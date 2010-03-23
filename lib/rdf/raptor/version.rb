@@ -6,7 +6,7 @@ module RDF; module Raptor
     EXTRA = :pre
 
     STRING = [MAJOR, MINOR, TINY].join('.')
-    STRING << "-#{EXTRA}" if EXTRA
+    STRING << ".#{EXTRA}" if EXTRA
 
     ##
     # @return [String]
