@@ -7,6 +7,27 @@ library.
 
 * <http://github.com/bendiken/rdf-raptor>
 
+Examples
+--------
+
+    require 'rdf/raptor'
+
+### Parsing an RDF/XML file
+
+    RDF::Reader.open('http://datagraph.org/jhacker/foaf.rdf') do |reader|
+      reader.each_statement do |statement|
+        puts statement.inspect
+      end
+    end
+
+### Parsing a Turtle file
+
+    RDF::Reader.open('http://datagraph.org/jhacker/foaf.ttl') do |reader|
+      reader.each_statement do |statement|
+        puts statement.inspect
+      end
+    end
+
 Documentation
 -------------
 
