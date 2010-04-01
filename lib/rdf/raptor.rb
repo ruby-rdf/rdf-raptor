@@ -12,6 +12,8 @@ module RDF
   #
   # @author [Arto Bendiken](http://ar.to/)
   module Raptor
-    autoload :VERSION, 'rdf/raptor/version'
+    require 'rdf/raptor/version'
+    require 'rdf/raptor/rdfxml'
+    require 'rdf/raptor/turtle'
   end # module Raptor
 end # module RDF
