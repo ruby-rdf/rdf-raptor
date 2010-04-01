@@ -31,6 +31,8 @@ Examples
 Documentation
 -------------
 
+<http://rdf.rubyforge.org/raptor/>
+
 * {RDF::Raptor}
   * {RDF::Raptor::RDFXML}
   * {RDF::Raptor::Turtle}
