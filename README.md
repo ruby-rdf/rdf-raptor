@@ -12,21 +12,57 @@ Examples
 
     require 'rdf/raptor'
 
-### Parsing an RDF/XML file
+### Parsing RDF statements from an RDF/XML file
 
-    RDF::Reader.open('http://datagraph.org/jhacker/foaf.rdf') do |reader|
+    RDF::Reader.open("http://datagraph.org/jhacker/foaf.rdf") do |reader|
       reader.each_statement do |statement|
         puts statement.inspect
       end
     end
 
-### Parsing a Turtle file
+### Parsing RDF statements from a Turtle file
 
-    RDF::Reader.open('http://datagraph.org/jhacker/foaf.ttl') do |reader|
+    RDF::Reader.open("http://datagraph.org/jhacker/foaf.ttl") do |reader|
       reader.each_statement do |statement|
         puts statement.inspect
       end
     end
+
+### Serializing RDF statements into an RDF/XML file
+
+    data = RDF::Repository.load("http://datagraph.org/jhacker/foaf.nt")
+    
+    RDF::Writer.open("output.rdf") do |writer|
+      data.each_statement do |statement|
+        writer << statement
+      end
+    end
+
+### Serializing RDF statements into a Turtle file
+
+    data = RDF::Repository.load("http://datagraph.org/jhacker/foaf.nt")
+    
+    RDF::Writer.open("output.ttl") do |writer|
+      data.each_statement do |statement|
+        writer << statement
+      end
+    end
+
+### Obtaining the RDF/XML format specification class
+
+    RDF::Format.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Format
+    RDF::Format.for("input.rdf")
+    RDF::Format.for(:file_name      => "input.rdf")
+    RDF::Format.for(:file_extension => "rdf")
+    RDF::Format.for(:content_type   => "application/rdf+xml")
+
+### Obtaining the Turtle format specification class
+
+    RDF::Format.for(:turtle)       #=> RDF::Raptor::Turtle::Format
+    RDF::Format.for("input.ttl")
+    RDF::Format.for(:file_name      => "input.ttl")
+    RDF::Format.for(:file_extension => "ttl")
+    RDF::Format.for(:content_type   => "text/turtle")
 
 Documentation
 -------------
@@ -41,7 +77,8 @@ Dependencies
 ------------
 
 * [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.1.3)
-* [Raptor](http://librdf.org/raptor/) (>= 1.4.21)
+* [Raptor](http://librdf.org/raptor/) (>= 1.4.21),
+  specifically the `rapper` binary
 
 Installation
 ------------
