@@ -11,11 +11,13 @@ Documentation
 -------------
 
 * {RDF::Raptor}
+  * {RDF::Raptor::RDFXML}
+  * {RDF::Raptor::Turtle}
 
 Dependencies
 ------------
 
-* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.1.1)
+* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.1.3)
 * [Raptor](http://librdf.org/raptor/) (>= 1.4.21)
 
 Installation
