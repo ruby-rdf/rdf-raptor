@@ -13,6 +13,9 @@ module RDF
   # @author [Arto Bendiken](http://ar.to/)
   module Raptor
     require 'rdf/raptor/version'
+    require 'rdf/raptor/format'
+    require 'rdf/raptor/reader'
+    require 'rdf/raptor/writer'
     require 'rdf/raptor/rdfxml'
     require 'rdf/raptor/turtle'
   end # module Raptor
