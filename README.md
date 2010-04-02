@@ -6,6 +6,17 @@ This is an [RDF.rb][] plugin that adds support for parsing/serializing
 library.
 
 * <http://github.com/bendiken/rdf-raptor>
+* <http://lists.w3.org/Archives/Public/public-rdf-ruby/2010Apr/0003.html>
+
+Features
+--------
+
+* Requires the [Raptor][] library and utilities to be available.
+* Based on the [`rapper`][rapper] command-line utility bundled with Raptor.
+* Parses and serializes RDF data from/into the RDF/XML or Turtle formats.
+* Provides serialization format autodetection for RDF/XML and Turtle.
+* Compatible with any operating system supported by Raptor and Ruby.
+* Compatible with MRI 1.8.x, 1.9.x and JRuby (tested with JRuby 1.4).
 
 Examples
 --------
@@ -120,3 +131,4 @@ information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 [RDF/XML]:  http://www.w3.org/TR/REC-rdf-syntax/
 [Turtle]:   http://en.wikipedia.org/wiki/Turtle_(syntax)
 [Raptor]:   http://librdf.org/raptor/
+[rapper]:   http://librdf.org/raptor/rapper.html
