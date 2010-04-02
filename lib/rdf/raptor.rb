@@ -37,6 +37,8 @@ module RDF
   #
   # @author [Arto Bendiken](http://ar.to/)
   module Raptor
+    RAPPER = 'rapper'
+
     require 'rdf/raptor/version'
     require 'rdf/raptor/format'
     require 'rdf/raptor/reader'
@@ -64,7 +66,7 @@ module RDF
     #
     # @return [String]
     def self.version
-      if `rapper --version 2>/dev/null` =~ /^(\d+)\.(\d+)\.(\d+)/
+      if `#{RAPPER} --version 2>/dev/null` =~ /^(\d+)\.(\d+)\.(\d+)/
         [$1, $2, $3].join('.')
       end
     end

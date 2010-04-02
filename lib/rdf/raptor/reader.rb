@@ -13,13 +13,13 @@ module RDF::Raptor
       format = self.class.format.rapper_format
       case input
         when RDF::URI, %r(^(file|http|https|ftp)://)
-          @command = "rapper -q -i #{format} -o ntriples #{input}"
+          @command = "#{RAPPER} -q -i #{format} -o ntriples #{input}"
           @rapper  = IO.popen(@command, 'rb')
         when File
-          @command = "rapper -q -i #{format} -o ntriples #{File.expand_path(input.path)}"
+          @command = "#{RAPPER} -q -i #{format} -o ntriples #{File.expand_path(input.path)}"
           @rapper  = IO.popen(@command, 'rb')
         else # IO, String
-          @command = "rapper -q -i #{format} -o ntriples file:///dev/stdin"
+          @command = "#{RAPPER} -q -i #{format} -o ntriples file:///dev/stdin"
           @rapper  = IO.popen(@command, 'rb+')
           @rapper.write(input.respond_to?(:read) ? input.read : input.to_s)
           @rapper.close_write
