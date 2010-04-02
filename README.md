@@ -12,6 +12,11 @@ Examples
 
     require 'rdf/raptor'
 
+### Ensuring Raptor is installed and obtaining the version number
+
+    RDF::Raptor.available?         #=> true
+    RDF::Raptor.version            #=> "1.4.21"
+
 ### Parsing RDF statements from an RDF/XML file
 
     RDF::Reader.open("http://datagraph.org/jhacker/foaf.rdf") do |reader|

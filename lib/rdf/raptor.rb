@@ -12,6 +12,12 @@ module RDF
   # @example Requiring the `RDF::Raptor` module
   #   require 'rdf/raptor'
   #
+  # @example Checking whether Raptor is installed
+  #   RDF::Raptor.available?         #=> true
+  #
+  # @example Obtaining the Raptor version number
+  #   RDF::Raptor.version            #=> "1.4.21"
+  #
   # @example Obtaining an RDF/XML format class
   #   RDF::Format.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Format
   #   RDF::Format.for("input.rdf")
