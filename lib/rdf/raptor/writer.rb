@@ -8,6 +8,8 @@ module RDF::Raptor
     # @yield  [writer]
     # @yieldparam [RDF::Writer] writer
     def initialize(output = $stdout, options = {}, &block)
+      raise RDF::WriterError.new("`rapper` binary not found") unless RDF::Raptor.available?
+
       format = self.class.format.rapper_format
       case output
         when File, IO
