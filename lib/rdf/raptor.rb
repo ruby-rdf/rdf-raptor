@@ -37,5 +37,30 @@ module RDF
     require 'rdf/raptor/writer'
     require 'rdf/raptor/rdfxml'
     require 'rdf/raptor/turtle'
+
+    ##
+    # Returns `true` if the `rapper` binary is available.
+    #
+    # @example
+    #   RDF::Raptor.available?  #=> true
+    #
+    # @return [Boolean]
+    def self.available?
+      !!version
+    end
+
+    ##
+    # Returns the installed `rapper` version number, or `nil` if `rapper` is
+    # not available.
+    #
+    # @example
+    #   RDF::Raptor.version  #=> "1.4.21"
+    #
+    # @return [String]
+    def self.version
+      if `rapper --version 2>/dev/null` =~ /^(\d+)\.(\d+)\.(\d+)/
+        [$1, $2, $3].join('.')
+      end
+    end
   end # module Raptor
 end # module RDF
