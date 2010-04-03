@@ -18,6 +18,24 @@ module RDF::Raptor
     #
     # @see http://librdf.org/raptor/libraptor.html
     module V1_4
+      ##
+      # @param  [Hash{Symbol => Object}] options
+      # @option (options) [Boolean] :init (true)
+      # @yield  [world]
+      # @yieldparam [FFI::Pointer] world
+      # @return [void]
+      def self.with_world(options = {}, &block)
+        options = {:init => true}.merge(options)
+        begin
+          raptor_init if options[:init]
+          raptor_world_open(world = raptor_new_world)
+          block.call(world)
+        ensure
+          raptor_free_world(world) if world
+          raptor_finish if options[:init]
+        end
+      end
+
       extend Base
       extend ::FFI::Library
       ffi_lib 'libraptor'
