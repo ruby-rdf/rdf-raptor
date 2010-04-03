@@ -36,6 +36,21 @@ module RDF::Raptor
         end
       end
 
+      ##
+      # @param  [Hash{Symbol => Object}] options
+      # @option (options) [String, #to_s] :name (:rdfxml)
+      # @yield  [parser]
+      # @yieldparam [FFI::Pointer] parser
+      # @return [void]
+      def self.with_parser(options = {}, &block)
+        begin
+          parser = raptor_new_parser((options[:name] || :rdfxml).to_s)
+          block.call(parser)
+        ensure
+          raptor_free_parser(parser) if parser
+        end
+      end
+
       extend Base
       extend ::FFI::Library
       ffi_lib 'libraptor'
