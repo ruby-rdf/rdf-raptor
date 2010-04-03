@@ -51,7 +51,8 @@ module RDF::Raptor
                     # TODO: error handling
                   end
                 ensure
-                  V1_4.raptor_free_uri(uri) if uri
+                  V1_4.raptor_free_uri(base_uri) if base_uri
+                  V1_4.raptor_free_uri(data_url) if data_url
                 end
 
               when File
