@@ -53,17 +53,5 @@ module RDF::Raptor
         # we're all done
       end
     end
-
-    ##
-    # @todo Remove this once RDF.rb 0.1.4 is released.
-    # @private
-    def self.format(klass = nil)
-      if klass.nil?
-        Format.each do |format|
-          return format if format.writer == self
-        end
-        return nil # not found
-      end
-    end
   end
 end
