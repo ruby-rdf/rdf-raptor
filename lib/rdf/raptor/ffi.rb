@@ -65,6 +65,24 @@ module RDF::Raptor
                :object_type, :int,
                :object_literal_datatype, :pointer,
                :object_literal_language, :string
+
+        ##
+        # @return [String]
+        def subject_as_string
+          V1_4.raptor_statement_part_as_string(self[:subject], self[:subject_type], nil, nil)
+        end
+
+        ##
+        # @return [String]
+        def predicate_as_string
+          V1_4.raptor_statement_part_as_string(self[:predicate], self[:predicate_type], nil, nil)
+        end
+
+        ##
+        # @return [String]
+        def object_as_string
+          V1_4.raptor_statement_part_as_string(self[:object], self[:object_type], self[:object_literal_datatype], self[:object_literal_language])
+        end
       end
 
       # @see http://librdf.org/raptor/api/tutorial-initialising-finishing.html
