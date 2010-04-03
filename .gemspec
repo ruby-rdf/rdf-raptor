@@ -26,7 +26,7 @@ GEMSPEC = Gem::Specification.new do |gem|
   gem.has_rdoc           = false
 
   gem.required_ruby_version      = '>= 1.8.2'
-  gem.requirements               = ['Raptor (>= 1.4.21)']
+  gem.requirements               = ['Raptor (>= 1.4.16)']
   gem.add_development_dependency 'rdf-spec',    '>= 0.1.0'
   gem.add_development_dependency 'rspec',       '>= 1.3.0'
   gem.add_development_dependency 'yard' ,       '>= 0.5.3'
