@@ -101,6 +101,18 @@ module RDF::Raptor
         def object_as_string
           V1_4.raptor_statement_part_as_string(self[:object], self[:object_type], self[:object_literal_datatype], self[:object_literal_language])
         end
+
+        ##
+        # @return [Array(RDF::Resource, RDF::URI, RDF::Value)]
+        def to_triple
+          [subject, predicate, object]
+        end
+
+        ##
+        # @return [Array(RDF::Resource, RDF::URI, RDF::Value, nil)]
+        def to_quad
+          [subject, predicate, object, nil]
+        end
       end
 
       # @see http://librdf.org/raptor/api/tutorial-initialising-finishing.html
