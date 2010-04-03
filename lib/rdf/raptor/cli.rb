@@ -1,7 +1,6 @@
 module RDF::Raptor
   ##
-  # Reader/writer implementation based on Raptor's command-line utility
-  # `rapper`.
+  # A command-line interface to Raptor's `rapper` utility.
   module CLI
     ##
     # Reader implementation.
