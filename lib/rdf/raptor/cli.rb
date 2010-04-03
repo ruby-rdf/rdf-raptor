@@ -8,6 +8,7 @@ module RDF::Raptor
       ##
       # @param  [IO, File, RDF::URI, String] input
       # @param  [Hash{Symbol => Object}]     options
+      # @option (options) [String, #to_s]    :base_uri ("file:///dev/stdin")
       # @yield  [reader]
       # @yieldparam [RDF::Reader] reader
       def initialize(input = $stdin, options = {}, &block)
@@ -17,12 +18,15 @@ module RDF::Raptor
         case input
           when RDF::URI, %r(^(file|http|https|ftp)://)
             @command = "#{RAPPER} -q -i #{format} -o ntriples #{input}"
+            @command << " #{options[:base_uri]}" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb')
           when File
             @command = "#{RAPPER} -q -i #{format} -o ntriples #{File.expand_path(input.path)}"
+            @command << " #{options[:base_uri]}" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb')
           else # IO, String
             @command = "#{RAPPER} -q -i #{format} -o ntriples file:///dev/stdin"
+            @command << " #{options[:base_uri]}" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb+')
             @rapper.write(input.respond_to?(:read) ? input.read : input.to_s)
             @rapper.close_write
