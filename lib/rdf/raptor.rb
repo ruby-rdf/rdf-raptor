@@ -40,11 +40,7 @@ module RDF
     RAPPER = 'rapper'
 
     require 'rdf/raptor/version'
-    require 'rdf/raptor/format'
-    require 'rdf/raptor/reader'
-    require 'rdf/raptor/writer'
-    require 'rdf/raptor/rdfxml'
-    require 'rdf/raptor/turtle'
+    require 'rdf/raptor/cli'
 
     ##
     # Returns `true` if the `rapper` binary is available.
@@ -70,5 +66,39 @@ module RDF
         [$1, $2, $3].join('.')
       end
     end
+
+    ##
+    # Format base class.
+    class Format < RDF::Format
+      ##
+      # @overload rapper_format
+      #
+      # @overload rapper_format(format)
+      #   @param  [Symbol] format
+      #
+      # @return [void]
+      def self.rapper_format(format = nil)
+        unless format
+          @rapper_format
+        else
+          @rapper_format = format
+        end
+      end
+    end
+
+    ##
+    # Reader base class.
+    class Reader < RDF::Reader
+      include RDF::Raptor::CLI::Reader
+    end
+
+    ##
+    # Writer base class.
+    class Writer < RDF::Writer
+      include RDF::Raptor::CLI::Writer
+    end
+
+    require 'rdf/raptor/rdfxml'
+    require 'rdf/raptor/turtle'
   end # module Raptor
 end # module RDF
