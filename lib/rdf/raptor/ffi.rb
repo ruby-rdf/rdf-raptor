@@ -7,6 +7,87 @@ module RDF::Raptor
   # @see http://librdf.org/raptor/api/
   # @see http://librdf.org/raptor/libraptor.html
   module FFI
+    ##
+    # Reader implementation.
+    module Reader
+      ##
+      # @param  [IO, File, RDF::URI, String] input
+      # @param  [Hash{Symbol => Object}]     options
+      # @option (options) [String, #to_s]    :base_uri ("file:///dev/stdin")
+      # @yield  [reader]
+      # @yieldparam [RDF::Reader] reader
+      def initialize(input = $stdin, options = {}, &block)
+        @format = self.class.format.rapper_format
+        super
+      end
+
+      ##
+      # @yield [statement]
+      # @yieldparam [RDF::Statement] statement
+      def each_statement(&block)
+        each_triple do |triple|
+          block.call(RDF::Statement.new(*triple))
+        end
+      end
+
+      ##
+      # @yield [triple]
+      # @yieldparam [Array(RDF::Resource, RDF::URI, RDF::Value)] triple
+      def each_triple(&block)
+        @parser = Proc.new do |user_data, statement|
+          triple = V1_4::Statement.new(statement).to_triple
+          block.call(triple)
+        end
+
+        V1_4.with_world do |world|
+          V1_4.with_parser(:name => @format) do |parser|
+            V1_4.raptor_set_statement_handler(parser, nil, @parser)
+            case @input
+              when RDF::URI, %r(^(file|http|https|ftp)://)
+                begin
+                  data_url = V1_4.raptor_new_uri(@input.to_s)
+                  base_uri = @options.has_key?(:base_uri) ? V1_4.raptor_new_uri(@options[:base_uri].to_s) : nil
+                  unless (result = V1_4.raptor_parse_uri(parser, data_url, base_uri)).zero?
+                    # TODO: error handling
+                  end
+                ensure
+                  V1_4.raptor_free_uri(uri) if uri
+                end
+
+              when File
+                begin
+                  data_url = V1_4.raptor_new_uri("file://#{File.expand_path(@input.path)}")
+                  base_uri = @options.has_key?(:base_uri) ? V1_4.raptor_new_uri(@options[:base_uri].to_s) : nil
+                  unless (result = V1_4.raptor_parse_file(parser, data_url, base_uri)).zero?
+                    # TODO: error handling
+                  end
+                ensure
+                  V1_4.raptor_free_uri(base_uri) if base_uri
+                  V1_4.raptor_free_uri(data_url) if data_url
+                end
+
+              else # IO, String
+                base_uri = (@options[:base_uri] || 'file:///dev/stdin').to_s
+                unless (result = V1_4.raptor_start_parse(parser, base_uri)).zero?
+                  # TODO: error handling
+                end
+                # TODO: read in chunks instead of everything in one go:
+                unless (result = V1_4.raptor_parse_chunk(parser, buffer = @input.read, buffer.size, 0)).zero?
+                  # TODO: error handling
+                end
+                V1_4.raptor_parse_chunk(parser, nil, 0, 1) # EOF
+            end
+          end
+        end
+
+        @parser = nil
+      end
+
+      alias_method :each, :each_statement
+    end
+
+    ##
+    # Helper methods for FFI modules.
     module Base
       def define_pointer(name)
         self.class.send(:define_method, name) { :pointer }
