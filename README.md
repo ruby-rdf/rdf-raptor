@@ -106,7 +106,7 @@ official release, do:
 To install the [Raptor][] command-line tools themselves, look for a "raptor"
 or "raptor-utils" package in your platform's package management system.
 Here follow installation instructions for the Mac and the most common Linux
-distributions:
+and BSD distributions:
 
     % [sudo] port install raptor             # Mac OS X with MacPorts
     % [sudo] fink install raptor-bin         # Mac OS X with Fink
@@ -114,6 +114,8 @@ distributions:
     % [sudo] yum install raptor              # Fedora / CentOS / RHEL
     % [sudo] zypper install raptor           # openSUSE
     % [sudo] emerge raptor                   # Gentoo Linux
+    % [sudo] pkg_add -r raptor               # FreeBSD
+    % [sudo] pkg_add raptor                  # OpenBSD / NetBSD
 
 Download
 --------
