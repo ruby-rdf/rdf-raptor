@@ -137,21 +137,29 @@ module RDF::Raptor
       extend ::FFI::Library
       ffi_lib LIBRAPTOR
 
+      enum :raptor_identifier_type,
+           [:unknown, :resource, :anonymous, :predicate, :ordinal, :literal, :xml_literal].freeze
+
       # @see http://librdf.org/raptor/api/raptor-section-triples.html
       class Statement < ::FFI::Struct
         layout :subject, :pointer,
-               :subject_type, :int,
+               :subject_type, :raptor_identifier_type,
                :predicate, :pointer,
-               :predicate_type, :int,
+               :predicate_type, :raptor_identifier_type,
                :object, :pointer,
-               :object_type, :int,
+               :object_type, :raptor_identifier_type,
                :object_literal_datatype, :pointer,
                :object_literal_language, :string
 
         ##
         # @return [RDF::Resource]
         def subject
-          RDF::NTriples::Reader.parse_subject(subject_as_string)
+          case self[:subject_type]
+            when :resource
+              RDF::NTriples::Reader.parse_uri(subject_as_string)
+            when :anonymous
+              RDF::NTriples::Reader.parse_node(subject_as_string)
+          end
         end
 
         ##
@@ -166,7 +174,10 @@ module RDF::Raptor
         ##
         # @return [RDF::URI]
         def predicate
-          RDF::NTriples::Reader.parse_predicate(predicate_as_string)
+          case self[:predicate_type]
+            when :resource
+              RDF::NTriples::Reader.parse_uri(predicate_as_string)
+          end
         end
 
         ##
@@ -181,7 +192,14 @@ module RDF::Raptor
         ##
         # @return [RDF::Value]
         def object
-          RDF::NTriples::Reader.parse_object(object_as_string)
+          case self[:object_type]
+            when :resource
+              RDF::NTriples::Reader.parse_uri(object_as_string)
+            when :anonymous
+              RDF::NTriples::Reader.parse_node(object_as_string)
+            when :literal
+              RDF::NTriples::Reader.parse_literal(object_as_string)
+          end
         end
 
         ##
@@ -230,7 +248,7 @@ module RDF::Raptor
       attach_function :raptor_statement_compare, [raptor_statement, raptor_statement], :int
       attach_function :raptor_print_statement, [raptor_statement, :pointer], :void
       attach_function :raptor_print_statement_as_ntriples, [:pointer, :pointer], :void
-      attach_function :raptor_statement_part_as_string, [:pointer, :int, raptor_uri, :string], :string
+      attach_function :raptor_statement_part_as_string, [:pointer, :raptor_identifier_type, raptor_uri, :string], :string
 
       # @see http://librdf.org/raptor/api/raptor-section-parser.html
       callback :raptor_statement_handler, [:pointer, raptor_statement], :void
