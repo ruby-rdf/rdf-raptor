@@ -37,7 +37,8 @@ module RDF
   #
   # @author [Arto Bendiken](http://ar.to/)
   module Raptor
-    RAPPER = 'rapper'
+    LIBRAPTOR = 'libraptor'
+    RAPPER    = 'rapper'
 
     require 'rdf/raptor/version'
     require 'rdf/raptor/cli'

@@ -53,7 +53,7 @@ module RDF::Raptor
 
       extend Base
       extend ::FFI::Library
-      ffi_lib 'libraptor'
+      ffi_lib LIBRAPTOR
 
       # @see http://librdf.org/raptor/api/raptor-section-triples.html
       class Statement < ::FFI::Struct
