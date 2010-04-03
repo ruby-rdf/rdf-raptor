@@ -151,37 +151,47 @@ module RDF::Raptor
         ##
         # @return [RDF::Resource]
         def subject
-          RDF::NTriples.unserialize(subject_as_string)
+          RDF::NTriples::Reader.parse_subject(subject_as_string)
         end
 
         ##
         # @return [String]
         def subject_as_string
-          V1_4.raptor_statement_part_as_string(self[:subject], self[:subject_type], nil, nil)
+          V1_4.raptor_statement_part_as_string(
+            self[:subject],
+            self[:subject_type],
+            nil, nil)
         end
 
         ##
         # @return [RDF::URI]
         def predicate
-          RDF::NTriples.unserialize(predicate_as_string)
+          RDF::NTriples::Reader.parse_predicate(predicate_as_string)
         end
 
         ##
         # @return [String]
         def predicate_as_string
-          V1_4.raptor_statement_part_as_string(self[:predicate], self[:predicate_type], nil, nil)
+          V1_4.raptor_statement_part_as_string(
+            self[:predicate],
+            self[:predicate_type],
+            nil, nil)
         end
 
         ##
         # @return [RDF::Value]
         def object
-          RDF::NTriples.unserialize(object_as_string)
+          RDF::NTriples::Reader.parse_object(object_as_string)
         end
 
         ##
         # @return [String]
         def object_as_string
-          V1_4.raptor_statement_part_as_string(self[:object], self[:object_type], self[:object_literal_datatype], self[:object_literal_language])
+          V1_4.raptor_statement_part_as_string(
+            self[:object],
+            self[:object_type],
+            self[:object_literal_datatype],
+            self[:object_literal_language])
         end
 
         ##
