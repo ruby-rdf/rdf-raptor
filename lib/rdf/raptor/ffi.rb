@@ -154,11 +154,11 @@ module RDF::Raptor
         ##
         # @return [RDF::Resource]
         def subject
-          case self[:subject_type]
+          @subject ||= case self[:subject_type]
             when :resource
-              RDF::NTriples::Reader.parse_uri(subject_as_string)
+              RDF::URI.new(V1_4.raptor_uri_to_string(self[:subject]))
             when :anonymous
-              RDF::NTriples::Reader.parse_node(subject_as_string)
+              RDF::Node.new(self[:subject].read_string)
           end
         end
 
@@ -174,9 +174,9 @@ module RDF::Raptor
         ##
         # @return [RDF::URI]
         def predicate
-          case self[:predicate_type]
+          @predicate ||= case self[:predicate_type]
             when :resource
-              RDF::NTriples::Reader.parse_uri(predicate_as_string)
+              RDF::URI.new(V1_4.raptor_uri_to_string(self[:predicate]))
           end
         end
 
@@ -192,13 +192,20 @@ module RDF::Raptor
         ##
         # @return [RDF::Value]
         def object
-          case self[:object_type]
+          @object ||= case self[:object_type]
             when :resource
-              RDF::NTriples::Reader.parse_uri(object_as_string)
+              RDF::URI.new(V1_4.raptor_uri_to_string(self[:object]))
             when :anonymous
-              RDF::NTriples::Reader.parse_node(object_as_string)
+              RDF::Node.new(self[:object].read_string)
             when :literal
-              RDF::NTriples::Reader.parse_literal(object_as_string)
+              case
+                when self[:object_literal_language]
+                  RDF::Literal.new(self[:object].read_string, :language => self[:object_literal_language])
+                when self[:object_literal_datatype] && !self[:object_literal_datatype].null?
+                  RDF::Literal.new(self[:object].read_string, :datatype => V1_4.raptor_uri_to_string(self[:object_literal_datatype]))
+                else
+                  RDF::Literal.new(self[:object].read_string)
+              end
           end
         end
 
