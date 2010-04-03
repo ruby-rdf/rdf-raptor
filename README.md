@@ -98,15 +98,15 @@ Dependencies
 Installation
 ------------
 
-The recommended installation method is via RubyGems. To install the latest
-official release, do:
+The recommended installation method is via [RubyGems](http://rubygems.org/).
+To install the latest official release of the `RDF::Raptor` gem, do:
 
     % [sudo] gem install rdf-raptor
 
-To install the [Raptor][] command-line tools themselves, look for a "raptor"
-or "raptor-utils" package in your platform's package management system.
-Here follow installation instructions for the Mac and the most common Linux
-and BSD distributions:
+To install the required [Raptor][] command-line tools themselves, look for a
+`raptor` or `raptor-utils` package in your platform's package management
+system. Here follow installation instructions for the Mac and the most
+common Linux and BSD distributions:
 
     % [sudo] port install raptor             # Mac OS X with MacPorts
     % [sudo] fink install raptor-bin         # Mac OS X with Fink
