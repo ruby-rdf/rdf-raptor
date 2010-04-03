@@ -93,8 +93,7 @@ Dependencies
 ------------
 
 * [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.1.3)
-* [Raptor](http://librdf.org/raptor/) (>= 1.4.21),
-  specifically the `rapper` binary
+* [Raptor][] (>= 1.4.16), specifically the `rapper` binary
 
 Installation
 ------------
@@ -103,6 +102,18 @@ The recommended installation method is via RubyGems. To install the latest
 official release, do:
 
     % [sudo] gem install rdf-raptor
+
+To install the [Raptor][] command-line tools themselves, look for a "raptor"
+or "raptor-utils" package in your platform's package management system.
+Here follow installation instructions for the Mac and the most common Linux
+distributions:
+
+    % [sudo] port install raptor             # Mac OS X with MacPorts
+    % [sudo] fink install raptor-bin         # Mac OS X with Fink
+    % [sudo] aptitude install raptor-utils   # Ubuntu / Debian
+    % [sudo] yum install raptor              # Fedora / CentOS / RHEL
+    % [sudo] zypper install raptor           # openSUSE
+    % [sudo] emerge raptor                   # Gentoo Linux
 
 Download
 --------
