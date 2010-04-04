@@ -37,11 +37,13 @@ module RDF
   #
   # @author [Arto Bendiken](http://ar.to/)
   module Raptor
-    LIBRAPTOR = ENV['RDF_RAPPER_LIBPATH'] || 'libraptor' unless const_defined?(:LIBRAPTOR)
-    RAPPER    = ENV['RDF_RAPPER_BINPATH'] || 'rapper'    unless const_defined?(:RAPPER)
+    ENGINE    = (ENV['RDF_RAPTOR_ENGINE'] || :cli).to_sym unless const_defined?(:ENGINE)
+    LIBRAPTOR = ENV['RDF_RAPTOR_LIBPATH'] || 'libraptor'  unless const_defined?(:LIBRAPTOR)
+    RAPPER    = ENV['RDF_RAPTOR_BINPATH'] || 'rapper'     unless const_defined?(:RAPPER)
 
     require 'rdf/raptor/version'
     require 'rdf/raptor/cli'
+    require 'rdf/raptor/ffi' if ENGINE == :ffi
 
     ##
     # Returns `true` if the `rapper` binary is available.
@@ -90,7 +92,8 @@ module RDF
     ##
     # Reader base class.
     class Reader < RDF::Reader
-      include RDF::Raptor::CLI::Reader
+      include RDF::Raptor::CLI::Reader if ENGINE == :cli
+      include RDF::Raptor::FFI::Reader if ENGINE == :ffi
     end
 
     ##
