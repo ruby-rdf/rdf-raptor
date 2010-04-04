@@ -137,17 +137,21 @@ module RDF::Raptor
       extend ::FFI::Library
       ffi_lib LIBRAPTOR
 
-      enum :raptor_identifier_type,
-           [:unknown, :resource, :anonymous, :predicate, :ordinal, :literal, :xml_literal].freeze
+      # TODO: Ideally this would be an enum, but the JRuby FFI (as of
+      # version 1.4.0) has problems with enums as part of structs:
+      #   `Unknown field type: #<FFI::Enum> (ArgumentError)`
+      RAPTOR_IDENTIFIER_TYPE_RESOURCE  = 1
+      RAPTOR_IDENTIFIER_TYPE_ANONYMOUS = 2
+      RAPTOR_IDENTIFIER_TYPE_LITERAL   = 5
 
       # @see http://librdf.org/raptor/api/raptor-section-triples.html
       class Statement < ::FFI::Struct
         layout :subject, :pointer,
-               :subject_type, :raptor_identifier_type,
+               :subject_type, :int,
                :predicate, :pointer,
-               :predicate_type, :raptor_identifier_type,
+               :predicate_type, :int,
                :object, :pointer,
-               :object_type, :raptor_identifier_type,
+               :object_type, :int,
                :object_literal_datatype, :pointer,
                :object_literal_language, :string
 
@@ -155,9 +159,9 @@ module RDF::Raptor
         # @return [RDF::Resource]
         def subject
           @subject ||= case self[:subject_type]
-            when :resource
+            when RAPTOR_IDENTIFIER_TYPE_RESOURCE
               RDF::URI.new(V1_4.raptor_uri_to_string(self[:subject]))
-            when :anonymous
+            when RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
               RDF::Node.new(self[:subject].read_string)
           end
         end
@@ -175,7 +179,7 @@ module RDF::Raptor
         # @return [RDF::URI]
         def predicate
           @predicate ||= case self[:predicate_type]
-            when :resource
+            when RAPTOR_IDENTIFIER_TYPE_RESOURCE
               RDF::URI.new(V1_4.raptor_uri_to_string(self[:predicate]))
           end
         end
@@ -193,11 +197,11 @@ module RDF::Raptor
         # @return [RDF::Value]
         def object
           @object ||= case self[:object_type]
-            when :resource
+            when RAPTOR_IDENTIFIER_TYPE_RESOURCE
               RDF::URI.new(V1_4.raptor_uri_to_string(self[:object]))
-            when :anonymous
+            when RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
               RDF::Node.new(self[:object].read_string)
-            when :literal
+            when RAPTOR_IDENTIFIER_TYPE_LITERAL
               case
                 when self[:object_literal_language]
                   RDF::Literal.new(self[:object].read_string, :language => self[:object_literal_language])
@@ -255,7 +259,7 @@ module RDF::Raptor
       attach_function :raptor_statement_compare, [raptor_statement, raptor_statement], :int
       attach_function :raptor_print_statement, [raptor_statement, :pointer], :void
       attach_function :raptor_print_statement_as_ntriples, [:pointer, :pointer], :void
-      attach_function :raptor_statement_part_as_string, [:pointer, :raptor_identifier_type, raptor_uri, :string], :string
+      attach_function :raptor_statement_part_as_string, [:pointer, :int, raptor_uri, :string], :string
 
       # @see http://librdf.org/raptor/api/raptor-section-parser.html
       callback :raptor_statement_handler, [:pointer, raptor_statement], :void
