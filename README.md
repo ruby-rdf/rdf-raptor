@@ -114,6 +114,7 @@ common Linux and BSD distributions:
     % [sudo] yum install raptor              # Fedora / CentOS / RHEL
     % [sudo] zypper install raptor           # openSUSE
     % [sudo] emerge raptor                   # Gentoo Linux
+    % [sudo] pacman -S raptor                # Arch Linux
     % [sudo] pkg_add -r raptor               # FreeBSD
     % [sudo] pkg_add raptor                  # OpenBSD / NetBSD
 
