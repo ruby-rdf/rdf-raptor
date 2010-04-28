@@ -92,7 +92,7 @@ Documentation
 Dependencies
 ------------
 
-* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.1.4)
+* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.1.9)
 * [Raptor][] (>= 1.4.16), specifically the `rapper` binary
 
 Installation
