@@ -14,7 +14,8 @@ Features
 * Requires the [Raptor][] library and utilities to be available.
 * Based on the [`rapper`][rapper] command-line utility bundled with Raptor.
 * Parses and serializes RDF data from/into the RDF/XML or Turtle formats.
-* Provides serialization format autodetection for RDF/XML and Turtle.
+* Extracts RDF statements from XHTML+RDFa documents.
+* Provides serialization format autodetection for RDF/XML, Turtle and RDFa.
 * Compatible with any operating system supported by Raptor and Ruby.
 * Compatible with MRI 1.8.x, 1.9.x and JRuby (tested with JRuby 1.4).
 
@@ -39,6 +40,14 @@ Examples
 ### Parsing RDF statements from a Turtle file
 
     RDF::Reader.open("http://datagraph.org/jhacker/foaf.ttl") do |reader|
+      reader.each_statement do |statement|
+        puts statement.inspect
+      end
+    end
+
+### Extracting RDF statements from an XHTML+RDFa document
+
+    RDF::Reader.open(url = "http://bblfish.net/", :format => :rdfa, :base_uri => url) do |reader|
       reader.each_statement do |statement|
         puts statement.inspect
       end
@@ -80,6 +89,14 @@ Examples
     RDF::Format.for(:file_extension => "ttl")
     RDF::Format.for(:content_type   => "text/turtle")
 
+### Obtaining the RDFa format specification class
+
+    RDF::Format.for(:rdfa)         #=> RDF::Raptor::RDFa::Format
+    RDF::Format.for("input.html")
+    RDF::Format.for(:file_name      => "input.html")
+    RDF::Format.for(:file_extension => "html")
+    RDF::Format.for(:content_type   => "application/xhtml+xml")
+
 Documentation
 -------------
 
@@ -88,6 +105,7 @@ Documentation
 * {RDF::Raptor}
   * {RDF::Raptor::RDFXML}
   * {RDF::Raptor::Turtle}
+  * {RDF::Raptor::RDFa}
 
 Dependencies
 ------------

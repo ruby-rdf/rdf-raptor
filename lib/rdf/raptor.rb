@@ -8,6 +8,8 @@ module RDF
   #   machine-readable RDF/XML format.
   # * {RDF::Raptor::Turtle} provides support for the popular
   #   human-readable Turtle format.
+  # * {RDF::Raptor::RDFa} provides support for extracting
+  #   RDF statements from XHTML+RDFa documents.
   #
   # @example Requiring the `RDF::Raptor` module
   #   require 'rdf/raptor'
@@ -31,6 +33,13 @@ module RDF
   #   RDF::Format.for(:file_name      => "input.ttl")
   #   RDF::Format.for(:file_extension => "ttl")
   #   RDF::Format.for(:content_type   => "text/turtle")
+  #
+  # @example Obtaining an RDFa format class
+  #   RDF::Format.for(:rdfa)       #=> RDF::Raptor::RDFa::Format
+  #   RDF::Format.for("input.html")
+  #   RDF::Format.for(:file_name      => "input.html")
+  #   RDF::Format.for(:file_extension => "html")
+  #   RDF::Format.for(:content_type   => "application/xhtml+xml")
   #
   # @see http://rdf.rubyforge.org/
   # @see http://librdf.org/raptor/
@@ -104,5 +113,6 @@ module RDF
 
     require 'rdf/raptor/rdfxml'
     require 'rdf/raptor/turtle'
+    require 'rdf/raptor/rdfa'
   end # module Raptor
 end # module RDF
