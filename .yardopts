@@ -1,4 +1,4 @@
---title "RDF::Raptor - Raptor RDF Parser Wrapper for RDF.rb"
+--title "RDF::Raptor - RDF/XML, Turtle and RDFa Support for RDF.rb"
 --output-dir doc/yard
 --protected
 --no-private
