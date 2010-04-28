@@ -6,7 +6,7 @@ This is an [RDF.rb][] plugin that adds support for parsing/serializing
 library.
 
 * <http://github.com/bendiken/rdf-raptor>
-* <http://lists.w3.org/Archives/Public/public-rdf-ruby/2010Apr/0003.html>
+* <http://blog.datagraph.org/2010/04/parsing-rdf-with-ruby>
 
 Features
 --------
