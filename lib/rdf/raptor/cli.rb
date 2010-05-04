@@ -17,18 +17,33 @@ module RDF::Raptor
         format = self.class.format.rapper_format
         case input
           when RDF::URI, %r(^(file|http|https|ftp)://)
-            @command = "#{RAPPER} -q -i #{format} -o ntriples #{input}"
-            @command << " #{options[:base_uri]}" if options.has_key?(:base_uri)
+            @command = "#{RAPPER} -q -i #{format} -o ntriples '#{input}'"
+            @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb')
           when File
-            @command = "#{RAPPER} -q -i #{format} -o ntriples #{File.expand_path(input.path)}"
-            @command << " #{options[:base_uri]}" if options.has_key?(:base_uri)
+            @command = "#{RAPPER} -q -i #{format} -o ntriples '#{File.expand_path(input.path)}'"
+            @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb')
           else # IO, String
             @command = "#{RAPPER} -q -i #{format} -o ntriples file:///dev/stdin"
-            @command << " #{options[:base_uri]}" if options.has_key?(:base_uri)
+            @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb+')
-            @rapper.write(input.respond_to?(:read) ? input.read : input.to_s)
+            pid = fork do
+              begin
+                if input.respond_to?(:read)
+                  buf = String.new
+                  while input.read(8192, buf)
+                    @rapper.write(buf)
+                  end
+                else
+                  @rapper.write(input.to_s)
+                end
+                @rapper.close_write
+              ensure
+                exit
+              end
+            end
+            Process.detach(pid)
             @rapper.close_write
         end
         @reader = RDF::NTriples::Reader.new(@rapper, options, &block)
@@ -58,7 +73,7 @@ module RDF::Raptor
         case output
           when File, IO, StringIO
             @command = "#{RAPPER} -q -i ntriples -o #{format} file:///dev/stdin"
-            @command << " #{options[:base_uri]}" if options.has_key?(:base_uri)
+            @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb+')
           else
             raise ArgumentError.new("unsupported output type: #{output.inspect}")
