@@ -1,3 +1,5 @@
+require 'tempfile'
+
 module RDF::Raptor
   ##
   # A command-line interface to Raptor's `rapper` utility.
@@ -20,7 +22,7 @@ module RDF::Raptor
             @command = "#{RAPPER} -q -i #{format} -o ntriples '#{input}'"
             @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb')
-          when File
+          when File, Tempfile
             @command = "#{RAPPER} -q -i #{format} -o ntriples '#{File.expand_path(input.path)}'"
             @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb')
@@ -29,7 +31,9 @@ module RDF::Raptor
             @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb+')
             pid = fork do
+              # process to feed rapper
               begin
+                @rapper.close_read
                 if input.respond_to?(:read)
                   buf = String.new
                   while input.read(8192, buf)
@@ -40,7 +44,7 @@ module RDF::Raptor
                 end
                 @rapper.close_write
               ensure
-                exit
+                Process.exit
               end
             end
             Process.detach(pid)
@@ -54,8 +58,16 @@ module RDF::Raptor
       ##
       # @return [Array]
       def read_triple
-        @reader.read_triple
+        raise EOFError if @rapper.closed?
+        begin
+          triple = @reader.read_triple
+        rescue EOFError
+          @rapper.close
+          raise
+        end
+        triple
       end
+
     end
 
     ##
@@ -71,7 +83,7 @@ module RDF::Raptor
 
         format = self.class.format.rapper_format
         case output
-          when File, IO, StringIO
+          when File, IO, StringIO, Tempfile
             @command = "#{RAPPER} -q -i ntriples -o #{format} file:///dev/stdin"
             @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb+')
@@ -96,22 +108,36 @@ module RDF::Raptor
       # @param  [RDF::Value]    object
       # @return [void]
       def write_triple(subject, predicate, object)
+        output_transit(false)
         @writer.write_triple(subject, predicate, object)
+        output_transit(false)
       end
 
       ##
       # @return [void]
       def write_epilogue
-        @rapper.close_write
-        begin
+        @rapper.close_write unless @rapper.closed?
+        output_transit(true)
+      end
+
+      ##
+      # Feed any available rapper output to the destination.
+      # @return [void]
+      def output_transit(block)
+        unless @rapper.closed?
           chunk_size = @options[:chunk_size] || 4096 # bytes
-          loop do
-            @output.write(@rapper.readpartial(chunk_size))
+          begin
+            loop do
+              @output.write(block ? @rapper.readpartial(chunk_size) : @rapper.read_nonblock(chunk_size))
+            end
+          rescue EOFError => e
+            @rapper.close
+          rescue Errno::EAGAIN, Errno::EINTR
+            # eat
           end
-        rescue EOFError => e
-          # we're all done
         end
       end
+
     end
   end
 end
