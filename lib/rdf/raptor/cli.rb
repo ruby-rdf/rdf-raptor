@@ -84,7 +84,7 @@ module RDF::Raptor
         format = self.class.format.rapper_format
         case output
           when File, IO, StringIO, Tempfile
-            @command = "#{RAPPER} -q -i ntriples -o #{format} file:///dev/stdin"
+            @command = "#{RAPPER} -q -i turtle -o #{format} file:///dev/stdin"
             @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb+')
           else
