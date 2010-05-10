@@ -55,7 +55,7 @@ module RDF::Raptor
                   V1_4.raptor_free_uri(data_url) if data_url
                 end
 
-              when File
+              when File, Tempfile
                 begin
                   data_url = V1_4.raptor_new_uri("file://#{File.expand_path(@input.path)}")
                   base_uri = @options.has_key?(:base_uri) ? V1_4.raptor_new_uri(@options[:base_uri].to_s) : nil
