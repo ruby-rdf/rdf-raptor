@@ -39,8 +39,14 @@ module RDF::Raptor
           block.call(triple)
         end
 
+        @error_handler = Proc.new do |user_data, locator, message|
+          line = V1_4.raptor_locator_line(locator)
+          raise RDF::ReaderError, line > -1 ? "Line #{line}: #{message}" : message
+        end
+
         V1_4.with_world do |world|
           V1_4.with_parser(:name => @format) do |parser|
+            V1_4.raptor_set_error_handler(parser, nil, @error_handler)
             V1_4.raptor_set_statement_handler(parser, nil, @parser)
             case @input
               when RDF::URI, %r(^(file|http|https|ftp)://)
@@ -240,6 +246,15 @@ module RDF::Raptor
       attach_function :raptor_init, [], :void
       attach_function :raptor_finish, [], :void
 
+      # @see http://librdf.org/raptor/api/raptor-section-locator.html
+      define_pointer  :raptor_locator
+      attach_function :raptor_locator_line, [raptor_locator], :int
+      attach_function :raptor_locator_column, [raptor_locator], :int
+      attach_function :raptor_locator_byte, [raptor_locator], :int
+
+      # @see http://librdf.org/raptor/api/raptor-section-general.html
+      callback :raptor_message_handler, [:pointer, raptor_locator, :string], :void
+
       # @see http://librdf.org/raptor/api/raptor-section-world.html
       define_pointer  :raptor_world
       attach_function :raptor_new_world, [], raptor_world
@@ -265,6 +280,8 @@ module RDF::Raptor
       callback :raptor_statement_handler, [:pointer, raptor_statement], :void
       define_pointer  :raptor_parser
       attach_function :raptor_new_parser, [:string], raptor_parser
+      attach_function :raptor_set_error_handler, [raptor_parser, :pointer, :raptor_message_handler], :void
+      attach_function :raptor_set_warning_handler, [raptor_parser, :pointer, :raptor_message_handler], :void
       attach_function :raptor_set_statement_handler, [raptor_parser, :pointer, :raptor_statement_handler], :void
       attach_function :raptor_parse_file, [raptor_parser, raptor_uri, raptor_uri], :int
       attach_function :raptor_parse_file_stream, [raptor_parser, :pointer, :string, raptor_uri], :int
