@@ -108,7 +108,8 @@ module RDF
     ##
     # Writer base class.
     class Writer < RDF::Writer
-      include RDF::Raptor::CLI::Writer
+      include RDF::Raptor::CLI::Writer if ENGINE == :cli
+      include RDF::Raptor::FFI::Writer if ENGINE == :ffi
     end
 
     require 'rdf/raptor/rdfxml'

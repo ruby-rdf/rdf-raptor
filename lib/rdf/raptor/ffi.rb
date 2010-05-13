@@ -44,9 +44,15 @@ module RDF::Raptor
           raise RDF::ReaderError, line > -1 ? "Line #{line}: #{message}" : message
         end
 
+        @warning_handler = Proc.new do |user_data, locator, message|
+          # line = V1_4.raptor_locator_line(locator)
+          # $stderr.puts line > -1 ? "Line #{line}: #{message}" : message
+        end
+
         V1_4.with_world do |world|
           V1_4.with_parser(:name => @format) do |parser|
             V1_4.raptor_set_error_handler(parser, nil, @error_handler)
+            V1_4.raptor_set_warning_handler(parser, nil, @warning_handler)
             V1_4.raptor_set_statement_handler(parser, nil, @parser)
             case @input
               when RDF::URI, %r(^(file|http|https|ftp)://)
@@ -94,6 +100,82 @@ module RDF::Raptor
     end
 
     ##
+    # Writer implementation.
+    module Writer
+
+      def initialize(output = $stdout, options = {}, &block)
+        raise ArgumentError, "Block required" unless block_given?  # Can we work without this?
+
+        @format = self.class.format.rapper_format
+
+        @error_handler = Proc.new do |user_data, locator, message|
+          raise RDF::WriterError, message
+        end
+
+        @warning_handler = Proc.new do |user_data, locator, message|
+          # $stderr.puts "warning"
+        end
+
+        V1_4.with_world do |world|
+          begin
+            @serializer = V1_4.raptor_new_serializer((@format || :rdfxml).to_s)
+            raise RDF::WriterError, "raptor_new_serializer failed" if @serializer.nil?
+            V1_4.raptor_serializer_set_error_handler(@serializer, nil, @error_handler)
+            V1_4.raptor_serializer_set_warning_handler(@serializer, nil, @warning_handler)
+            @handler = V1_4::IOStreamHandler.new
+            @handler.rubyio = output
+            @raptor_stream = V1_4.raptor_new_iostream_from_handler2(nil, @handler)
+            @base_uri = if options.has_key?(:base_uri)
+              V1_4.raptor_new_uri(options[:base_uri].to_s)
+            else
+              nil
+            end
+            super
+          ensure
+            V1_4.raptor_free_uri(@base_uri) if @base_uri
+            V1_4.raptor_free_serializer(@serializer) if @serializer
+            V1_4.raptor_free_iostream(@raptor_iostream) if @raptor_iostream
+          end
+        end
+      end
+
+      ##
+      # @return [void]
+      def write_prologue
+        super
+        unless V1_4.raptor_serialize_start_to_iostream(@serializer, @base_uri, @raptor_stream).zero?
+          raise RDF::WriterError, "raptor_serialize_start_to_iostream failed"
+        end
+      end
+
+      ##
+      # @param  [RDF::Resource] subject
+      # @param  [RDF::URI]      predicate
+      # @param  [RDF::Value]    object
+      # @return [void]
+      def write_triple(subject, predicate, object)
+        raptor_statement = V1_4::Statement.new
+        raptor_statement.subject = subject
+        raptor_statement.predicate = predicate
+        raptor_statement.object = object
+        unless V1_4.raptor_serialize_statement(@serializer, raptor_statement.to_ptr).zero?
+          raise RDF::WriterError, "raptor_serialize_statement failed"
+        end
+      end
+
+      ##
+      # @return [void]
+      def write_epilogue
+        unless V1_4.raptor_serialize_end(@serializer).zero?
+          raise RDF::WriterError, "raptor_serialize_end failed"
+        end
+        super
+      end
+
+    end
+
+
+    ##
     # Helper methods for FFI modules.
     module Base
       def define_pointer(name)
@@ -120,7 +202,7 @@ module RDF::Raptor
           block.call(world)
         ensure
           raptor_free_world(world) if world
-          raptor_finish if options[:init]
+          raptor_finish if options[:init] # is this safe?
         end
       end
 
@@ -138,6 +220,7 @@ module RDF::Raptor
           raptor_free_parser(parser) if parser
         end
       end
+
 
       extend Base
       extend ::FFI::Library
@@ -159,7 +242,17 @@ module RDF::Raptor
                :object, :pointer,
                :object_type, :int,
                :object_literal_datatype, :pointer,
-               :object_literal_language, :string
+               :object_literal_language, :pointer
+
+        # MemmoryPointer references we need to keep
+        def initialize(*args)
+          super
+
+          # Objects we need to keep a Ruby reference
+          # to so they don't get garbage collected out from under
+          # the C code we pass them to.
+          @mp = {}
+        end
 
         ##
         # @return [RDF::Resource]
@@ -170,6 +263,24 @@ module RDF::Raptor
             when RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
               RDF::Node.new(self[:subject].read_string)
           end
+        end
+
+        ##
+        # Set the subject from an RDF::Resource
+        # @param  [RDF::Resource] value
+        def subject=(resource)
+          @subject = nil
+          case resource
+          when RDF::Node
+            self[:subject] = @mp[:subject] = ::FFI::MemoryPointer.from_string(resource.id.to_s)
+            self[:subject_type] = RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
+          when RDF::URI
+            self[:subject] = @mp[:subject] = RaptorUriPointer.new(V1_4.raptor_new_uri(resource.to_s))
+            self[:subject_type] = RAPTOR_IDENTIFIER_TYPE_RESOURCE
+          else
+            raise ArgumentError, "subject must be of kind RDF::Node or RDF::URI"
+          end
+          @subject = resource
         end
 
         ##
@@ -191,6 +302,17 @@ module RDF::Raptor
         end
 
         ##
+        # Set the predicate from an RDF::URI
+        # @param  [RDF::URI] value
+        def predicate=(uri)
+          @predicate = nil
+          raise ArgumentError, "predicate must be a kind of RDF::URI" unless uri.kind_of?(RDF::URI)
+          self[:predicate] = @mp[:predicate] = RaptorUriPointer.new(V1_4.raptor_new_uri(uri.to_s))
+          self[:predicate_type] = RAPTOR_IDENTIFIER_TYPE_RESOURCE
+          @predicate = uri
+        end
+
+        ##
         # @return [String]
         def predicate_as_string
           V1_4.raptor_statement_part_as_string(
@@ -209,14 +331,46 @@ module RDF::Raptor
               RDF::Node.new(self[:object].read_string)
             when RAPTOR_IDENTIFIER_TYPE_LITERAL
               case
-                when self[:object_literal_language]
-                  RDF::Literal.new(self[:object].read_string, :language => self[:object_literal_language])
+                when self[:object_literal_language] && !self[:object_literal_language].null?
+                  RDF::Literal.new(self[:object].read_string, :language => self[:object_literal_language].read_string)
                 when self[:object_literal_datatype] && !self[:object_literal_datatype].null?
                   RDF::Literal.new(self[:object].read_string, :datatype => V1_4.raptor_uri_to_string(self[:object_literal_datatype]))
                 else
                   RDF::Literal.new(self[:object].read_string)
               end
           end
+        end
+
+        ##
+        # Set the object from an RDF::Value.
+        # Value must be one of RDF::Resource or RDF::Literal.
+        # @param  [RDF::Value] value
+        def object=(value)
+          @object = nil
+          case value
+          when RDF::Node
+            self[:object] = @mp[:object] = ::FFI::MemoryPointer.from_string(value.id.to_s)
+            self[:object_type] = RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
+          when RDF::URI
+            self[:object] = @mp[:object] = RaptorUriPointer.new(V1_4.raptor_new_uri(value.to_s))
+            self[:object_type] = RAPTOR_IDENTIFIER_TYPE_RESOURCE
+          when RDF::Literal
+            self[:object_type] = RAPTOR_IDENTIFIER_TYPE_LITERAL
+            self[:object] = @mp[:object] = ::FFI::MemoryPointer.from_string(value.value)
+            self[:object_literal_datatype] = @mp[:object_literal_datatype] = if value.datatype
+              RaptorUriPointer.new(V1_4.raptor_new_uri(value.datatype.to_s))
+            else
+              nil
+            end
+            self[:object_literal_language] = @mp[:object_literal_language] = if value.language?
+              ::FFI::MemoryPointer.from_string(value.language.to_s)
+            else
+              nil
+            end
+          else
+            raise ArgumentError, "object must be of type RDF::Node, RDF::URI or RDF::Literal"
+          end
+          @object = value
         end
 
         ##
@@ -240,6 +394,7 @@ module RDF::Raptor
         def to_quad
           [subject, predicate, object, nil]
         end
+
       end
 
       # @see http://librdf.org/raptor/api/tutorial-initialising-finishing.html
@@ -269,7 +424,14 @@ module RDF::Raptor
       attach_function :raptor_uri_print, [raptor_uri, :pointer], :void
       attach_function :raptor_free_uri, [raptor_uri], :void
 
+      class RaptorUriPointer < ::FFI::AutoPointer
+        def self.release(ptr)
+          raptor_free_uri(ptr)
+        end
+      end
+
       # @see http://librdf.org/raptor/api/raptor-section-triples.html
+      define_pointer  :raptor_identifier
       define_pointer  :raptor_statement
       attach_function :raptor_statement_compare, [raptor_statement, raptor_statement], :int
       attach_function :raptor_print_statement, [raptor_statement, :pointer], :void
@@ -293,6 +455,91 @@ module RDF::Raptor
       attach_function :raptor_get_need_base_uri, [raptor_parser], :int
       attach_function :raptor_parser_get_world, [raptor_parser], raptor_world
       attach_function :raptor_free_parser, [raptor_parser], :void
+
+      # @see http://librdf.org/raptor/api/raptor-section-iostream.html
+      define_pointer  :raptor_iostream
+      callback        :raptor_iostream_init_func, [:pointer], :int
+      callback        :raptor_iostream_finish_func, [:pointer], :void
+      callback        :raptor_iostream_write_byte_func, [:pointer, :int], :int
+      callback        :raptor_iostream_write_bytes_func, [:pointer, :pointer, :size_t, :size_t], :int
+      callback        :raptor_iostream_write_end_func, [:pointer], :void
+      callback        :raptor_iostream_read_bytes_func, [:pointer, :pointer, :size_t, :size_t], :int
+      callback        :raptor_iostream_read_eof_func, [:pointer], :int
+      attach_function :raptor_new_iostream_from_handler2, [:pointer, :pointer], raptor_iostream
+
+      class IOStreamHandler < ::FFI::Struct
+        layout :version, :int,
+               :init, :raptor_iostream_init_func,
+               :finish, :raptor_iostream_finish_func,
+               :write_byte, :raptor_iostream_write_byte_func,
+               :write_bytes, :raptor_iostream_write_bytes_func,
+               :write_end, :raptor_iostream_write_end_func,
+               :read_bytes, :raptor_iostream_read_bytes_func,
+               :read_eof, :raptor_iostream_read_eof_func
+
+        attr_accessor :rubyio
+
+        def initialize(*args)
+          super
+          # Keep a ruby land reference to our procs so they don't
+          # get snatched by GC.
+          @procs = {}
+
+          self[:version] = 2
+
+          # @procs[:init] = self[:init] = Proc.new do |context|
+          #   $stderr.puts("#{self.class}: init")
+          # end
+          # @procs[:finish] = self[:finish] = Proc.new do |context|
+          #   $stderr.puts("#{self.class}: finish")
+          # end
+          @procs[:write_byte] = self[:write_byte] = Proc.new do |context, byte|
+            begin
+              @rubyio.putc(byte)
+            rescue
+              return 1
+            end
+            0
+          end
+          @procs[:write_bytes] = self[:write_bytes] = Proc.new do |context, data, size, nmemb|
+            begin
+              @rubyio.write(data.read_string(size * nmemb))
+            rescue
+              return 1
+            end
+            0
+          end
+          # @procs[:write_end] = self[:write_end] = Proc.new do |context|
+          #   $stderr.puts("#{self.class}: write_end")
+          # end
+          # @procs[:read_bytes] = self[:read_bytes] = Proc.new do |context, data, size, nmemb|
+          #   $stderr.puts("#{self.class}: read_bytes")
+          # end
+          # @procs[:read_eof] = self[:read_eof] = Proc.new do |context|
+          #   $stderr.puts("#{self.class}: read_eof")
+          # end
+        end
+      end
+
+      # @see http://librdf.org/raptor/api/raptor-section-xml-namespace.html
+      define_pointer  :raptor_namespace
+
+      # @see http://librdf.org/raptor/api/raptor-section-serializer.html
+      define_pointer  :raptor_serializer
+      attach_function :raptor_new_serializer, [:string], raptor_serializer
+      attach_function :raptor_free_serializer, [raptor_serializer], :void
+      attach_function :raptor_serialize_start, [raptor_serializer, raptor_uri, raptor_iostream], :int
+      attach_function :raptor_serialize_start_to_iostream, [raptor_serializer, raptor_uri, raptor_iostream], :int
+      attach_function :raptor_serialize_start_to_filename, [raptor_serializer, :string], :int
+      attach_function :raptor_serialize_set_namespace, [raptor_serializer, raptor_uri, :string], :int
+      attach_function :raptor_serialize_set_namespace_from_namespace, [raptor_serializer, raptor_namespace], :int
+      attach_function :raptor_serialize_statement, [raptor_serializer, raptor_statement], :int
+      attach_function :raptor_serialize_end, [raptor_serializer], :int
+      attach_function :raptor_serializer_get_iostream, [raptor_serializer], raptor_iostream
+      attach_function :raptor_serializer_set_error_handler, [raptor_serializer, :pointer, :raptor_message_handler], :void
+      attach_function :raptor_serializer_set_warning_handler, [raptor_serializer, :pointer, :raptor_message_handler], :void
+
     end
   end
 end
+
