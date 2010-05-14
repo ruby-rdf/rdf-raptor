@@ -21,6 +21,17 @@ module RDF::Raptor
         super
       end
 
+      ERROR_HANDLER = Proc.new do |user_data, locator, message|
+        line = V1_4.raptor_locator_line(locator)
+        raise RDF::ReaderError, line > -1 ? "Line #{line}: #{message}" : message
+      end
+
+      WARNING_HANDLER = Proc.new do |user_data, locator, message|
+        # line = V1_4.raptor_locator_line(locator)
+        # $stderr.puts line > -1 ? "Line #{line}: #{message}" : message
+      end
+
+
       ##
       # @yield [statement]
       # @yieldparam [RDF::Statement] statement
@@ -34,66 +45,53 @@ module RDF::Raptor
       # @yield [triple]
       # @yieldparam [Array(RDF::Resource, RDF::URI, RDF::Value)] triple
       def each_triple(&block)
-        @parser = Proc.new do |user_data, statement|
+        statement_handler = Proc.new do |user_data, statement|
           triple = V1_4::Statement.new(statement).to_triple
           block.call(triple)
         end
 
-        @error_handler = Proc.new do |user_data, locator, message|
-          line = V1_4.raptor_locator_line(locator)
-          raise RDF::ReaderError, line > -1 ? "Line #{line}: #{message}" : message
-        end
-
-        @warning_handler = Proc.new do |user_data, locator, message|
-          # line = V1_4.raptor_locator_line(locator)
-          # $stderr.puts line > -1 ? "Line #{line}: #{message}" : message
-        end
-
-        V1_4.with_world do |world|
-          V1_4.with_parser(:name => @format) do |parser|
-            V1_4.raptor_set_error_handler(parser, nil, @error_handler)
-            V1_4.raptor_set_warning_handler(parser, nil, @warning_handler)
-            V1_4.raptor_set_statement_handler(parser, nil, @parser)
-            case @input
-              when RDF::URI, %r(^(file|http|https|ftp)://)
-                begin
-                  data_url = V1_4.raptor_new_uri(@input.to_s)
-                  base_uri = @options.has_key?(:base_uri) ? V1_4.raptor_new_uri(@options[:base_uri].to_s) : nil
-                  unless (result = V1_4.raptor_parse_uri(parser, data_url, base_uri)).zero?
-                    # TODO: error handling
-                  end
-                ensure
-                  V1_4.raptor_free_uri(base_uri) if base_uri
-                  V1_4.raptor_free_uri(data_url) if data_url
-                end
-
-              when File, Tempfile
-                begin
-                  data_url = V1_4.raptor_new_uri("file://#{File.expand_path(@input.path)}")
-                  base_uri = @options.has_key?(:base_uri) ? V1_4.raptor_new_uri(@options[:base_uri].to_s) : nil
-                  unless (result = V1_4.raptor_parse_file(parser, data_url, base_uri)).zero?
-                    # TODO: error handling
-                  end
-                ensure
-                  V1_4.raptor_free_uri(base_uri) if base_uri
-                  V1_4.raptor_free_uri(data_url) if data_url
-                end
-
-              else # IO, String
-                base_uri = (@options[:base_uri] || 'file:///dev/stdin').to_s
-                unless (result = V1_4.raptor_start_parse(parser, base_uri)).zero?
+        V1_4.with_parser(:name => @format) do |parser|
+          V1_4.raptor_set_error_handler(parser, nil, ERROR_HANDLER)
+          V1_4.raptor_set_warning_handler(parser, nil, WARNING_HANDLER)
+          V1_4.raptor_set_statement_handler(parser, nil, statement_handler)
+          case @input
+            when RDF::URI, %r(^(file|http|https|ftp)://)
+              begin
+                data_url = V1_4.raptor_new_uri(@input.to_s)
+                base_uri = @options[:base_uri].to_s.empty? ? nil : V1_4.raptor_new_uri(@options[:base_uri].to_s)
+                unless (result = V1_4.raptor_parse_uri(parser, data_url, base_uri)).zero?
                   # TODO: error handling
                 end
-                # TODO: read in chunks instead of everything in one go:
-                unless (result = V1_4.raptor_parse_chunk(parser, buffer = @input.read, buffer.size, 0)).zero?
+              ensure
+                V1_4.raptor_free_uri(base_uri) if base_uri
+                V1_4.raptor_free_uri(data_url) if data_url
+              end
+
+            when File, Tempfile
+              begin
+                data_url = V1_4.raptor_new_uri("file://#{File.expand_path(@input.path)}")
+                base_uri = @options[:base_uri].to_s.empty? ? nil : V1_4.raptor_new_uri(@options[:base_uri].to_s)
+                unless (result = V1_4.raptor_parse_file(parser, data_url, base_uri)).zero?
                   # TODO: error handling
                 end
-                V1_4.raptor_parse_chunk(parser, nil, 0, 1) # EOF
-            end
+              ensure
+                V1_4.raptor_free_uri(base_uri) if base_uri
+                V1_4.raptor_free_uri(data_url) if data_url
+              end
+
+            else # IO, String
+              base_uri = (@options[:base_uri] || 'file:///dev/stdin').to_s
+              unless (result = V1_4.raptor_start_parse(parser, base_uri)).zero?
+                # TODO: error handling
+              end
+              # TODO: read in chunks instead of everything in one go:
+              unless (result = V1_4.raptor_parse_chunk(parser, buffer = @input.read, buffer.size, 0)).zero?
+                # TODO: error handling
+              end
+              V1_4.raptor_parse_chunk(parser, nil, 0, 1) # EOF
           end
         end
 
-        @parser = nil
       end
 
       alias_method :each, :each_statement
@@ -103,48 +101,39 @@ module RDF::Raptor
     # Writer implementation.
     module Writer
 
-      def initialize(output = $stdout, options = {}, &block)
-        raise ArgumentError, "Block required" unless block_given?  # Can we work without this?
-
-        @format = self.class.format.rapper_format
-
-        @error_handler = Proc.new do |user_data, locator, message|
-          raise RDF::WriterError, message
-        end
-
-        @warning_handler = Proc.new do |user_data, locator, message|
-          # $stderr.puts "warning"
-        end
-
-        V1_4.with_world do |world|
-          begin
-            @serializer = V1_4.raptor_new_serializer((@format || :rdfxml).to_s)
-            raise RDF::WriterError, "raptor_new_serializer failed" if @serializer.nil?
-            V1_4.raptor_serializer_set_error_handler(@serializer, nil, @error_handler)
-            V1_4.raptor_serializer_set_warning_handler(@serializer, nil, @warning_handler)
-            @handler = V1_4::IOStreamHandler.new
-            @handler.rubyio = output
-            @raptor_stream = V1_4.raptor_new_iostream_from_handler2(nil, @handler)
-            @base_uri = if options.has_key?(:base_uri)
-              V1_4.raptor_new_uri(options[:base_uri].to_s)
-            else
-              nil
-            end
-            super
-          ensure
-            V1_4.raptor_free_uri(@base_uri) if @base_uri
-            V1_4.raptor_free_serializer(@serializer) if @serializer
-            V1_4.raptor_free_iostream(@raptor_iostream) if @raptor_iostream
-          end
-        end
+      ERROR_HANDLER = Proc.new do |user_data, locator, message|
+        raise RDF::WriterError, message
       end
 
-      ##
-      # @return [void]
-      def write_prologue
-        super
-        unless V1_4.raptor_serialize_start_to_iostream(@serializer, @base_uri, @raptor_stream).zero?
-          raise RDF::WriterError, "raptor_serialize_start_to_iostream failed"
+      WARNING_HANDLER = Proc.new do |user_data, locator, message|
+        # $stderr.puts "warning"
+      end
+
+      def initialize(output = $stdout, options = {}, &block)
+        raise ArgumentError, "Block required" unless block_given?  # Can we work without this?
+        @format = self.class.format.rapper_format
+        begin
+          # make a serializer
+          @serializer = V1_4.raptor_new_serializer((@format || :rdfxml).to_s)
+          raise RDF::WriterError, "raptor_new_serializer failed" if @serializer.nil?
+          V1_4.raptor_serializer_set_error_handler(@serializer, nil, ERROR_HANDLER)
+          V1_4.raptor_serializer_set_warning_handler(@serializer, nil, WARNING_HANDLER)
+          base_uri = options[:base_uri].to_s.empty? ? nil : V1_4.raptor_new_uri(options[:base_uri].to_s)
+
+          # make an iostream
+          handler = V1_4::IOStreamHandler.new
+          handler.rubyio = output
+          raptor_iostream = V1_4.raptor_new_iostream_from_handler2(nil, handler)
+
+          # connect the two
+          unless V1_4.raptor_serialize_start_to_iostream(@serializer, base_uri, raptor_iostream).zero?
+            raise RDF::WriterError, "raptor_serialize_start_to_iostream failed"
+          end
+          super
+        ensure
+          V1_4.raptor_free_iostream(raptor_iostream) if raptor_iostream
+          V1_4.raptor_free_uri(base_uri) if base_uri
+          V1_4.raptor_free_serializer(@serializer) if @serializer
         end
       end
 
@@ -158,8 +147,13 @@ module RDF::Raptor
         raptor_statement.subject = subject
         raptor_statement.predicate = predicate
         raptor_statement.object = object
-        unless V1_4.raptor_serialize_statement(@serializer, raptor_statement.to_ptr).zero?
-          raise RDF::WriterError, "raptor_serialize_statement failed"
+        begin
+          unless V1_4.raptor_serialize_statement(@serializer, raptor_statement.to_ptr).zero?
+            raise RDF::WriterError, "raptor_serialize_statement failed"
+          end
+        ensure
+          raptor_statement.release
+          raptor_statement = nil
         end
       end
 
@@ -188,23 +182,6 @@ module RDF::Raptor
     #
     # @see http://librdf.org/raptor/libraptor.html
     module V1_4
-      ##
-      # @param  [Hash{Symbol => Object}] options
-      # @option (options) [Boolean] :init (true)
-      # @yield  [world]
-      # @yieldparam [FFI::Pointer] world
-      # @return [void]
-      def self.with_world(options = {}, &block)
-        options = {:init => true}.merge(options)
-        begin
-          raptor_init if options[:init]
-          raptor_world_open(world = raptor_new_world)
-          block.call(world)
-        ensure
-          raptor_free_world(world) if world
-          raptor_finish if options[:init] # is this safe?
-        end
-      end
 
       ##
       # @param  [Hash{Symbol => Object}] options
@@ -244,14 +221,29 @@ module RDF::Raptor
                :object_literal_datatype, :pointer,
                :object_literal_language, :pointer
 
-        # MemmoryPointer references we need to keep
         def initialize(*args)
           super
-
           # Objects we need to keep a Ruby reference
           # to so they don't get garbage collected out from under
           # the C code we pass them to.
           @mp = {}
+
+          # Raptor object references we we need to explicitly free
+          # when release is called
+          @raptor_uri_list = []
+        end
+
+        ##
+        # Release raptor memory associated with this struct.
+        # Use of the object after calling this will most likely
+        # cause a crash.  This is kind of ugly.
+        def release
+          if pointer.kind_of?(::FFI::MemoryPointer) && !pointer.null?
+            pointer.free
+          end
+          while uri = @raptor_uri_list.pop
+            V1_4.raptor_free_uri(uri) unless uri.nil? || uri.null?
+          end
         end
 
         ##
@@ -275,7 +267,7 @@ module RDF::Raptor
             self[:subject] = @mp[:subject] = ::FFI::MemoryPointer.from_string(resource.id.to_s)
             self[:subject_type] = RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
           when RDF::URI
-            self[:subject] = @mp[:subject] = RaptorUriPointer.new(V1_4.raptor_new_uri(resource.to_s))
+            self[:subject] = @mp[:subject] = @raptor_uri_list.push(V1_4.raptor_new_uri(resource.to_s)).last
             self[:subject_type] = RAPTOR_IDENTIFIER_TYPE_RESOURCE
           else
             raise ArgumentError, "subject must be of kind RDF::Node or RDF::URI"
@@ -307,7 +299,7 @@ module RDF::Raptor
         def predicate=(uri)
           @predicate = nil
           raise ArgumentError, "predicate must be a kind of RDF::URI" unless uri.kind_of?(RDF::URI)
-          self[:predicate] = @mp[:predicate] = RaptorUriPointer.new(V1_4.raptor_new_uri(uri.to_s))
+          self[:predicate] = @raptor_uri_list.push(V1_4.raptor_new_uri(uri.to_s)).last
           self[:predicate_type] = RAPTOR_IDENTIFIER_TYPE_RESOURCE
           @predicate = uri
         end
@@ -352,13 +344,13 @@ module RDF::Raptor
             self[:object] = @mp[:object] = ::FFI::MemoryPointer.from_string(value.id.to_s)
             self[:object_type] = RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
           when RDF::URI
-            self[:object] = @mp[:object] = RaptorUriPointer.new(V1_4.raptor_new_uri(value.to_s))
+            self[:object] = @mp[:object] = @raptor_uri_list.push(V1_4.raptor_new_uri(value.to_s)).last
             self[:object_type] = RAPTOR_IDENTIFIER_TYPE_RESOURCE
           when RDF::Literal
             self[:object_type] = RAPTOR_IDENTIFIER_TYPE_LITERAL
             self[:object] = @mp[:object] = ::FFI::MemoryPointer.from_string(value.value)
-            self[:object_literal_datatype] = @mp[:object_literal_datatype] = if value.datatype
-              RaptorUriPointer.new(V1_4.raptor_new_uri(value.datatype.to_s))
+            self[:object_literal_datatype] = if value.datatype
+              @raptor_uri_list.push(V1_4.raptor_new_uri(value.datatype.to_s)).last
             else
               nil
             end
@@ -410,12 +402,6 @@ module RDF::Raptor
       # @see http://librdf.org/raptor/api/raptor-section-general.html
       callback :raptor_message_handler, [:pointer, raptor_locator, :string], :void
 
-      # @see http://librdf.org/raptor/api/raptor-section-world.html
-      define_pointer  :raptor_world
-      attach_function :raptor_new_world, [], raptor_world
-      attach_function :raptor_world_open, [raptor_world], :int
-      attach_function :raptor_free_world, [raptor_world], :void
-
       # @see http://librdf.org/raptor/api/raptor-section-uri.html
       define_pointer  :raptor_uri
       attach_function :raptor_new_uri, [:string], raptor_uri
@@ -423,12 +409,6 @@ module RDF::Raptor
       attach_function :raptor_uri_to_string, [raptor_uri], :string
       attach_function :raptor_uri_print, [raptor_uri, :pointer], :void
       attach_function :raptor_free_uri, [raptor_uri], :void
-
-      class RaptorUriPointer < ::FFI::AutoPointer
-        def self.release(ptr)
-          raptor_free_uri(ptr)
-        end
-      end
 
       # @see http://librdf.org/raptor/api/raptor-section-triples.html
       define_pointer  :raptor_identifier
@@ -453,7 +433,6 @@ module RDF::Raptor
       attach_function :raptor_get_mime_type, [raptor_parser], :string
       attach_function :raptor_set_parser_strict, [raptor_parser, :int], :void
       attach_function :raptor_get_need_base_uri, [raptor_parser], :int
-      attach_function :raptor_parser_get_world, [raptor_parser], raptor_world
       attach_function :raptor_free_parser, [raptor_parser], :void
 
       # @see http://librdf.org/raptor/api/raptor-section-iostream.html
@@ -466,6 +445,7 @@ module RDF::Raptor
       callback        :raptor_iostream_read_bytes_func, [:pointer, :pointer, :size_t, :size_t], :int
       callback        :raptor_iostream_read_eof_func, [:pointer], :int
       attach_function :raptor_new_iostream_from_handler2, [:pointer, :pointer], raptor_iostream
+      attach_function :raptor_free_iostream, [raptor_iostream], :void
 
       class IOStreamHandler < ::FFI::Struct
         layout :version, :int,
@@ -528,16 +508,18 @@ module RDF::Raptor
       define_pointer  :raptor_serializer
       attach_function :raptor_new_serializer, [:string], raptor_serializer
       attach_function :raptor_free_serializer, [raptor_serializer], :void
-      attach_function :raptor_serialize_start, [raptor_serializer, raptor_uri, raptor_iostream], :int
       attach_function :raptor_serialize_start_to_iostream, [raptor_serializer, raptor_uri, raptor_iostream], :int
       attach_function :raptor_serialize_start_to_filename, [raptor_serializer, :string], :int
-      attach_function :raptor_serialize_set_namespace, [raptor_serializer, raptor_uri, :string], :int
-      attach_function :raptor_serialize_set_namespace_from_namespace, [raptor_serializer, raptor_namespace], :int
       attach_function :raptor_serialize_statement, [raptor_serializer, raptor_statement], :int
       attach_function :raptor_serialize_end, [raptor_serializer], :int
-      attach_function :raptor_serializer_get_iostream, [raptor_serializer], raptor_iostream
       attach_function :raptor_serializer_set_error_handler, [raptor_serializer, :pointer, :raptor_message_handler], :void
       attach_function :raptor_serializer_set_warning_handler, [raptor_serializer, :pointer, :raptor_message_handler], :void
+
+      # Initialize the world
+      # We do this exactly once and never release because we can't delegate
+      # any memory management to the ruby GC.
+      # Internally raptor_init/raptor_finish work with ref-counts.
+      raptor_init
 
     end
   end
