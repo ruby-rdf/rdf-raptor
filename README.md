@@ -152,6 +152,7 @@ Author
 ------
 
 * [Arto Bendiken](mailto:arto.bendiken@gmail.com) - <http://ar.to/>
+* [John Fieber](mailto:jrf@ursamaris.org) - <http://github.com/jfieber>
 
 License
 -------

@@ -45,6 +45,7 @@ module RDF
   # @see http://librdf.org/raptor/
   #
   # @author [Arto Bendiken](http://ar.to/)
+  # @author [John Fieber](http://github.com/jfieber)
   module Raptor
     ENGINE    = (ENV['RDF_RAPTOR_ENGINE'] || :cli).to_sym unless const_defined?(:ENGINE)
     LIBRAPTOR = ENV['RDF_RAPTOR_LIBPATH'] || 'libraptor'  unless const_defined?(:LIBRAPTOR)

@@ -12,8 +12,8 @@ GEMSPEC = Gem::Specification.new do |gem|
   gem.description        = 'RDF.rb plugin for parsing/serializing RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library.'
   gem.rubyforge_project  = 'rdf'
 
-  gem.authors            = ['Arto Bendiken']
-  gem.email              = 'arto.bendiken@gmail.com'
+  gem.authors            = ['Arto Bendiken', 'John Fieber']
+  gem.email              = 'public-rdf-ruby@w3.org'
 
   gem.platform           = Gem::Platform::RUBY
   gem.files              = %w(AUTHORS README UNLICENSE VERSION) + Dir.glob('lib/**/*.rb')
