@@ -23,6 +23,7 @@ module RDF::Raptor
   module Turtle
     ##
     # Turtle format specification.
+    # @see http://www.w3.org/TeamSubmission/turtle/
     #
     # @example Obtaining a Turtle format class
     #   RDF::Format.for(:turtle)       #=> RDF::Raptor::Turtle::Format
@@ -32,7 +33,7 @@ module RDF::Raptor
     #   RDF::Format.for(:content_type   => "text/turtle")
     #
     class Format < RDF::Raptor::Format
-      content_type     'text/turtle', :extension => :ttl
+      content_type     'text/turtle', :aliases => ['application/x-turtle', 'application/turtle'], :extension => :ttl
       content_encoding 'utf-8'
       rapper_format    :turtle
 
