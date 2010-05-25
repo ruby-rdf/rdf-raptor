@@ -116,5 +116,6 @@ module RDF
     require 'rdf/raptor/rdfxml'
     require 'rdf/raptor/turtle'
     require 'rdf/raptor/rdfa'
+    require 'rdf/raptor/graphviz'
   end # module Raptor
 end # module RDF
