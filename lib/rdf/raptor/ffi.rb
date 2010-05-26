@@ -400,7 +400,11 @@ module RDF::Raptor
       attach_function :raptor_locator_byte, [raptor_locator], :int
 
       # @see http://librdf.org/raptor/api/raptor-section-general.html
-      callback :raptor_message_handler, [:pointer, raptor_locator, :string], :void
+      attach_variable :raptor_version_major, :int
+      attach_variable :raptor_version_minor, :int
+      attach_variable :raptor_version_release, :int
+      attach_variable :raptor_version_decimal, :int
+      callback        :raptor_message_handler, [:pointer, raptor_locator, :string], :void
 
       # @see http://librdf.org/raptor/api/raptor-section-uri.html
       define_pointer  :raptor_uri

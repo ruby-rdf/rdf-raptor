@@ -52,7 +52,7 @@ module RDF
     RAPPER    = ENV['RDF_RAPTOR_BINPATH'] || 'rapper'     unless const_defined?(:RAPPER)
 
     require 'rdf/raptor/version'
-    require 'rdf/raptor/cli'
+    require 'rdf/raptor/cli' if ENGINE == :cli
     require 'rdf/raptor/ffi' if ENGINE == :ffi
 
     ##
@@ -75,8 +75,15 @@ module RDF
     #
     # @return [String]
     def self.version
-      if `#{RAPPER} --version 2>/dev/null` =~ /^(\d+)\.(\d+)\.(\d+)/
-        [$1, $2, $3].join('.')
+      case ENGINE
+      when :ffi
+        [ FFI::V1_4.raptor_version_major,
+          FFI::V1_4.raptor_version_minor,
+          FFI::V1_4.raptor_version_release ].join('.')
+      when :cli
+        if `#{RAPPER} --version 2>/dev/null` =~ /^(\d+)\.(\d+)\.(\d+)/
+          [$1, $2, $3].join('.')
+        end
       end
     end
 
