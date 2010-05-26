@@ -10,6 +10,8 @@ module RDF
   #   human-readable Turtle format.
   # * {RDF::Raptor::RDFa} provides support for extracting
   #   RDF statements from XHTML+RDFa documents.
+  # * {RDF::Raptor::Graphviz} provides support for serializing
+  #   RDF statements to the Graphviz DOT format.
   #
   # @example Requiring the `RDF::Raptor` module
   #   require 'rdf/raptor'
@@ -19,6 +21,9 @@ module RDF
   #
   # @example Obtaining the Raptor version number
   #   RDF::Raptor.version            #=> "1.4.21"
+  #
+  # @example Obtaining the Raptor engine
+  #   RDF::Raptor::ENGINE            #=> :ffi
   #
   # @example Obtaining an RDF/XML format class
   #   RDF::Format.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Format
@@ -41,19 +46,42 @@ module RDF
   #   RDF::Format.for(:file_extension => "html")
   #   RDF::Format.for(:content_type   => "application/xhtml+xml")
   #
+  # {RDF::Raptor} includes an ffi implementation, which loads
+  # the libraptor library into the ruby process, and a cli
+  # implementation, which uses the rapper command line tool
+  # in a subprocess.  The ffi implementation is used unless
+  # libraptor library is not found, or the RDF_RAPTOR_ENGINE
+  # environment variable is set to 'cli'.
+  #
+  # If the libraptor library is in the standard library search
+  # path, and the rapper command is in the standard command
+  # search path, all should be well.  If either is in a
+  # non-standard location, set the RDF_RAPTOR_LIBPATH and/or
+  # RDF_RAPTOR_BINPATH appropriately before requiring rdf/raptor.
+  #
   # @see http://rdf.rubyforge.org/
   # @see http://librdf.org/raptor/
+  # @see http://wiki.github.com/ffi/ffi/
   #
   # @author [Arto Bendiken](http://ar.to/)
   # @author [John Fieber](http://github.com/jfieber)
   module Raptor
-    ENGINE    = (ENV['RDF_RAPTOR_ENGINE'] || :cli).to_sym unless const_defined?(:ENGINE)
     LIBRAPTOR = ENV['RDF_RAPTOR_LIBPATH'] || 'libraptor'  unless const_defined?(:LIBRAPTOR)
     RAPPER    = ENV['RDF_RAPTOR_BINPATH'] || 'rapper'     unless const_defined?(:RAPPER)
 
     require 'rdf/raptor/version'
-    require 'rdf/raptor/cli' if ENGINE == :cli
-    require 'rdf/raptor/ffi' if ENGINE == :ffi
+    begin
+      # Try ffi implementation
+      raise LoadError if ENV['RDF_RAPTOR_ENGINE'] == 'cli' # override
+      require 'rdf/raptor/ffi'
+      include RDF::Raptor::FFI
+      extend RDF::Raptor::FFI
+    rescue LoadError => e
+      # cli fallback
+      require 'rdf/raptor/cli'
+      include RDF::Raptor::CLI
+      extend RDF::Raptor::CLI
+    end
 
     ##
     # Returns `true` if the `rapper` binary is available.
@@ -64,27 +92,6 @@ module RDF
     # @return [Boolean]
     def self.available?
       !!version
-    end
-
-    ##
-    # Returns the installed `rapper` version number, or `nil` if `rapper` is
-    # not available.
-    #
-    # @example
-    #   RDF::Raptor.version  #=> "1.4.21"
-    #
-    # @return [String]
-    def self.version
-      case ENGINE
-      when :ffi
-        [ FFI::V1_4.raptor_version_major,
-          FFI::V1_4.raptor_version_minor,
-          FFI::V1_4.raptor_version_release ].join('.')
-      when :cli
-        if `#{RAPPER} --version 2>/dev/null` =~ /^(\d+)\.(\d+)\.(\d+)/
-          [$1, $2, $3].join('.')
-        end
-      end
     end
 
     ##
@@ -104,20 +111,6 @@ module RDF
           @rapper_format = format
         end
       end
-    end
-
-    ##
-    # Reader base class.
-    class Reader < RDF::Reader
-      include RDF::Raptor::CLI::Reader if ENGINE == :cli
-      include RDF::Raptor::FFI::Reader if ENGINE == :ffi
-    end
-
-    ##
-    # Writer base class.
-    class Writer < RDF::Writer
-      include RDF::Raptor::CLI::Writer if ENGINE == :cli
-      include RDF::Raptor::FFI::Writer if ENGINE == :ffi
     end
 
     require 'rdf/raptor/rdfxml'

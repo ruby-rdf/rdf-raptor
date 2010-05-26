@@ -4,9 +4,26 @@ module RDF::Raptor
   ##
   # A command-line interface to Raptor's `rapper` utility.
   module CLI
+
+    ENGINE = :cli
+
+    ##
+    # Returns the installed `rapper` version number, or `nil` if `rapper` is
+    # not available.
+    #
+    # @example
+    #   RDF::Raptor.version  #=> "1.4.21"
+    #
+    # @return [String]
+    def version
+      if `#{RAPPER} --version 2>/dev/null` =~ /^(\d+)\.(\d+)\.(\d+)/
+        [$1, $2, $3].join('.')
+      end
+    end
+
     ##
     # Reader implementation.
-    module Reader
+    class Reader < RDF::Reader
       ##
       # @param  [IO, File, RDF::URI, String] input
       # @param  [Hash{Symbol => Object}]     options
@@ -72,7 +89,7 @@ module RDF::Raptor
 
     ##
     # Writer implementation.
-    module Writer
+    class Writer < RDF::Writer
       ##
       # @param  [IO, File]               output
       # @param  [Hash{Symbol => Object}] options

@@ -7,9 +7,26 @@ module RDF::Raptor
   # @see http://librdf.org/raptor/api/
   # @see http://librdf.org/raptor/libraptor.html
   module FFI
+
+    ENGINE = :ffi
+
+    ##
+    # Returns the installed `rapper` version number, or `nil` if `rapper` is
+    # not available.
+    #
+    # @example
+    #   RDF::Raptor.version  #=> "1.4.21"
+    #
+    # @return [String]
+    def version
+      [ V1_4.raptor_version_major,
+        V1_4.raptor_version_minor,
+        V1_4.raptor_version_release ].join('.')
+    end
+
     ##
     # Reader implementation.
-    module Reader
+    class Reader < RDF::Reader
       ##
       # @param  [IO, File, RDF::URI, String] input
       # @param  [Hash{Symbol => Object}]     options
@@ -99,7 +116,7 @@ module RDF::Raptor
 
     ##
     # Writer implementation.
-    module Writer
+    class Writer < RDF::Writer
 
       ERROR_HANDLER = Proc.new do |user_data, locator, message|
         raise RDF::WriterError, message
