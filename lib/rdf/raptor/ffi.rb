@@ -268,7 +268,7 @@ module RDF::Raptor
         def subject
           @subject ||= case self[:subject_type]
             when RAPTOR_IDENTIFIER_TYPE_RESOURCE
-              RDF::URI.new(V1_4.raptor_uri_to_string(self[:subject]))
+              RDF::URI.intern(V1_4.raptor_uri_to_string(self[:subject]))
             when RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
               RDF::Node.new(self[:subject].read_string)
           end
@@ -306,7 +306,7 @@ module RDF::Raptor
         def predicate
           @predicate ||= case self[:predicate_type]
             when RAPTOR_IDENTIFIER_TYPE_RESOURCE
-              RDF::URI.new(V1_4.raptor_uri_to_string(self[:predicate]))
+              RDF::URI.intern(V1_4.raptor_uri_to_string(self[:predicate]))
           end
         end
 
@@ -335,7 +335,7 @@ module RDF::Raptor
         def object
           @object ||= case self[:object_type]
             when RAPTOR_IDENTIFIER_TYPE_RESOURCE
-              RDF::URI.new(V1_4.raptor_uri_to_string(self[:object]))
+              RDF::URI.intern(V1_4.raptor_uri_to_string(self[:object]))
             when RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
               RDF::Node.new(self[:object].read_string)
             when RAPTOR_IDENTIFIER_TYPE_LITERAL
