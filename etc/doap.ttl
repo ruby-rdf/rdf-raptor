@@ -1,0 +1,45 @@
+@base         <http://rubygems.org/gems/rdf-json> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc:   <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+
+<> a doap:Project ;
+  doap:name          "RDF::Raptor" ;
+  doap:homepage      <http://rdf.rubyforge.org/raptor/> ;
+  doap:license       <http://creativecommons.org/licenses/publicdomain/> ;
+  doap:shortdesc     "Raptor RDF Parser wrapper for RDF.rb."@en ;
+  doap:description   "RDF.rb plugin for parsing/serializing RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library."@en ;
+  doap:created       "2010-03-23" ;
+  doap:platform      "Ruby" ;
+  doap:download-page <http://rubyforge.org/projects/rdf/> ;
+  doap:bug-database  <http://github.com/bendiken/rdf-raptor/issues> ;
+  doap:blog          <http://ar.to/>, <http://blog.datagraph.org/> ;
+  doap:developer     <http://ar.to/#self>, _:jfieber ;
+  doap:maintainer    <http://ar.to/#self> ;
+  doap:documenter    <http://ar.to/#self> ;
+  doap:helper        <http://bhuga.net/#ben> ;
+  foaf:maker         <http://ar.to/#self> ;
+  dc:creator         <http://ar.to/#self> .
+
+<http://ar.to/#self> a foaf:Person ;
+  foaf:name          "Arto Bendiken" ;
+  foaf:mbox          <mailto:arto.bendiken@gmail.com> ;
+  foaf:mbox_sha1sum  "d0737cceb55eb7d740578d2db1bc0727e3ed49ce",
+                     "a033f652c84a4d73b8c26d318c2395699dd2bdfb" ;
+  foaf:homepage      <http://ar.to/> ;
+  rdfs:isDefinedBy   <http://datagraph.org/bendiken/foaf> .
+
+<http://bhuga.net/#ben> a foaf:Person ;
+  foaf:name          "Ben Lavender" ;
+  foaf:mbox          <mailto:blavender@gmail.com> ;
+  foaf:mbox_sha1sum  "dbf45f4ffbd27b67aa84f02a6a31c144727d10af" ;
+  foaf:homepage      <http://bhuga.net/> ;
+  rdfs:isDefinedBy   <http://datagraph.org/bhuga/foaf> .
+
+_:jfieber a foaf:Person ;
+  foaf:name          "John Fieber" ;
+  foaf:mbox          <mailto:jrf@ursamaris.org> ;
+  foaf:mbox_sha1sum "f7653fc1ac0e82ebb32f092389bd5fc728eaae12" ;
+  foaf:homepage      <http://ursamaris.org/> .
