@@ -1,12 +1,11 @@
 module RDF; module Raptor
   module VERSION
     MAJOR = 0
-    MINOR = 3
+    MINOR = 4
     TINY  = 0
     EXTRA = nil
 
-    STRING = [MAJOR, MINOR, TINY].join('.')
-    STRING << ".#{EXTRA}" if EXTRA
+    STRING = [MAJOR, MINOR, TINY, EXTRA].compact.join('.')
 
     ##
     # @return [String]
