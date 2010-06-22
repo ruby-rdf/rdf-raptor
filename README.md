@@ -106,11 +106,12 @@ Documentation
   * {RDF::Raptor::RDFXML}
   * {RDF::Raptor::Turtle}
   * {RDF::Raptor::RDFa}
+  * {RDF::Raptor::Graphviz}
 
 Dependencies
 ------------
 
-* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.1.9)
+* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.2.0)
 * [Raptor][] (>= 1.4.16), specifically the `rapper` binary
 
 Installation
