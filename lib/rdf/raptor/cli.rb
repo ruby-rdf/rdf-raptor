@@ -1,5 +1,3 @@
-require 'tempfile'
-
 module RDF::Raptor
   ##
   # A command-line interface to Raptor's `rapper` utility.

@@ -1,3 +1,4 @@
+require 'tempfile'
 require 'rdf'
 
 module RDF
