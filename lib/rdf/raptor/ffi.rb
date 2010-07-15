@@ -339,13 +339,14 @@ module RDF::Raptor
             when RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
               RDF::Node.new(self[:object].read_string)
             when RAPTOR_IDENTIFIER_TYPE_LITERAL
+              str = self[:object].read_string.unpack("U*").pack("U*")
               case
                 when self[:object_literal_language] && !self[:object_literal_language].null?
-                  RDF::Literal.new(self[:object].read_string, :language => self[:object_literal_language].read_string)
+                  RDF::Literal.new(str, :language => self[:object_literal_language].read_string)
                 when self[:object_literal_datatype] && !self[:object_literal_datatype].null?
-                  RDF::Literal.new(self[:object].read_string, :datatype => V1_4.raptor_uri_to_string(self[:object_literal_datatype]))
+                  RDF::Literal.new(str, :datatype => V1_4.raptor_uri_to_string(self[:object_literal_datatype]))
                 else
-                  RDF::Literal.new(self[:object].read_string)
+                  RDF::Literal.new(str)
               end
           end
         end
