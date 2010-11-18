@@ -124,8 +124,8 @@ To install the latest official release of the `RDF::Raptor` gem, do:
 
 To install the required [Raptor][] command-line tools themselves, look for a
 `raptor` or `raptor-utils` package in your platform's package management
-system. Here follow installation instructions for the Mac and the most
-common Linux and BSD distributions:
+system. For your convenience, here follow installation instructions for the
+Mac and the most common Linux and BSD distributions:
 
     % [sudo] port install raptor             # Mac OS X with MacPorts
     % [sudo] fink install raptor-bin         # Mac OS X with Fink
@@ -144,27 +144,32 @@ To get a local working copy of the development repository, do:
 
     % git clone git://github.com/bendiken/rdf-raptor.git
 
-Alternatively, you can download the latest development version as a tarball
-as follows:
+Alternatively, download the latest development version as a tarball as
+follows:
 
     % wget http://github.com/bendiken/rdf-raptor/tarball/master
 
-Author
-------
+Mailing List
+------------
 
-* [Arto Bendiken](mailto:arto.bendiken@gmail.com) - <http://ar.to/>
-* [John Fieber](mailto:jrf@ursamaris.org) - <http://github.com/jfieber>
+* <http://lists.w3.org/Archives/Public/public-rdf-ruby/>
+
+Authors
+-------
+
+* [Arto Bendiken](http://github.com/bendiken) - <http://ar.to/>
+* [John Fieber](http://github.com/jfieber) - <http://github.com/jfieber>
 
 Contributors
 ------------
 
-* [Ben Lavender](mailto:blavender@gmail.com) - <http://bhuga.net/>
+* [Ben Lavender](http://github.com/bhuga) - <http://bhuga.net/>
 
 License
 -------
 
-`RDF::Raptor` is free and unencumbered public domain software. For more
-information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
+This is free and unencumbered public domain software. For more information,
+see <http://unlicense.org/> or the accompanying {file:UNLICENSE} file.
 
 [RDF.rb]:   http://rdf.rubyforge.org/
 [RDF/XML]:  http://www.w3.org/TR/REC-rdf-syntax/
