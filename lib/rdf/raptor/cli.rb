@@ -24,11 +24,15 @@ module RDF::Raptor
     # CLI reader implementation.
     class Reader < RDF::Reader
       ##
+      # Initializes the CLI reader instance.
+      #
       # @param  [IO, File, RDF::URI, String] input
-      # @param  [Hash{Symbol => Object}]     options
-      # @option (options) [String, #to_s]    :base_uri ("file:///dev/stdin")
-      # @yield  [reader]
-      # @yieldparam [RDF::Reader] reader
+      # @param  [Hash{Symbol => Object}] options
+      #   any additional options (see `RDF::Reader#initialize`)
+      # @option options [String, #to_s] :base_uri ("file:///dev/stdin")
+      # @yield  [reader] `self`
+      # @yieldparam  [RDF::Reader] reader
+      # @yieldreturn [void] ignored
       def initialize(input = $stdin, options = {}, &block)
         raise RDF::ReaderError, "`rapper` binary not found" unless RDF::Raptor.available?
 
@@ -38,10 +42,12 @@ module RDF::Raptor
             @command = "#{RAPPER} -q -i #{format} -o ntriples '#{input}'"
             @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb')
+
           when File, Tempfile
             @command = "#{RAPPER} -q -i #{format} -o ntriples '#{File.expand_path(input.path)}'"
             @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb')
+
           else # IO, String
             @command = "#{RAPPER} -q -i #{format} -o ntriples file:///dev/stdin"
             @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
@@ -66,7 +72,16 @@ module RDF::Raptor
             Process.detach(pid)
             @rapper.close_write
         end
-        @reader = RDF::NTriples::Reader.new(@rapper, options, &block)
+
+        @options = options
+        @reader = RDF::NTriples::Reader.new(@rapper, @options).extend(Extensions)
+
+        if block_given?
+          case block.arity
+            when 0 then instance_eval(&block)
+            else block.call(self)
+          end
+        end
       end
 
     protected
@@ -84,16 +99,42 @@ module RDF::Raptor
         end
         triple
       end
+
+      ##
+      # Extensions for `RDF::NTriples::Reader`.
+      module Extensions
+        NODEID = RDF::NTriples::Reader::NODEID
+        GENID  = /^genid\d+$/
+
+        ##
+        # Generates fresh random identifiers for Raptor's `_:genid[0-9]+`
+        # blank nodes, while preserving any user-specified blank node
+        # identifiers verbatim.
+        #
+        # @private
+        # @see RDF::NTriples::Reader#read_node
+        # @see https://github.com/bendiken/rdf-raptor/issues/#issue/9
+        def read_node
+          if node_id = match(NODEID)
+            @nodes ||= {}
+            @nodes[node_id] ||= RDF::Node.new(GENID === node_id ? nil : node_id)
+          end
+        end
+      end
     end # Reader
 
     ##
     # CLI writer implementation.
     class Writer < RDF::Writer
       ##
+      # Initializes the CLI writer instance.
+      #
       # @param  [IO, File]               output
       # @param  [Hash{Symbol => Object}] options
-      # @yield  [writer]
-      # @yieldparam [RDF::Writer] writer
+      #   any additional options (see `RDF::Writer#initialize`)
+      # @yield  [writer] `self`
+      # @yieldparam  [RDF::Writer] writer
+      # @yieldreturn [void]
       def initialize(output = $stdout, options = {}, &block)
         raise RDF::WriterError, "`rapper` binary not found" unless RDF::Raptor.available?
 
