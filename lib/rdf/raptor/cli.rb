@@ -1,8 +1,9 @@
+require 'tempfile'
+
 module RDF::Raptor
   ##
   # A command-line interface to Raptor's `rapper` utility.
   module CLI
-
     ENGINE = :cli
 
     ##
@@ -20,7 +21,7 @@ module RDF::Raptor
     end
 
     ##
-    # Reader implementation.
+    # CLI reader implementation.
     class Reader < RDF::Reader
       ##
       # @param  [IO, File, RDF::URI, String] input
@@ -29,7 +30,7 @@ module RDF::Raptor
       # @yield  [reader]
       # @yieldparam [RDF::Reader] reader
       def initialize(input = $stdin, options = {}, &block)
-        raise RDF::ReaderError.new("`rapper` binary not found") unless RDF::Raptor.available?
+        raise RDF::ReaderError, "`rapper` binary not found" unless RDF::Raptor.available?
 
         format = self.class.format.rapper_format
         case input
@@ -46,7 +47,7 @@ module RDF::Raptor
             @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb+')
             pid = fork do
-              # process to feed rapper
+              # process to feed `rapper`
               begin
                 @rapper.close_read
                 if input.respond_to?(:read)
@@ -68,10 +69,11 @@ module RDF::Raptor
         @reader = RDF::NTriples::Reader.new(@rapper, options, &block)
       end
 
-      protected
+    protected
 
       ##
-      # @return [Array]
+      # @return [Array(RDF::Resource, RDF::URI, RDF::Term)]
+      # @see    RDF::Reader#read_triple
       def read_triple
         raise EOFError if @rapper.closed?
         begin
@@ -82,11 +84,10 @@ module RDF::Raptor
         end
         triple
       end
-
-    end
+    end # Reader
 
     ##
-    # Writer implementation.
+    # CLI writer implementation.
     class Writer < RDF::Writer
       ##
       # @param  [IO, File]               output
@@ -94,7 +95,7 @@ module RDF::Raptor
       # @yield  [writer]
       # @yieldparam [RDF::Writer] writer
       def initialize(output = $stdout, options = {}, &block)
-        raise RDF::WriterError.new("`rapper` binary not found") unless RDF::Raptor.available?
+        raise RDF::WriterError, "`rapper` binary not found" unless RDF::Raptor.available?
 
         format = self.class.format.rapper_format
         case output
@@ -103,16 +104,17 @@ module RDF::Raptor
             @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb+')
           else
-            raise ArgumentError.new("unsupported output type: #{output.inspect}")
+            raise ArgumentError, "unsupported output type: #{output.inspect}"
         end
         @writer = RDF::NTriples::Writer.new(@rapper, options)
         super(output, options, &block)
       end
 
-      protected
+    protected
 
       ##
       # @return [void]
+      # @see    RDF::Writer#write_prologue
       def write_prologue
         super
       end
@@ -120,8 +122,9 @@ module RDF::Raptor
       ##
       # @param  [RDF::Resource] subject
       # @param  [RDF::URI]      predicate
-      # @param  [RDF::Value]    object
+      # @param  [RDF::Term]     object
       # @return [void]
+      # @see    RDF::Writer#write_triple
       def write_triple(subject, predicate, object)
         output_transit(false)
         @writer.write_triple(subject, predicate, object)
@@ -130,20 +133,23 @@ module RDF::Raptor
 
       ##
       # @return [void]
+      # @see    RDF::Writer#write_epilogue
       def write_epilogue
         @rapper.close_write unless @rapper.closed?
         output_transit(true)
       end
 
       ##
-      # Feed any available rapper output to the destination.
+      # Feeds any available `rapper` output to the destination.
+      #
+      # @param  [Boolean] may_block
       # @return [void]
-      def output_transit(block)
+      def output_transit(may_block)
         unless @rapper.closed?
           chunk_size = @options[:chunk_size] || 4096 # bytes
           begin
             loop do
-              @output.write(block ? @rapper.readpartial(chunk_size) : @rapper.read_nonblock(chunk_size))
+              @output.write(may_block ? @rapper.readpartial(chunk_size) : @rapper.read_nonblock(chunk_size))
             end
           rescue EOFError => e
             @rapper.close
@@ -152,7 +158,6 @@ module RDF::Raptor
           end
         end
       end
-
-    end
-  end
-end
+    end # Writer
+  end # CLI
+end # RDF::Raptor

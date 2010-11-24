@@ -1,9 +1,8 @@
-require 'tempfile'
-require 'rdf'
+require 'rdf' # @see http://rubygems.org/gems/rdf
 
 module RDF
   ##
-  # **`RDF::Raptor`** is a Raptor RDF Parser wrapper for RDF.rb.
+  # **`RDF::Raptor`** is a Raptor RDF Parser plugin for RDF.rb.
   #
   # * {RDF::Raptor::RDFXML} provides support for the standard
   #   machine-readable RDF/XML format.
@@ -47,24 +46,27 @@ module RDF
   #   RDF::Format.for(:file_extension => "html")
   #   RDF::Format.for(:content_type   => "application/xhtml+xml")
   #
-  # {RDF::Raptor} includes an ffi implementation, which loads
-  # the libraptor library into the ruby process, and a cli
-  # implementation, which uses the rapper command line tool
-  # in a subprocess.  The ffi implementation is used unless
-  # libraptor library is not found, or the RDF_RAPTOR_ENGINE
-  # environment variable is set to 'cli'.
+  # {RDF::Raptor} includes an FFI implementation, which loads the
+  # `libraptor` library into the Ruby process, as well as a CLI
+  # implementation, which drives the `rapper` command-line tool in a
+  # sub-process.
   #
-  # If the libraptor library is in the standard library search
-  # path, and the rapper command is in the standard command
-  # search path, all should be well.  If either is in a
-  # non-standard location, set the RDF_RAPTOR_LIBPATH and/or
-  # RDF_RAPTOR_BINPATH appropriately before requiring rdf/raptor.
+  # The FFI implementation is used by default unless the `libraptor` library
+  # cannot be found, or if the `RDF_RAPTOR_ENGINE` environment variable is
+  # explicitly set to `'cli'`.
+  #
+  # If the `libraptor` library is in the standard library search path, and
+  # the `rapper` command is in the standard command search path, all should
+  # be well and work fine out of the box. However, if either is in a
+  # non-standard location, be sure to set the `RDF_RAPTOR_LIBPATH` and/or
+  # `RDF_RAPTOR_BINPATH` environment variables appropriately before
+  # requiring `rdf/raptor`.
   #
   # @see http://rdf.rubyforge.org/
   # @see http://librdf.org/raptor/
   # @see http://wiki.github.com/ffi/ffi/
   #
-  # @author [Arto Bendiken](http://ar.to/)
+  # @author [Arto Bendiken](http://github.com/bendiken)
   # @author [John Fieber](http://github.com/jfieber)
   module Raptor
     LIBRAPTOR = ENV['RDF_RAPTOR_LIBPATH'] || 'libraptor'  unless const_defined?(:LIBRAPTOR)
@@ -72,13 +74,13 @@ module RDF
 
     require 'rdf/raptor/version'
     begin
-      # Try ffi implementation
+      # Try FFI implementation
       raise LoadError if ENV['RDF_RAPTOR_ENGINE'] == 'cli' # override
       require 'rdf/raptor/ffi'
       include RDF::Raptor::FFI
       extend RDF::Raptor::FFI
     rescue LoadError => e
-      # cli fallback
+      # CLI fallback
       require 'rdf/raptor/cli'
       include RDF::Raptor::CLI
       extend RDF::Raptor::CLI
@@ -112,11 +114,11 @@ module RDF
           @rapper_format = format
         end
       end
-    end
+    end # Format
 
     require 'rdf/raptor/rdfxml'
     require 'rdf/raptor/turtle'
     require 'rdf/raptor/rdfa'
     require 'rdf/raptor/graphviz'
-  end # module Raptor
-end # module RDF
+  end # Raptor
+end # RDF

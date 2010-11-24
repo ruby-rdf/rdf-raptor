@@ -38,7 +38,7 @@ module RDF::Raptor
 
       reader { RDF::Raptor::RDFXML::Reader }
       writer { RDF::Raptor::RDFXML::Writer }
-    end
+    end # Format
 
     ##
     # RDF/XML parser.
@@ -59,7 +59,7 @@ module RDF::Raptor
     #
     class Reader < RDF::Raptor::Reader
       format RDF::Raptor::RDFXML::Format
-    end
+    end # Reader
 
     ##
     # RDF/XML serializer.
@@ -80,6 +80,6 @@ module RDF::Raptor
     #
     class Writer < RDF::Raptor::Writer
       format RDF::Raptor::RDFXML::Format
-    end
-  end
-end
+    end # Writer
+  end # RDFXML
+end # RDF::Raptor

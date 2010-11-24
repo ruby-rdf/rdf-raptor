@@ -30,7 +30,7 @@ module RDF::Raptor
       rapper_format    :dot
 
       writer { RDF::Raptor::Graphviz::Writer }
-    end
+    end # Format
 
     ##
     # Graphviz serializer.
@@ -51,6 +51,6 @@ module RDF::Raptor
     #
     class Writer < RDF::Raptor::Writer
       format RDF::Raptor::Graphviz::Format
-    end
-  end
-end
+    end # Writer
+  end # Graphviz
+end # RDF::Raptor

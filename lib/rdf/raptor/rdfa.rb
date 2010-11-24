@@ -25,12 +25,12 @@ module RDF::Raptor
     #   RDF::Format.for(:content_type   => "application/xhtml+xml")
     #
     class Format < RDF::Raptor::Format
-      content_type     'application/xhtml+xml', :extension => :html
+      content_type     'application/xhtml+xml', :aliases => ['text/html'], :extension => :html
       content_encoding 'utf-8'
       rapper_format    :rdfa
 
       reader { RDF::Raptor::RDFa::Reader }
-    end
+    end # Format
 
     ##
     # RDFa extractor.
@@ -51,6 +51,6 @@ module RDF::Raptor
     #
     class Reader < RDF::Raptor::Reader
       format RDF::Raptor::RDFa::Format
-    end
-  end
-end
+    end # Reader
+  end # RDFa
+end # RDF::Raptor

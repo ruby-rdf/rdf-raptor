@@ -1,4 +1,5 @@
-require 'ffi'
+require 'tempfile'
+require 'ffi' # @see http://rubygems.org/gems/ffi
 
 module RDF::Raptor
   ##
@@ -7,25 +8,24 @@ module RDF::Raptor
   # @see http://librdf.org/raptor/api/
   # @see http://librdf.org/raptor/libraptor.html
   module FFI
-
     ENGINE = :ffi
 
     ##
-    # Returns the installed `rapper` version number, or `nil` if `rapper` is
-    # not available.
+    # Returns the installed `libraptor` version number, or `nil` if
+    # `libraptor` is not available.
     #
     # @example
     #   RDF::Raptor.version  #=> "1.4.21"
     #
     # @return [String]
     def version
-      [ V1_4.raptor_version_major,
-        V1_4.raptor_version_minor,
-        V1_4.raptor_version_release ].join('.')
+      [V1_4.raptor_version_major,
+       V1_4.raptor_version_minor,
+       V1_4.raptor_version_release].join('.')
     end
 
     ##
-    # Reader implementation.
+    # FFI reader implementation.
     class Reader < RDF::Reader
       ##
       # @param  [IO, File, RDF::URI, String] input
@@ -48,10 +48,10 @@ module RDF::Raptor
         # $stderr.puts line > -1 ? "Line #{line}: #{message}" : message
       end
 
-
       ##
       # @yield [statement]
       # @yieldparam [RDF::Statement] statement
+      # @see   RDF::Reader#each_statement
       def each_statement(&block)
         each_triple do |triple|
           block.call(RDF::Statement.new(*triple))
@@ -60,7 +60,8 @@ module RDF::Raptor
 
       ##
       # @yield [triple]
-      # @yieldparam [Array(RDF::Resource, RDF::URI, RDF::Value)] triple
+      # @yieldparam [Array(RDF::Resource, RDF::URI, RDF::Term)] triple
+      # @see   RDF::Reader#each_triple
       def each_triple(&block)
         statement_handler = Proc.new do |user_data, statement|
           triple = V1_4::Statement.new(statement).to_triple
@@ -110,14 +111,12 @@ module RDF::Raptor
         end
 
       end
-
       alias_method :each, :each_statement
-    end
+    end # Reader
 
     ##
-    # Writer implementation.
+    # FFI writer implementation.
     class Writer < RDF::Writer
-
       ERROR_HANDLER = Proc.new do |user_data, locator, message|
         raise RDF::WriterError, message
       end
@@ -126,6 +125,7 @@ module RDF::Raptor
         # $stderr.puts "warning"
       end
 
+      ##
       def initialize(output = $stdout, options = {}, &block)
         raise ArgumentError, "Block required" unless block_given?  # Can we work without this?
         @format = self.class.format.rapper_format
@@ -157,8 +157,9 @@ module RDF::Raptor
       ##
       # @param  [RDF::Resource] subject
       # @param  [RDF::URI]      predicate
-      # @param  [RDF::Value]    object
+      # @param  [RDF::Term]     object
       # @return [void]
+      # @see    RDF::Writer#write_triple
       def write_triple(subject, predicate, object)
         raptor_statement = V1_4::Statement.new
         raptor_statement.subject = subject
@@ -176,30 +177,31 @@ module RDF::Raptor
 
       ##
       # @return [void]
+      # @see    RDF::Writer#write_epilogue
       def write_epilogue
         unless V1_4.raptor_serialize_end(@serializer).zero?
           raise RDF::WriterError, "raptor_serialize_end failed"
         end
         super
       end
-
-    end
-
+    end # Writer
 
     ##
     # Helper methods for FFI modules.
     module Base
+      ##
+      # @param  [Symbol] name
+      # @return [void]
       def define_pointer(name)
         self.class.send(:define_method, name) { :pointer }
       end
-    end
+    end # Base
 
     ##
     # A foreign-function interface (FFI) to `libraptor` 1.4.x.
     #
     # @see http://librdf.org/raptor/libraptor.html
     module V1_4
-
       ##
       # @param  [Hash{Symbol => Object}] options
       # @option (options) [String, #to_s] :name (:rdfxml)
@@ -215,7 +217,6 @@ module RDF::Raptor
         end
       end
 
-
       extend Base
       extend ::FFI::Library
       ffi_lib LIBRAPTOR
@@ -227,6 +228,7 @@ module RDF::Raptor
       RAPTOR_IDENTIFIER_TYPE_ANONYMOUS = 2
       RAPTOR_IDENTIFIER_TYPE_LITERAL   = 5
 
+      ##
       # @see http://librdf.org/raptor/api/raptor-section-triples.html
       class Statement < ::FFI::Struct
         layout :subject, :pointer,
@@ -240,20 +242,22 @@ module RDF::Raptor
 
         def initialize(*args)
           super
-          # Objects we need to keep a Ruby reference
-          # to so they don't get garbage collected out from under
-          # the C code we pass them to.
+          # Objects we need to keep a Ruby reference to so they don't get
+          # garbage collected out from under the C code we pass them to.
           @mp = {}
 
-          # Raptor object references we we need to explicitly free
-          # when release is called
+          # Raptor object references we we need to explicitly free when
+          # `#release` is called.
           @raptor_uri_list = []
         end
 
         ##
-        # Release raptor memory associated with this struct.
-        # Use of the object after calling this will most likely
-        # cause a crash.  This is kind of ugly.
+        # Releases `libraptor` memory associated with this struct.
+        #
+        # Use of the object after calling this will most likely cause a
+        # crash. This is kind of ugly.
+        #
+        # @return [void]
         def release
           if pointer.kind_of?(::FFI::MemoryPointer) && !pointer.null?
             pointer.free
@@ -275,8 +279,10 @@ module RDF::Raptor
         end
 
         ##
-        # Set the subject from an RDF::Resource
+        # Sets the subject term from an `RDF::Resource`.
+        #
         # @param  [RDF::Resource] value
+        # @return [void]
         def subject=(resource)
           @subject = nil
           case resource
@@ -311,8 +317,10 @@ module RDF::Raptor
         end
 
         ##
-        # Set the predicate from an RDF::URI
+        # Sets the predicate term from an `RDF::URI`.
+        #
         # @param  [RDF::URI] value
+        # @return [void]
         def predicate=(uri)
           @predicate = nil
           raise ArgumentError, "predicate must be a kind of RDF::URI" unless uri.kind_of?(RDF::URI)
@@ -331,7 +339,7 @@ module RDF::Raptor
         end
 
         ##
-        # @return [RDF::Value]
+        # @return [RDF::Term]
         def object
           @object ||= case self[:object_type]
             when RAPTOR_IDENTIFIER_TYPE_RESOURCE
@@ -352,9 +360,12 @@ module RDF::Raptor
         end
 
         ##
-        # Set the object from an RDF::Value.
-        # Value must be one of RDF::Resource or RDF::Literal.
-        # @param  [RDF::Value] value
+        # Sets the object term from an `RDF::Term`.
+        #
+        # The value must be one of `RDF::Resource` or `RDF::Literal`.
+        #
+        # @param  [RDF::Term] value
+        # @return [void]
         def object=(value)
           @object = nil
           case value
@@ -394,18 +405,19 @@ module RDF::Raptor
         end
 
         ##
-        # @return [Array(RDF::Resource, RDF::URI, RDF::Value)]
+        # @return [Array(RDF::Resource, RDF::URI, RDF::Term)]
+        # @see    RDF::Statement#to_triple
         def to_triple
           [subject, predicate, object]
         end
 
         ##
-        # @return [Array(RDF::Resource, RDF::URI, RDF::Value, nil)]
+        # @return [Array(RDF::Resource, RDF::URI, RDF::Term, nil)]
+        # @see    RDF::Statement#to_quad
         def to_quad
           [subject, predicate, object, nil]
         end
-
-      end
+      end # Statement
 
       # @see http://librdf.org/raptor/api/tutorial-initialising-finishing.html
       attach_function :raptor_init, [], :void
@@ -483,8 +495,8 @@ module RDF::Raptor
 
         def initialize(*args)
           super
-          # Keep a ruby land reference to our procs so they don't
-          # get snatched by GC.
+          # Keep a Ruby land reference to our procs so they don't get
+          # snatched by GC.
           @procs = {}
 
           self[:version] = 2
@@ -521,7 +533,7 @@ module RDF::Raptor
           #   $stderr.puts("#{self.class}: read_eof")
           # end
         end
-      end
+      end # IOStreamHandler
 
       # @see http://librdf.org/raptor/api/raptor-section-xml-namespace.html
       define_pointer  :raptor_namespace
@@ -537,13 +549,11 @@ module RDF::Raptor
       attach_function :raptor_serializer_set_error_handler, [raptor_serializer, :pointer, :raptor_message_handler], :void
       attach_function :raptor_serializer_set_warning_handler, [raptor_serializer, :pointer, :raptor_message_handler], :void
 
-      # Initialize the world
+      # Initialize the world.
       # We do this exactly once and never release because we can't delegate
-      # any memory management to the ruby GC.
-      # Internally raptor_init/raptor_finish work with ref-counts.
+      # any memory management to the Ruby GC.
+      # Internally `raptor_init`/`raptor_finish` work with reference counts.
       raptor_init
-
-    end
-  end
-end
-
+    end # V1_4
+  end # FFI
+end # RDF::Raptor

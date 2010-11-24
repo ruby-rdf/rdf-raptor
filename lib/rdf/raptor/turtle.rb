@@ -23,7 +23,6 @@ module RDF::Raptor
   module Turtle
     ##
     # Turtle format specification.
-    # @see http://www.w3.org/TeamSubmission/turtle/
     #
     # @example Obtaining a Turtle format class
     #   RDF::Format.for(:turtle)       #=> RDF::Raptor::Turtle::Format
@@ -39,7 +38,7 @@ module RDF::Raptor
 
       reader { RDF::Raptor::Turtle::Reader }
       writer { RDF::Raptor::Turtle::Writer }
-    end
+    end # Format
 
     ##
     # Turtle parser.
@@ -60,7 +59,7 @@ module RDF::Raptor
     #
     class Reader < RDF::Raptor::Reader
       format RDF::Raptor::Turtle::Format
-    end
+    end # Reader
 
     ##
     # Turtle serializer.
@@ -81,6 +80,6 @@ module RDF::Raptor
     #
     class Writer < RDF::Raptor::Writer
       format RDF::Raptor::Turtle::Format
-    end
-  end
-end
+    end # Writer
+  end # Turtle
+end # RDF::Raptor
