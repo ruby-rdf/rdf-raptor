@@ -1,5 +1,5 @@
-Raptor RDF Parser Wrapper for RDF.rb
-====================================
+Raptor RDF Parser Plugin for RDF.rb
+===================================
 
 This is an [RDF.rb][] plugin that adds support for parsing/serializing
 [RDF/XML][], [Turtle][] and [RDFa][] data using the [Raptor RDF Parser][Raptor]
@@ -11,8 +11,7 @@ library.
 Features
 --------
 
-* Requires the [Raptor][] library and utilities to be available.
-* Based on the [`rapper`][rapper] command-line utility bundled with Raptor.
+* Requires the [Raptor][] library and/or command-line utilities.
 * Parses and serializes RDF data from/into the RDF/XML or Turtle formats.
 * Extracts RDF statements from XHTML+RDFa documents.
 * Provides serialization format autodetection for RDF/XML, Turtle and RDFa.
@@ -112,7 +111,8 @@ Dependencies
 ------------
 
 * [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.3.0)
-* [Raptor][] (>= 1.4.16), specifically the `rapper` binary
+* [Raptor][] (>= 1.4.16), the `libraptor` library or the `rapper` binary
+* [FFI](http://rubygems.org/gems/ffi) (>= 0.6.3), if using `libraptor`
 
 Installation
 ------------

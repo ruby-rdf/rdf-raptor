@@ -9,7 +9,7 @@
   doap:name          "RDF::Raptor" ;
   doap:homepage      <http://rdf.rubyforge.org/raptor/> ;
   doap:license       <http://creativecommons.org/licenses/publicdomain/> ;
-  doap:shortdesc     "Raptor RDF Parser wrapper for RDF.rb."@en ;
+  doap:shortdesc     "Raptor RDF Parser plugin for RDF.rb."@en ;
   doap:description   "RDF.rb plugin for parsing/serializing RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library."@en ;
   doap:created       "2010-03-23" ;
   doap:platform      "Ruby" ;
