@@ -17,11 +17,11 @@ module RDF::Raptor
     # @example
     #   RDF::Raptor.version  #=> "1.4.21"
     #
-    # @return [String]
+    # @return [String] an "x.y.z" version string
     def version
       [V1_4.raptor_version_major,
        V1_4.raptor_version_minor,
-       V1_4.raptor_version_release].join('.')
+       V1_4.raptor_version_release].join('.').freeze
     end
 
     ##
