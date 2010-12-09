@@ -5,6 +5,7 @@ module RDF::Raptor::FFI
   # @see http://librdf.org/raptor/libraptor.html
   module V1_4
     autoload :IOStreamHandler, 'rdf/raptor/ffi/v1_4/iostream_handler'
+    autoload :Serializer,      'rdf/raptor/ffi/v1_4/serializer'
     autoload :Statement,       'rdf/raptor/ffi/v1_4/statement'
 
     extend ::FFI::Library
