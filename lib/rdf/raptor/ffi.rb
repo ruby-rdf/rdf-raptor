@@ -38,6 +38,9 @@ module RDF::Raptor
       # @yieldparam [RDF::Reader] reader
       def initialize(input = $stdin, options = {}, &block)
         @format = self.class.format.rapper_format
+        @parser = V1_4::Parser.new(@format)
+        @parser.error_handler   = ERROR_HANDLER
+        @parser.warning_handler = WARNING_HANDLER
         super
       end
 
@@ -53,65 +56,86 @@ module RDF::Raptor
 
       ##
       # @yield [statement]
-      # @yieldparam [RDF::Statement] statement
+      # @yieldparam  [RDF::Statement] statement
+      # @yieldreturn [void] ignored
       # @see   RDF::Reader#each_statement
-      def each_statement(&block)
-        each_triple do |triple|
-          block.call(RDF::Statement.new(*triple))
+      def each_statement(options = {}, &block)
+        if block_given?
+          if options[:raw]
+            # this is up to an order of magnitude faster...
+            parse(@input) do |parser, statement|
+              block.call(V1_4::Statement.new(statement, self))
+            end
+          else
+            parse(@input) do |parser, statement|
+              block.call(V1_4::Statement.new(statement, self).to_statement)
+            end
+          end
         end
+        enum_for(:each_statement, options)
       end
       alias_method :each, :each_statement
 
       ##
       # @yield [triple]
-      # @yieldparam [Array(RDF::Resource, RDF::URI, RDF::Term)] triple
+      # @yieldparam  [Array(RDF::Resource, RDF::URI, RDF::Term)] triple
+      # @yieldreturn [void] ignored
       # @see   RDF::Reader#each_triple
       def each_triple(&block)
-        statement_handler = Proc.new do |user_data, statement|
-          triple = V1_4::Statement.new(statement, self).to_triple
-          block.call(triple)
-        end
-
-        V1_4.with_parser(:name => @format) do |parser|
-          V1_4.raptor_set_error_handler(parser, nil, ERROR_HANDLER)
-          V1_4.raptor_set_warning_handler(parser, nil, WARNING_HANDLER)
-          V1_4.raptor_set_statement_handler(parser, nil, statement_handler)
-          case @input
-            when RDF::URI, %r(^(file|http|https|ftp)://)
-              begin
-                data_url = V1_4.raptor_new_uri(@input.to_s)
-                base_uri = @options[:base_uri].to_s.empty? ? nil : V1_4.raptor_new_uri(@options[:base_uri].to_s)
-                unless (result = V1_4.raptor_parse_uri(parser, data_url, base_uri)).zero?
-                  # TODO: error handling
-                end
-              ensure
-                V1_4.raptor_free_uri(base_uri) if base_uri
-                V1_4.raptor_free_uri(data_url) if data_url
-              end
-
-            when File, Tempfile
-              begin
-                data_url = V1_4.raptor_new_uri("file://#{File.expand_path(@input.path)}")
-                base_uri = @options[:base_uri].to_s.empty? ? nil : V1_4.raptor_new_uri(@options[:base_uri].to_s)
-                unless (result = V1_4.raptor_parse_file(parser, data_url, base_uri)).zero?
-                  # TODO: error handling
-                end
-              ensure
-                V1_4.raptor_free_uri(base_uri) if base_uri
-                V1_4.raptor_free_uri(data_url) if data_url
-              end
-
-            else # IO, String
-              base_uri = (@options[:base_uri] || 'file:///dev/stdin').to_s
-              unless (result = V1_4.raptor_start_parse(parser, base_uri)).zero?
-                # TODO: error handling
-              end
-              # TODO: read in chunks instead of everything in one go:
-              unless (result = V1_4.raptor_parse_chunk(parser, buffer = @input.read, buffer.size, 0)).zero?
-                # TODO: error handling
-              end
-              V1_4.raptor_parse_chunk(parser, nil, 0, 1) # EOF
+        if block_given?
+          parse(@input) do |parser, statement|
+            block.call(V1_4::Statement.new(statement, self).to_triple)
           end
+        end
+        enum_for(:each_triple)
+      end
+
+      ##
+      # @private
+      # @param  [RDF::URI, File, Tempfile, IO, StringIO] input
+      #   the input stream
+      # @yield  [parser, statement]
+      #   each statement in the input stream
+      # @yieldparam  [FFI::Pointer] parser
+      # @yieldparam  [FFI::Pointer] statement
+      # @return [void]
+      def parse(input, &block)
+        @parser.statement_handler = block
+        case input
+          when RDF::URI, %r(^(file|http|https|ftp)://)
+            begin
+              data_url = V1_4.raptor_new_uri(input.to_s)
+              base_uri = @options[:base_uri].to_s.empty? ? nil : V1_4.raptor_new_uri(@options[:base_uri].to_s)
+              unless (result = V1_4.raptor_parse_uri(@parser, data_url, base_uri)).zero?
+                # TODO: error handling
+              end
+            ensure
+              V1_4.raptor_free_uri(base_uri) if base_uri
+              V1_4.raptor_free_uri(data_url) if data_url
+            end
+
+          when File, Tempfile
+            begin
+              data_url = V1_4.raptor_new_uri("file://#{File.expand_path(input.path)}")
+              base_uri = @options[:base_uri].to_s.empty? ? nil : V1_4.raptor_new_uri(@options[:base_uri].to_s)
+              unless (result = V1_4.raptor_parse_file(@parser, data_url, base_uri)).zero?
+                # TODO: error handling
+              end
+            ensure
+              V1_4.raptor_free_uri(base_uri) if base_uri
+              V1_4.raptor_free_uri(data_url) if data_url
+            end
+
+          else # IO, String
+            base_uri = (@options[:base_uri] || 'file:///dev/stdin').to_s
+            unless (result = V1_4.raptor_start_parse(@parser, base_uri)).zero?
+              # TODO: error handling
+            end
+            # TODO: read in chunks instead of everything in one go:
+            unless (result = V1_4.raptor_parse_chunk(@parser, buffer = input.read, buffer.size, 0)).zero?
+              # TODO: error handling
+            end
+            V1_4.raptor_parse_chunk(@parser, nil, 0, 1) # EOF
         end
       end
 

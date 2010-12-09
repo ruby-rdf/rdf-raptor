@@ -12,21 +12,6 @@ module RDF::Raptor::FFI
     extend ::FFI::Library
     ffi_lib RDF::Raptor::LIBRAPTOR
 
-    ##
-    # @param  [Hash{Symbol => Object}] options
-    # @option (options) [String, #to_s] :name (:rdfxml)
-    # @yield  [parser]
-    # @yieldparam [FFI::Pointer] parser
-    # @return [void]
-    def self.with_parser(options = {}, &block)
-      begin
-        parser = raptor_new_parser((options[:name] || :rdfxml).to_s)
-        block.call(parser)
-      ensure
-        raptor_free_parser(parser) if parser
-      end
-    end
-
     # TODO: Ideally this would be an enum, but the JRuby FFI (as of
     # version 1.4.0) has problems with enums as part of structs:
     #   `Unknown field type: #<FFI::Enum> (ArgumentError)`
