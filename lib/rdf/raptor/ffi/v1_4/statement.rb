@@ -44,6 +44,12 @@ module RDF::Raptor::FFI::V1_4
       end
     end
 
+    # @return [Object]
+    attr_accessor :id
+
+    # @return [RDF::Resource]
+    attr_accessor :context
+
     ##
     # @return [RDF::Resource]
     def subject
@@ -192,13 +198,13 @@ module RDF::Raptor::FFI::V1_4
     # @return [Array(RDF::Resource, RDF::URI, RDF::Term, nil)]
     # @see    RDF::Statement#to_quad
     def to_quad
-      [subject, predicate, object, nil]
+      [subject, predicate, object, context]
     end
 
     ##
     # @return [RDF::Statement]
     def to_statement
-      RDF::Statement.new(subject, predicate, object)
+      RDF::Statement.new(subject, predicate, object, :context => context)
     end
   end # Statement
 end # RDF::Raptor::FFI::V1_4
