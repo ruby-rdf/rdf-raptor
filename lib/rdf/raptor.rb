@@ -4,10 +4,12 @@ module RDF
   ##
   # **`RDF::Raptor`** is a Raptor RDF Parser plugin for RDF.rb.
   #
-  # * {RDF::Raptor::RDFXML} provides support for the standard
-  #   machine-readable RDF/XML format.
+  # * {RDF::Raptor::NTriples} provides support for the standard
+  #   machine-readable N-Triples format.
   # * {RDF::Raptor::Turtle} provides support for the popular
   #   human-readable Turtle format.
+  # * {RDF::Raptor::RDFXML} provides support for the standard
+  #   machine-readable RDF/XML format.
   # * {RDF::Raptor::RDFa} provides support for extracting
   #   RDF statements from XHTML+RDFa documents.
   # * {RDF::Raptor::Graphviz} provides support for serializing
@@ -25,12 +27,12 @@ module RDF
   # @example Obtaining the Raptor engine
   #   RDF::Raptor::ENGINE            #=> :ffi
   #
-  # @example Obtaining an RDF/XML format class
-  #   RDF::Format.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Format
-  #   RDF::Format.for("input.rdf")
-  #   RDF::Format.for(:file_name      => "input.rdf")
-  #   RDF::Format.for(:file_extension => "rdf")
-  #   RDF::Format.for(:content_type   => "application/rdf+xml")
+  # @example Obtaining an N-Triples format class
+  #   RDF::Format.for(:ntriples)     #=> RDF::Raptor::NTriples::Format
+  #   RDF::Format.for("input.nt")
+  #   RDF::Format.for(:file_name      => "input.nt")
+  #   RDF::Format.for(:file_extension => "nt")
+  #   RDF::Format.for(:content_type   => "text/plain")
   #
   # @example Obtaining a Turtle format class
   #   RDF::Format.for(:turtle)       #=> RDF::Raptor::Turtle::Format
@@ -38,6 +40,13 @@ module RDF
   #   RDF::Format.for(:file_name      => "input.ttl")
   #   RDF::Format.for(:file_extension => "ttl")
   #   RDF::Format.for(:content_type   => "text/turtle")
+  #
+  # @example Obtaining an RDF/XML format class
+  #   RDF::Format.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Format
+  #   RDF::Format.for("input.rdf")
+  #   RDF::Format.for(:file_name      => "input.rdf")
+  #   RDF::Format.for(:file_extension => "rdf")
+  #   RDF::Format.for(:content_type   => "application/rdf+xml")
   #
   # @example Obtaining an RDFa format class
   #   RDF::Format.for(:rdfa)       #=> RDF::Raptor::RDFa::Format
@@ -116,8 +125,9 @@ module RDF
       end
     end # Format
 
-    require 'rdf/raptor/rdfxml'
+    #require 'rdf/raptor/ntriples'
     require 'rdf/raptor/turtle'
+    require 'rdf/raptor/rdfxml'
     require 'rdf/raptor/rdfa'
     require 'rdf/raptor/graphviz'
   end # Raptor
