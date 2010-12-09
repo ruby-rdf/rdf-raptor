@@ -45,12 +45,13 @@ module RDF::Raptor::FFI
     attach_function :raptor_free_uri, [:raptor_uri], :void
 
     # @see http://librdf.org/raptor/api-1.4/raptor-section-triples.html
+    typedef :int,     :raptor_identifier_type
     typedef :pointer, :raptor_identifier
     typedef :pointer, :raptor_statement
     attach_function :raptor_statement_compare, [:raptor_statement, :raptor_statement], :int
     attach_function :raptor_print_statement, [:raptor_statement, :pointer], :void
     attach_function :raptor_print_statement_as_ntriples, [:pointer, :pointer], :void
-    attach_function :raptor_statement_part_as_string, [:pointer, :int, :raptor_uri, :string], :string
+    attach_function :raptor_statement_part_as_string, [:pointer, :raptor_identifier_type, :raptor_uri, :pointer], :string
 
     # @see http://librdf.org/raptor/api-1.4/raptor-section-parser.html
     callback :raptor_statement_handler, [:pointer, :raptor_statement], :void
