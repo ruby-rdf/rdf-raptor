@@ -194,5 +194,11 @@ module RDF::Raptor::FFI::V1_4
     def to_quad
       [subject, predicate, object, nil]
     end
+
+    ##
+    # @return [RDF::Statement]
+    def to_statement
+      RDF::Statement.new(subject, predicate, object)
+    end
   end # Statement
 end # RDF::Raptor::FFI::V1_4
