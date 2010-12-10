@@ -13,35 +13,20 @@ module RDF::Raptor::FFI::V1_4
            :object_literal_language, :pointer
 
     ##
-    # @param  [FFI::Pointer] pointer
+    # @param  [FFI::Pointer] ptr
     # @param  [#create_node] factory
-    def initialize(pointer = nil, factory = nil)
-      super(pointer)
+    def initialize(ptr = nil, factory = nil)
+      super(ptr)
       @factory = factory if factory
-
-      # Objects we need to keep a Ruby reference to so they don't get
-      # garbage collected out from under the C code we pass them to.
-      @mp = {}
-
-      # Raptor object references we need to explicitly free when `#release`
-      # is called.
-      @raptor_uri_list = []
     end
 
     ##
-    # Releases `libraptor` memory associated with this struct.
+    # Releases `libraptor` memory associated with this structure.
     #
-    # Use of the object after calling this will most likely cause a
-    # crash. This is kind of ugly.
-    #
+    # @param  [FFI::Pointer] ptr
     # @return [void]
-    def release
-      if pointer.kind_of?(::FFI::MemoryPointer) && !pointer.null?
-        pointer.free
-      end
-      while uri = @raptor_uri_list.pop
-        V1_4.raptor_free_uri(uri) unless uri.nil? || uri.null?
-      end
+    def self.release(ptr)
+      raptor_free_memory(ptr) unless ptr.null?
     end
 
     # @return [Object]
@@ -54,10 +39,10 @@ module RDF::Raptor::FFI::V1_4
     # @return [RDF::Resource]
     def subject
       @subject ||= case self[:subject_type]
-        when RAPTOR_IDENTIFIER_TYPE_RESOURCE
-          @factory.create_uri(V1_4.raptor_uri_to_string(self[:subject]))
         when RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
           @factory.create_node(self[:subject].read_string)
+        when RAPTOR_IDENTIFIER_TYPE_RESOURCE
+          @factory.create_uri(V1_4.raptor_uri_as_string(self[:subject]))
       end
     end
 
@@ -70,13 +55,13 @@ module RDF::Raptor::FFI::V1_4
       @subject = nil
       case resource
         when RDF::Node
-          self[:subject] = @mp[:subject] = ::FFI::MemoryPointer.from_string(resource.id.to_s)
           self[:subject_type] = RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
+          self[:subject] = V1_4.raptor_new_string(resource.id.to_s)
         when RDF::URI
-          self[:subject] = @mp[:subject] = @raptor_uri_list.push(V1_4.raptor_new_uri(resource.to_s)).last
           self[:subject_type] = RAPTOR_IDENTIFIER_TYPE_RESOURCE
+          self[:subject] = V1_4.raptor_new_uri(resource.to_s)
         else
-          raise ArgumentError, "subject must be of kind RDF::Node or RDF::URI"
+          raise ArgumentError, "subject term must be an RDF::Node or RDF::URI"
       end
       @subject = resource
     end
@@ -95,7 +80,7 @@ module RDF::Raptor::FFI::V1_4
     def predicate
       @predicate ||= case self[:predicate_type]
         when RAPTOR_IDENTIFIER_TYPE_RESOURCE
-          RDF::URI.intern(V1_4.raptor_uri_to_string(self[:predicate]))
+          RDF::URI.intern(V1_4.raptor_uri_as_string(self[:predicate]))
       end
     end
 
@@ -106,9 +91,9 @@ module RDF::Raptor::FFI::V1_4
     # @return [void]
     def predicate=(uri)
       @predicate = nil
-      raise ArgumentError, "predicate must be a kind of RDF::URI" unless uri.kind_of?(RDF::URI)
-      self[:predicate] = @raptor_uri_list.push(V1_4.raptor_new_uri(uri.to_s)).last
+      raise ArgumentError, "predicate term must be an RDF::URI" unless uri.is_a?(RDF::URI)
       self[:predicate_type] = RAPTOR_IDENTIFIER_TYPE_RESOURCE
+      self[:predicate] = V1_4.raptor_new_uri(uri.to_s)
       @predicate = uri
     end
 
@@ -125,17 +110,17 @@ module RDF::Raptor::FFI::V1_4
     # @return [RDF::Term]
     def object
       @object ||= case self[:object_type]
-        when RAPTOR_IDENTIFIER_TYPE_RESOURCE
-          @factory.create_uri(V1_4.raptor_uri_to_string(self[:object]))
         when RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
           @factory.create_node(self[:object].read_string)
+        when RAPTOR_IDENTIFIER_TYPE_RESOURCE
+          @factory.create_uri(V1_4.raptor_uri_as_string(self[:object]))
         when RAPTOR_IDENTIFIER_TYPE_LITERAL
           str = self[:object].read_string.unpack('U*').pack('U*')
           case
-            when self[:object_literal_language] && !self[:object_literal_language].null?
+            when !self[:object_literal_language].null?
               RDF::Literal.new(str, :language => self[:object_literal_language].read_string)
-            when self[:object_literal_datatype] && !self[:object_literal_datatype].null?
-              RDF::Literal.new(str, :datatype => V1_4.raptor_uri_to_string(self[:object_literal_datatype]))
+            when !self[:object_literal_datatype].null?
+              RDF::Literal.new(str, :datatype => V1_4.raptor_uri_as_string(self[:object_literal_datatype]))
             else
               RDF::Literal.new(str)
           end
@@ -153,26 +138,18 @@ module RDF::Raptor::FFI::V1_4
       @object = nil
       case value
         when RDF::Node
-          self[:object] = @mp[:object] = ::FFI::MemoryPointer.from_string(value.id.to_s)
           self[:object_type] = RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
+          self[:object] = V1_4.raptor_new_string(value.id.to_s)
         when RDF::URI
-          self[:object] = @mp[:object] = @raptor_uri_list.push(V1_4.raptor_new_uri(value.to_s)).last
           self[:object_type] = RAPTOR_IDENTIFIER_TYPE_RESOURCE
+          self[:object] = V1_4.raptor_new_uri(value.to_s)
         when RDF::Literal
           self[:object_type] = RAPTOR_IDENTIFIER_TYPE_LITERAL
-          self[:object] = @mp[:object] = ::FFI::MemoryPointer.from_string(value.value)
-          self[:object_literal_datatype] = if value.datatype
-            @raptor_uri_list.push(V1_4.raptor_new_uri(value.datatype.to_s)).last
-          else
-            nil
-          end
-          self[:object_literal_language] = @mp[:object_literal_language] = if value.language?
-            ::FFI::MemoryPointer.from_string(value.language.to_s)
-          else
-            nil
-          end
+          self[:object] = V1_4.raptor_new_string(value.value)
+          self[:object_literal_datatype] = V1_4.raptor_new_uri(value.datatype.to_s) if value.datatype
+          self[:object_literal_language] = V1_4.raptor_new_string(value.language.to_s) if value.language?
         else
-          raise ArgumentError, "object must be of type RDF::Node, RDF::URI or RDF::Literal"
+          raise ArgumentError, "object term must be an RDF::Node, RDF::URI, or RDF::Literal"
       end
       @object = value
     end
@@ -203,8 +180,54 @@ module RDF::Raptor::FFI::V1_4
 
     ##
     # @return [RDF::Statement]
-    def to_statement
+    def to_rdf
       RDF::Statement.new(subject, predicate, object, :context => context)
     end
+
+    ##
+    # @return [void]
+    def reset!
+      @subject = @predicate = @object = @context = nil
+    end
+
+    ##
+    # Releases `libraptor` memory associated with this structure.
+    #
+    # @return [void]
+    def free
+      if self[:subject_type].nonzero? && !(self[:subject].null?)
+        self[:subject] = case self[:subject_type]
+          when RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
+            V1_4.raptor_free_string(self[:subject])
+          when RAPTOR_IDENTIFIER_TYPE_RESOURCE
+            V1_4.raptor_free_uri(self[:subject])
+        end
+        self[:subject_type] = RAPTOR_IDENTIFIER_TYPE_UNKNOWN
+      end
+
+      if self[:predicate_type].nonzero? && !(self[:predicate].null?)
+        self[:predicate] = V1_4.raptor_free_uri(self[:predicate])
+        self[:predicate_type] = RAPTOR_IDENTIFIER_TYPE_UNKNOWN
+      end
+
+      if self[:object_type].nonzero? && !(self[:object].null?)
+        self[:object] = case self[:object_type]
+          when RAPTOR_IDENTIFIER_TYPE_ANONYMOUS
+            V1_4.raptor_free_string(self[:object])
+          when RAPTOR_IDENTIFIER_TYPE_RESOURCE
+            V1_4.raptor_free_uri(self[:object])
+          when RAPTOR_IDENTIFIER_TYPE_LITERAL
+            V1_4.raptor_free_string(self[:object])
+            unless self[:object_literal_datatype].null?
+              self[:object_literal_datatype] = V1_4.raptor_free_uri(self[:object_literal_datatype])
+            end
+            unless self[:object_literal_language].null?
+              self[:object_literal_language] = V1_4.raptor_free_string(self[:object_literal_language])
+            end
+        end
+        self[:object_type] = RAPTOR_IDENTIFIER_TYPE_UNKNOWN
+      end
+    end
+    alias_method :release, :free
   end # Statement
 end # RDF::Raptor::FFI::V1_4

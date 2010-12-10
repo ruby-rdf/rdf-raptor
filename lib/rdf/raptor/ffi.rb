@@ -68,7 +68,7 @@ module RDF::Raptor
             end
           else
             parse(@input) do |parser, statement|
-              block.call(V1_4::Statement.new(statement, self).to_statement)
+              block.call(V1_4::Statement.new(statement, self).to_rdf)
             end
           end
         end
