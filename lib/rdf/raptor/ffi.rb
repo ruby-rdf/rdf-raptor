@@ -91,6 +91,12 @@ module RDF::Raptor
       end
 
       ##
+      # The Raptor parser instance.
+      #
+      # @return [V1_4::Parser]
+      attr_reader :parser
+
+      ##
       # @private
       # @param  [RDF::URI, File, Tempfile, IO, StringIO] input
       #   the input stream
@@ -98,45 +104,10 @@ module RDF::Raptor
       #   each statement in the input stream
       # @yieldparam  [FFI::Pointer] parser
       # @yieldparam  [FFI::Pointer] statement
+      # @yieldreturn [void] ignored
       # @return [void]
       def parse(input, &block)
-        @parser.statement_handler = block
-        case input
-          when RDF::URI, %r(^(file|http|https|ftp)://)
-            begin
-              data_url = V1_4.raptor_new_uri(input.to_s)
-              base_uri = @options[:base_uri].to_s.empty? ? nil : V1_4.raptor_new_uri(@options[:base_uri].to_s)
-              unless (result = V1_4.raptor_parse_uri(@parser, data_url, base_uri)).zero?
-                # TODO: error handling
-              end
-            ensure
-              V1_4.raptor_free_uri(base_uri) if base_uri
-              V1_4.raptor_free_uri(data_url) if data_url
-            end
-
-          when File, Tempfile
-            begin
-              data_url = V1_4.raptor_new_uri("file://#{File.expand_path(input.path)}")
-              base_uri = @options[:base_uri].to_s.empty? ? nil : V1_4.raptor_new_uri(@options[:base_uri].to_s)
-              unless (result = V1_4.raptor_parse_file(@parser, data_url, base_uri)).zero?
-                # TODO: error handling
-              end
-            ensure
-              V1_4.raptor_free_uri(base_uri) if base_uri
-              V1_4.raptor_free_uri(data_url) if data_url
-            end
-
-          else # IO, String
-            base_uri = (@options[:base_uri] || 'file:///dev/stdin').to_s
-            unless (result = V1_4.raptor_start_parse(@parser, base_uri)).zero?
-              # TODO: error handling
-            end
-            # TODO: read in chunks instead of everything in one go:
-            unless (result = V1_4.raptor_parse_chunk(@parser, buffer = input.read, buffer.size, 0)).zero?
-              # TODO: error handling
-            end
-            V1_4.raptor_parse_chunk(@parser, nil, 0, 1) # EOF
-        end
+        @parser.parse(input, @options, &block)
       end
 
       GENID = /^genid\d+$/
