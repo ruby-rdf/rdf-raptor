@@ -149,19 +149,7 @@ module RDF::Raptor
         @serializer = V1_4::Serializer.new(@format)
         @serializer.error_handler   = ERROR_HANDLER
         @serializer.warning_handler = WARNING_HANDLER
-
-        base_uri = options[:base_uri].to_s.empty? ? nil : V1_4::URI.new(options[:base_uri].to_s)
-
-        # make an iostream
-        handler = V1_4::IOStreamHandler.new
-        handler.rubyio = output
-        iostream = V1_4::IOStream.new(handler)
-
-        # connect it to the serializer
-        if V1_4.raptor_serialize_start_to_iostream(@serializer, base_uri, iostream).nonzero?
-          raise RDF::WriterError, "raptor_serialize_start_to_iostream failed"
-        end
-
+        @serializer.start_to(output, options)
         super
       end
 
@@ -186,27 +174,14 @@ module RDF::Raptor
       # @return [void]
       # @see    RDF::Writer#write_triple
       def write_triple(subject, predicate, object)
-        raptor_statement = V1_4::Statement.new
-        raptor_statement.subject   = subject
-        raptor_statement.predicate = predicate
-        raptor_statement.object    = object
-        begin
-          if V1_4.raptor_serialize_statement(@serializer, raptor_statement).nonzero?
-            raise RDF::WriterError, "raptor_serialize_statement failed"
-          end
-        ensure
-          raptor_statement.release
-          raptor_statement = nil
-        end
+        @serializer.serialize_triple(subject, predicate, object)
       end
 
       ##
       # @return [void]
       # @see    RDF::Writer#write_epilogue
       def write_epilogue
-        if V1_4.raptor_serialize_end(@serializer).nonzero?
-          raise RDF::WriterError, "raptor_serialize_end failed"
-        end
+        @serializer.finish
         super
       end
     end # Writer

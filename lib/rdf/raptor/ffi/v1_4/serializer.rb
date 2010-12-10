@@ -48,5 +48,81 @@ module RDF::Raptor::FFI::V1_4
     def warning_handler=(handler)
       V1_4.raptor_serializer_set_warning_handler(self, self, handler)
     end
+
+    ##
+    # @param  [Object] output
+    #   where output should be written to
+    # @param  [Hash{Symbol => Object}] options
+    #   any additional options for serializing
+    # @option options [String, #to_s] :base_uri (nil)
+    #   the base URI to use when resolving relative URIs
+    # @return [void]
+    def start_to(output, options = {})
+      case output
+        when IO, StringIO
+          start_to_stream(output, options)
+        else
+          raise ArgumentError, "don't know how to serialize to #{output.inspect}"
+      end
+    end
+
+    ##
+    # @param  [IO, StringIO] stream
+    # @param  [Hash{Symbol => Object}] options
+    #   any additional options for serializing (see {#start_to})
+    # @return [void]
+    def start_to_stream(stream, options = {})
+      iostream = V1_4::IOStream.new(V1_4::IOStreamHandler.new(stream))
+      start_to_iostream(iostream, options)
+    end
+
+    ##
+    # @param  [V1_4::IOStream] iostream
+    # @param  [Hash{Symbol => Object}] options
+    #   any additional options for serializing (see {#start_to})
+    # @return [void]
+    def start_to_iostream(iostream, options = {})
+      @iostream = iostream # prevents premature GC
+      @base_uri = options[:base_uri].to_s.empty? ? nil : V1_4::URI.new(options[:base_uri].to_s)
+      if V1_4.raptor_serialize_start_to_iostream(self, @base_uri, @iostream).nonzero?
+        raise RDF::WriterError, "raptor_serialize_start_to_iostream() failed"
+      end
+    end
+
+    ##
+    # @return [void]
+    def finish
+      if V1_4.raptor_serialize_end(self).nonzero?
+        raise RDF::WriterError, "raptor_serialize_end() failed"
+      end
+      @iostream = @base_uri = nil # allows GC
+    end
+
+    ##
+    # @param  [RDF::Resource] subject
+    # @param  [RDF::URI]      predicate
+    # @param  [RDF::Term]     object
+    # @return [void]
+    def serialize_triple(subject, predicate, object)
+      raptor_statement = V1_4::Statement.new
+      raptor_statement.subject   = subject
+      raptor_statement.predicate = predicate
+      raptor_statement.object    = object
+      begin
+        serialize_raw_statement(raptor_statement)
+      ensure
+        raptor_statement.release
+        raptor_statement = nil
+      end
+    end
+
+    ##
+    # @param  [V1_4::Statement] statement
+    # @return [void]
+    def serialize_raw_statement(statement)
+      if V1_4.raptor_serialize_statement(self, statement).nonzero?
+        raise RDF::WriterError, "raptor_serialize_statement() failed"
+      end
+    end
   end # Serializer
 end # RDF::Raptor::FFI::V1_4

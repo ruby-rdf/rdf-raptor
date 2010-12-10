@@ -13,49 +13,80 @@ module RDF::Raptor::FFI::V1_4
            :read_eof, :raptor_iostream_read_eof_func
 
     ##
+    # The IO object to operate upon.
+    #
     # @return [IO]
-    attr_accessor :rubyio
+    attr_accessor :io
 
     ##
-    def initialize(*args)
-      super
-      # Keep a Ruby land reference to our procs so they don't get
-      # snatched by GC.
-      @procs = {}
+    # @overload initialize(ptr)
+    #   @param  [FFI::Pointer] ptr
+    #
+    # @overload initialize(io)
+    #   @param  [IO, StringIO] io
+    #
+    def initialize(ptr_or_io = nil)
+      ptr = case ptr_or_io
+        when FFI::Pointer
+          ptr_or_io
+        when IO, StringIO
+          @io = ptr_or_io
+          nil
+        when nil then nil
+        else
+          raise ArgumentError, "invalid argument: #{ptr_or_io.inspect}"
+      end
+      super(ptr)
+      initialize!
+    end
 
+    ##
+    # @return [void]
+    def initialize!
       self[:version] = 2
 
-      # @procs[:init] = self[:init] = Proc.new do |context|
-      #   $stderr.puts("#{self.class}: init")
-      # end
-      # @procs[:finish] = self[:finish] = Proc.new do |context|
-      #   $stderr.puts("#{self.class}: finish")
-      # end
-      @procs[:write_byte] = self[:write_byte] = Proc.new do |context, byte|
+      #define_handler(:init) do |context|
+      #  $stderr.puts("#{self.class}: init")
+      #end
+      #define_handler(:finish) do |context|
+      #  $stderr.puts("#{self.class}: finish")
+      #end
+      define_handler(:write_byte) do |context, byte|
         begin
-          @rubyio.putc(byte)
-        rescue
-          return 1
+          @io.putc(byte)
+          0
+        rescue => e
+          $stderr.puts("#{e} in #{self.class}#write_byte")
+          1
         end
-        0
       end
-      @procs[:write_bytes] = self[:write_bytes] = Proc.new do |context, data, size, nmemb|
+      define_handler(:write_bytes) do |context, data, size, nmemb|
         begin
-          @rubyio.write(data.read_string(size * nmemb))
-        rescue
-          return 1
+          @io.write(data.read_string(size * nmemb))
+          0
+        rescue => e
+          $stderr.puts("#{e} in #{self.class}#write_bytes")
+          1
         end
-        0
       end
-      # @procs[:write_end] = self[:write_end] = Proc.new do |context|
-      #   $stderr.puts("#{self.class}: write_end")
-      # end
-      # @procs[:read_bytes] = self[:read_bytes] = Proc.new do |context, data, size, nmemb|
-      #   $stderr.puts("#{self.class}: read_bytes")
-      # end
-      # @procs[:read_eof] = self[:read_eof] = Proc.new do |context|
-      #   $stderr.puts("#{self.class}: read_eof")
-      # end
+      #define_handler(:write_end) do |context|
+      #  $stderr.puts("#{self.class}: write_end")
+      #end
+      #define_handler(:read_bytes) do |context, data, size, nmemb|
+      #  $stderr.puts("#{self.class}: read_bytes")
+      #end
+      #define_handler(:read_eof) do |context|
+      #  $stderr.puts("#{self.class}: read_eof")
+      #end
+    end
+
+    ##
+    # @param  [Symbol, #to_sym] name
+    # @return [void]
+    def define_handler(name, &block)
+      name = name.to_sym
+      @procs ||= {} # prevents premature GC of the procs
+      @procs[name] = self[name] = block
     end
   end # IOStreamHandler
 end # RDF::Raptor::FFI::V1_4
