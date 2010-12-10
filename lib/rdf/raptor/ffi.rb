@@ -150,22 +150,19 @@ module RDF::Raptor
         @serializer.error_handler   = ERROR_HANDLER
         @serializer.warning_handler = WARNING_HANDLER
 
-        begin
-          base_uri = options[:base_uri].to_s.empty? ? nil : V1_4::URI.new(options[:base_uri].to_s)
+        base_uri = options[:base_uri].to_s.empty? ? nil : V1_4::URI.new(options[:base_uri].to_s)
 
-          # make an iostream
-          handler = V1_4::IOStreamHandler.new
-          handler.rubyio = output
-          iostream = V1_4.raptor_new_iostream_from_handler2(nil, handler)
+        # make an iostream
+        handler = V1_4::IOStreamHandler.new
+        handler.rubyio = output
+        iostream = V1_4::IOStream.new(handler)
 
-          # connect it to the serializer
-          if V1_4.raptor_serialize_start_to_iostream(@serializer, base_uri, iostream).nonzero?
-            raise RDF::WriterError, "raptor_serialize_start_to_iostream failed"
-          end
-          super
-        ensure
-          V1_4.raptor_free_iostream(iostream) if iostream
+        # connect it to the serializer
+        if V1_4.raptor_serialize_start_to_iostream(@serializer, base_uri, iostream).nonzero?
+          raise RDF::WriterError, "raptor_serialize_start_to_iostream failed"
         end
+
+        super
       end
 
       ERROR_HANDLER = Proc.new do |user_data, locator, message|
