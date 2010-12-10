@@ -31,11 +31,15 @@ module RDF::Raptor
     # FFI reader implementation.
     class Reader < RDF::Reader
       ##
+      # Initializes the FFI reader instance.
+      #
       # @param  [IO, File, RDF::URI, String] input
-      # @param  [Hash{Symbol => Object}]     options
-      # @option (options) [String, #to_s]    :base_uri ("file:///dev/stdin")
-      # @yield  [reader]
-      # @yieldparam [RDF::Reader] reader
+      # @param  [Hash{Symbol => Object}] options
+      #   any additional options (see `RDF::Reader#initialize`)
+      # @option options [String, #to_s]  :base_uri ("file:///dev/stdin")
+      # @yield  [reader] `self`
+      # @yieldparam  [RDF::Reader] reader
+      # @yieldreturn [void] ignored
       def initialize(input = $stdin, options = {}, &block)
         @format = self.class.format.rapper_format
         @parser = V1_4::Parser.new(@format)
@@ -53,6 +57,12 @@ module RDF::Raptor
         # line = V1_4.raptor_locator_line(locator)
         # $stderr.puts line > -1 ? "Line #{line}: #{message}" : message
       end
+
+      ##
+      # The Raptor parser instance.
+      #
+      # @return [V1_4::Parser]
+      attr_reader :parser
 
       ##
       # @yield [statement]
@@ -91,12 +101,6 @@ module RDF::Raptor
       end
 
       ##
-      # The Raptor parser instance.
-      #
-      # @return [V1_4::Parser]
-      attr_reader :parser
-
-      ##
       # @private
       # @param  [RDF::URI, File, Tempfile, IO, StringIO] input
       #   the input stream
@@ -131,6 +135,39 @@ module RDF::Raptor
     ##
     # FFI writer implementation.
     class Writer < RDF::Writer
+      ##
+      # Initializes the FFI writer instance.
+      #
+      # @param  [IO, File] output
+      # @param  [Hash{Symbol => Object}] options
+      #   any additional options (see `RDF::Writer#initialize`)
+      # @yield  [writer] `self`
+      # @yieldparam  [RDF::Writer] writer
+      # @yieldreturn [void] ignored
+      def initialize(output = $stdout, options = {}, &block)
+        @format = self.class.format.rapper_format
+        @serializer = V1_4::Serializer.new(@format)
+        @serializer.error_handler   = ERROR_HANDLER
+        @serializer.warning_handler = WARNING_HANDLER
+
+        begin
+          base_uri = options[:base_uri].to_s.empty? ? nil : V1_4::URI.new(options[:base_uri].to_s)
+
+          # make an iostream
+          handler = V1_4::IOStreamHandler.new
+          handler.rubyio = output
+          iostream = V1_4.raptor_new_iostream_from_handler2(nil, handler)
+
+          # connect it to the serializer
+          if V1_4.raptor_serialize_start_to_iostream(@serializer, base_uri, iostream).nonzero?
+            raise RDF::WriterError, "raptor_serialize_start_to_iostream failed"
+          end
+          super
+        ensure
+          V1_4.raptor_free_iostream(iostream) if iostream
+        end
+      end
+
       ERROR_HANDLER = Proc.new do |user_data, locator, message|
         raise RDF::WriterError, message
       end
@@ -140,33 +177,10 @@ module RDF::Raptor
       end
 
       ##
-      def initialize(output = $stdout, options = {}, &block)
-        raise ArgumentError, "Block required" unless block_given?  # Can we work without this?
-        @format = self.class.format.rapper_format
-        begin
-          # make a serializer
-          @serializer = V1_4.raptor_new_serializer((@format || :rdfxml).to_s)
-          raise RDF::WriterError, "raptor_new_serializer failed" if @serializer.nil?
-          V1_4.raptor_serializer_set_error_handler(@serializer, nil, ERROR_HANDLER)
-          V1_4.raptor_serializer_set_warning_handler(@serializer, nil, WARNING_HANDLER)
-          base_uri = options[:base_uri].to_s.empty? ? nil : V1_4.raptor_new_uri(options[:base_uri].to_s)
-
-          # make an iostream
-          handler = V1_4::IOStreamHandler.new
-          handler.rubyio = output
-          raptor_iostream = V1_4.raptor_new_iostream_from_handler2(nil, handler)
-
-          # connect the two
-          unless V1_4.raptor_serialize_start_to_iostream(@serializer, base_uri, raptor_iostream).zero?
-            raise RDF::WriterError, "raptor_serialize_start_to_iostream failed"
-          end
-          super
-        ensure
-          V1_4.raptor_free_iostream(raptor_iostream) if raptor_iostream
-          V1_4.raptor_free_uri(base_uri) if base_uri
-          V1_4.raptor_free_serializer(@serializer) if @serializer
-        end
-      end
+      # The Raptor serializer instance.
+      #
+      # @return [V1_4::Serializer]
+      attr_reader :serializer
 
       ##
       # @param  [RDF::Resource] subject
@@ -180,7 +194,7 @@ module RDF::Raptor
         raptor_statement.predicate = predicate
         raptor_statement.object    = object
         begin
-          unless V1_4.raptor_serialize_statement(@serializer, raptor_statement.to_ptr).zero?
+          if V1_4.raptor_serialize_statement(@serializer, raptor_statement).nonzero?
             raise RDF::WriterError, "raptor_serialize_statement failed"
           end
         ensure
@@ -193,7 +207,7 @@ module RDF::Raptor
       # @return [void]
       # @see    RDF::Writer#write_epilogue
       def write_epilogue
-        unless V1_4.raptor_serialize_end(@serializer).zero?
+        if V1_4.raptor_serialize_end(@serializer).nonzero?
           raise RDF::WriterError, "raptor_serialize_end failed"
         end
         super

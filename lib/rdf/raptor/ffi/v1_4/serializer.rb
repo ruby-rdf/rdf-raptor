@@ -34,5 +34,19 @@ module RDF::Raptor::FFI::V1_4
     def self.release(ptr)
       V1_4.raptor_free_serializer(ptr)
     end
+
+    ##
+    # @param  [Proc] handler
+    # @return [void]
+    def error_handler=(handler)
+      V1_4.raptor_serializer_set_error_handler(self, self, handler)
+    end
+
+    ##
+    # @param  [Proc] handler
+    # @return [void]
+    def warning_handler=(handler)
+      V1_4.raptor_serializer_set_warning_handler(self, self, handler)
+    end
   end # Serializer
 end # RDF::Raptor::FFI::V1_4
