@@ -8,6 +8,7 @@ module RDF::Raptor::FFI
     autoload :Parser,          'rdf/raptor/ffi/v1_4/parser'
     autoload :Serializer,      'rdf/raptor/ffi/v1_4/serializer'
     autoload :Statement,       'rdf/raptor/ffi/v1_4/statement'
+    autoload :URI,             'rdf/raptor/ffi/v1_4/uri'
 
     extend ::FFI::Library
     ffi_lib RDF::Raptor::LIBRAPTOR
@@ -39,6 +40,8 @@ module RDF::Raptor::FFI
     # @see http://librdf.org/raptor/api-1.4/raptor-section-uri.html
     typedef :pointer, :raptor_uri
     attach_function :raptor_new_uri, [:string], :raptor_uri
+    attach_function :raptor_uri_copy, [:raptor_uri], :raptor_uri
+    attach_function :raptor_uri_equals, [:raptor_uri, :raptor_uri], :int
     attach_function :raptor_uri_as_string, [:raptor_uri], :string
     attach_function :raptor_uri_to_string, [:raptor_uri], :string
     attach_function :raptor_uri_print, [:raptor_uri, :pointer], :void
