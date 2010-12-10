@@ -228,5 +228,13 @@ module RDF::Raptor
         super
       end
     end # Writer
+
+    ##
+    # @private
+    module LibC
+      extend ::FFI::Library
+      ffi_lib ::FFI::Library::LIBC
+      attach_function :strlen, [:pointer], :size_t
+    end # LibC
   end # FFI
 end # RDF::Raptor
