@@ -16,6 +16,7 @@ module RDF::Raptor::FFI
     # TODO: Ideally this would be an enum, but the JRuby FFI (as of
     # version 1.4.0) has problems with enums as part of structs:
     #   `Unknown field type: #<FFI::Enum> (ArgumentError)`
+    RAPTOR_IDENTIFIER_TYPE_UNKNOWN   = 0
     RAPTOR_IDENTIFIER_TYPE_RESOURCE  = 1
     RAPTOR_IDENTIFIER_TYPE_ANONYMOUS = 2
     RAPTOR_IDENTIFIER_TYPE_LITERAL   = 5
@@ -23,6 +24,9 @@ module RDF::Raptor::FFI
     # @see http://librdf.org/raptor/api-1.4/tutorial-initialising-finishing.html
     attach_function :raptor_init, [], :void
     attach_function :raptor_finish, [], :void
+    attach_function :raptor_alloc_memory, [:size_t], :pointer
+    attach_function :raptor_calloc_memory, [:size_t, :size_t], :pointer
+    attach_function :raptor_free_memory, [:pointer], :void
 
     # @see http://librdf.org/raptor/api-1.4/raptor-section-locator.html
     typedef :pointer, :raptor_locator
@@ -104,5 +108,22 @@ module RDF::Raptor::FFI
     # any memory management to the Ruby GC.
     # Internally `raptor_init`/`raptor_finish` work with reference counts.
     raptor_init
+
+    ##
+    # Allocates memory for the string `str` inside `libraptor`, copying the
+    # string into the newly-allocated buffer.
+    #
+    # The buffer should later be deallocated using `raptor_free_string`.
+    #
+    # @return [FFI::Pointer]
+    def raptor_new_string(str)
+      ptr = V1_4.raptor_alloc_memory(str.bytesize + 1)
+      ptr.put_string(0, str)
+      ptr
+    end
+    module_function :raptor_new_string
+
+    alias_method :raptor_free_string, :raptor_free_memory
+    module_function :raptor_free_string
   end # V1_4
 end # RDF::Raptor::FFI
