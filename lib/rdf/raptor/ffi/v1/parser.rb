@@ -8,6 +8,12 @@ module RDF::Raptor::FFI::V1
     include RDF::Raptor::FFI
     layout :world, :pointer # the actual layout is private
 
+    # The default base URI
+    BASE_URI    = 'file:///dev/stdin'
+
+    # The maximum chunk size for `#parse_stream`
+    BUFFER_SIZE = 64 * 1024
+
     ##
     # @overload initialize(ptr)
     #   @param  [FFI::Pointer] ptr
@@ -128,7 +134,7 @@ module RDF::Raptor::FFI::V1
     end
 
     ##
-    # @param  [IO, StringIO, #read] stream
+    # @param  [IO, StringIO, #readpartial] stream
     #   the input stream to parse
     # @param  [Hash{Symbol => Object}] options
     #   any additional options for parsing (see {#parse})
@@ -139,8 +145,16 @@ module RDF::Raptor::FFI::V1
     # @yieldreturn [void] ignored
     # @return [void]
     def parse_stream(stream, options = {}, &block)
-      # TODO: read in chunks instead of everything in one go
-      parse_buffer(stream.read, options, &block)
+      self.statement_handler = block if block_given?
+
+      begin
+        parse_start!((options[:base_uri] || BASE_URI).to_s)
+        loop do
+          parse_chunk(stream.readpartial(BUFFER_SIZE))
+        end
+      rescue EOFError => e
+        parse_end!
+      end
     end
 
     ##
@@ -157,14 +171,35 @@ module RDF::Raptor::FFI::V1
     def parse_buffer(buffer, options = {}, &block)
       self.statement_handler = block if block_given?
 
-      buffer = buffer.to_str
-      base_uri = (options[:base_uri] || 'file:///dev/stdin').to_s
+      parse_start!((options[:base_uri] || BASE_URI).to_s)
+      parse_chunk(buffer.to_str)
+      parse_end!
+    end
 
+    ##
+    # @private
+    # @param  [String] base_uri
+    # @return [void]
+    def parse_start!(base_uri = BASE_URI)
       result = V1.raptor_start_parse(self, base_uri)
       # TODO: error handling if result.nonzero?
+    end
+
+    ##
+    # @private
+    # @param  [String] buffer
+    #   the input chunk to parse
+    # @return [void]
+    def parse_chunk(buffer)
       result = V1.raptor_parse_chunk(self, buffer, buffer.bytesize, 0)
       # TODO: error handling if result.nonzero?
-      V1.raptor_parse_chunk(self, nil, 0, 1) # EOF
+    end
+
+    ##
+    # @private
+    # @return [void]
+    def parse_end!
+      result = V1.raptor_parse_chunk(self, nil, 0, 1) # EOF
     end
   end # Parser
 end # RDF::Raptor::FFI::V1
