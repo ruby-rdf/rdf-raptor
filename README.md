@@ -102,8 +102,9 @@ Documentation
 <http://rdf.rubyforge.org/raptor/>
 
 * {RDF::Raptor}
-  * {RDF::Raptor::RDFXML}
+  * {RDF::Raptor::NTriples}
   * {RDF::Raptor::Turtle}
+  * {RDF::Raptor::RDFXML}
   * {RDF::Raptor::RDFa}
   * {RDF::Raptor::Graphviz}
 
@@ -111,8 +112,8 @@ Dependencies
 ------------
 
 * [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.3.0)
+* [FFI](http://rubygems.org/gems/ffi) (>= 1.0.0)
 * [Raptor][] (>= 1.4.16), the `libraptor` library or the `rapper` binary
-* [FFI](http://rubygems.org/gems/ffi) (>= 0.6.3), if using `libraptor`
 
 Installation
 ------------
