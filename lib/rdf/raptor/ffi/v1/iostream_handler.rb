@@ -12,6 +12,8 @@ module RDF::Raptor::FFI::V1
            :read_bytes, :raptor_iostream_read_bytes_func,
            :read_eof, :raptor_iostream_read_eof_func
 
+    HANDLERS = [:init, :finish, :write_byte, :write_bytes, :read_bytes, :read_eof]
+
     ##
     # The IO object to operate upon.
     #
@@ -81,10 +83,67 @@ module RDF::Raptor::FFI::V1
     end
 
     ##
+    # @param  [Proc] func
+    # @return [void]
+    def init_handler=(func)
+      define_handler(:init, &func)
+    end
+    alias_method :init=, :init_handler=
+
+    ##
+    # @param  [Proc] func
+    # @return [void]
+    def finish_handler=(func)
+      define_handler(:finish, &func)
+    end
+    alias_method :finish=, :finish_handler=
+
+    ##
+    # @param  [Proc] func
+    # @return [void]
+    def write_byte_handler=(func)
+      define_handler(:write_byte, &func)
+    end
+    alias_method :write_byte=, :write_byte_handler=
+
+    ##
+    # @param  [Proc] func
+    # @return [void]
+    def write_bytes_handler=(func)
+      define_handler(:write_bytes, &func)
+    end
+    alias_method :write_bytes=, :write_bytes_handler=
+
+    ##
+    # @param  [Proc] func
+    # @return [void]
+    def write_end_handler=(func)
+      define_handler(:write_end, &func)
+    end
+    alias_method :write_end=, :write_end_handler=
+
+    ##
+    # @param  [Proc] func
+    # @return [void]
+    def read_bytes_handler=(func)
+      define_handler(:read_bytes, &func)
+    end
+    alias_method :read_bytes=, :read_bytes_handler=
+
+    ##
+    # @param  [Proc] func
+    # @return [void]
+    def read_eof_handler=(func)
+      define_handler(:read_eof, &func)
+    end
+    alias_method :read_eof=, :read_eof_handler=
+
+    ##
     # @param  [Symbol, #to_sym] name
     # @return [void]
     def define_handler(name, &block)
       name = name.to_sym
+      raise ArgumentError, "invalid IOStreamHandler function name: #{name}" unless HANDLERS.include?(name)
       @procs ||= {} # prevents premature GC of the procs
       @procs[name] = self[name] = block
     end
