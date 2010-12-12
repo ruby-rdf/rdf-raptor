@@ -1,4 +1,4 @@
-module RDF::Raptor::FFI::V1_4
+module RDF::Raptor::FFI::V1
   ##
   # @see http://librdf.org/raptor/api-1.4/raptor-section-iostream.html
   class IOStreamHandler < ::FFI::Struct
@@ -89,4 +89,4 @@ module RDF::Raptor::FFI::V1_4
       @procs[name] = self[name] = block
     end
   end # IOStreamHandler
-end # RDF::Raptor::FFI::V1_4
+end # RDF::Raptor::FFI::V1

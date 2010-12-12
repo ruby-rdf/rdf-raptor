@@ -1,4 +1,4 @@
-module RDF::Raptor::FFI::V1_4
+module RDF::Raptor::FFI::V1
   ##
   # Raptor has a `raptor_uri` class which must be used for manipulating and
   # passing URI references. The default internal implementation uses `char*`
@@ -20,8 +20,8 @@ module RDF::Raptor::FFI::V1_4
     def initialize(ptr_or_name)
       ptr = case ptr_or_name
         when FFI::Pointer then ptr_or_name
-        when RDF::URI     then V1_4.raptor_new_uri(ptr_or_name.to_s)
-        when String       then V1_4.raptor_new_uri(ptr_or_name)
+        when RDF::URI     then V1.raptor_new_uri(ptr_or_name.to_s)
+        when String       then V1.raptor_new_uri(ptr_or_name)
         else nil
       end
       raise ArgumentError, "invalid argument: #{ptr_or_name.inspect}" if ptr.nil? || ptr.null?
@@ -34,7 +34,7 @@ module RDF::Raptor::FFI::V1_4
     # @param  [FFI::Pointer] ptr
     # @return [void]
     def self.release(ptr)
-      V1_4.raptor_free_uri(ptr)
+      V1.raptor_free_uri(ptr)
     end
 
     ##
@@ -46,7 +46,7 @@ module RDF::Raptor::FFI::V1_4
     ##
     # @return [URI] a copy of `self`
     def dup
-      copy = self.class.new(V1_4.raptor_uri_copy(self))
+      copy = self.class.new(V1.raptor_uri_copy(self))
       copy.taint if tainted?
       copy
     end
@@ -54,7 +54,7 @@ module RDF::Raptor::FFI::V1_4
     ##
     # @return [URI] a copy of `self`
     def clone
-      copy = self.class.new(V1_4.raptor_uri_copy(self))
+      copy = self.class.new(V1.raptor_uri_copy(self))
       copy.taint  if tainted?
       copy.freeze if frozen?
       copy
@@ -73,7 +73,7 @@ module RDF::Raptor::FFI::V1_4
       return true if self.equal?(other)
       case other
         when self.class
-          !(V1_4.raptor_uri_equals(self, other).zero?)
+          !(V1.raptor_uri_equals(self, other).zero?)
         when RDF::URI, String
           to_str == other.to_str
         else false
@@ -85,7 +85,7 @@ module RDF::Raptor::FFI::V1_4
     # @return [Boolean] `true` or `false`
     def eql?(other)
       return true if self.equal?(other)
-      other.is_a?(self.class) && !(V1_4.raptor_uri_equals(self, other).zero?)
+      other.is_a?(self.class) && !(V1.raptor_uri_equals(self, other).zero?)
     end
 
     ##
@@ -97,7 +97,7 @@ module RDF::Raptor::FFI::V1_4
     ##
     # @return [String] the URI string
     def to_str
-      V1_4.raptor_uri_as_string(self)
+      V1.raptor_uri_as_string(self)
     end
     alias_method :to_s, :to_str
 
@@ -108,4 +108,4 @@ module RDF::Raptor::FFI::V1_4
     end
     alias_method :to_uri, :to_rdf
   end # URI
-end # RDF::Raptor::FFI::V1_4
+end # RDF::Raptor::FFI::V1

@@ -8,7 +8,7 @@ module RDF::Raptor
   # @see http://librdf.org/raptor/api/
   # @see http://librdf.org/raptor/libraptor.html
   module FFI
-    autoload :V1_4, 'rdf/raptor/ffi/v1_4'
+    autoload :V1, 'rdf/raptor/ffi/v1'
 
     ENGINE = :ffi
 
@@ -21,9 +21,9 @@ module RDF::Raptor
     #
     # @return [String] an "x.y.z" version string
     def version
-      [V1_4.raptor_version_major,
-       V1_4.raptor_version_minor,
-       V1_4.raptor_version_release].join('.').freeze
+      [V1.raptor_version_major,
+       V1.raptor_version_minor,
+       V1.raptor_version_release].join('.').freeze
     end
     module_function :version
 
@@ -42,26 +42,26 @@ module RDF::Raptor
       # @yieldreturn [void] ignored
       def initialize(input = $stdin, options = {}, &block)
         @format = self.class.format.rapper_format
-        @parser = V1_4::Parser.new(@format)
+        @parser = V1::Parser.new(@format)
         @parser.error_handler   = ERROR_HANDLER
         @parser.warning_handler = WARNING_HANDLER
         super
       end
 
       ERROR_HANDLER = Proc.new do |user_data, locator, message|
-        line = V1_4.raptor_locator_line(locator)
+        line = V1.raptor_locator_line(locator)
         raise RDF::ReaderError, line > -1 ? "Line #{line}: #{message}" : message
       end
 
       WARNING_HANDLER = Proc.new do |user_data, locator, message|
-        # line = V1_4.raptor_locator_line(locator)
+        # line = V1.raptor_locator_line(locator)
         # $stderr.puts line > -1 ? "Line #{line}: #{message}" : message
       end
 
       ##
       # The Raptor parser instance.
       #
-      # @return [V1_4::Parser]
+      # @return [V1::Parser]
       attr_reader :parser
 
       ##
@@ -74,11 +74,11 @@ module RDF::Raptor
           if options[:raw]
             # this is up to an order of magnitude faster...
             parse(@input) do |parser, statement|
-              block.call(V1_4::Statement.new(statement, self))
+              block.call(V1::Statement.new(statement, self))
             end
           else
             parse(@input) do |parser, statement|
-              block.call(V1_4::Statement.new(statement, self).to_rdf)
+              block.call(V1::Statement.new(statement, self).to_rdf)
             end
           end
         end
@@ -94,7 +94,7 @@ module RDF::Raptor
       def each_triple(&block)
         if block_given?
           parse(@input) do |parser, statement|
-            block.call(V1_4::Statement.new(statement, self).to_triple)
+            block.call(V1::Statement.new(statement, self).to_triple)
           end
         end
         enum_for(:each_triple)
@@ -146,7 +146,7 @@ module RDF::Raptor
       # @yieldreturn [void] ignored
       def initialize(output = $stdout, options = {}, &block)
         @format = self.class.format.rapper_format
-        @serializer = V1_4::Serializer.new(@format)
+        @serializer = V1::Serializer.new(@format)
         @serializer.error_handler   = ERROR_HANDLER
         @serializer.warning_handler = WARNING_HANDLER
         @serializer.start_to(output, options)
@@ -164,7 +164,7 @@ module RDF::Raptor
       ##
       # The Raptor serializer instance.
       #
-      # @return [V1_4::Serializer]
+      # @return [V1::Serializer]
       attr_reader :serializer
 
       ##

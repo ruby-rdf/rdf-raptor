@@ -1,4 +1,4 @@
-module RDF::Raptor::FFI::V1_4
+module RDF::Raptor::FFI::V1
   ##
   # This class provides the functionality of turning RDF triples into
   # syntaxes - RDF serializing.
@@ -18,8 +18,8 @@ module RDF::Raptor::FFI::V1_4
     def initialize(ptr_or_name)
       ptr = case ptr_or_name
         when FFI::Pointer then ptr_or_name
-        when Symbol       then V1_4.raptor_new_serializer(ptr_or_name.to_s)
-        when String       then V1_4.raptor_new_serializer(ptr_or_name)
+        when Symbol       then V1.raptor_new_serializer(ptr_or_name.to_s)
+        when String       then V1.raptor_new_serializer(ptr_or_name)
         else nil
       end
       raise ArgumentError, "invalid argument: #{ptr_or_name.inspect}" if ptr.nil? || ptr.null?
@@ -32,21 +32,21 @@ module RDF::Raptor::FFI::V1_4
     # @param  [FFI::Pointer] ptr
     # @return [void]
     def self.release(ptr)
-      V1_4.raptor_free_serializer(ptr)
+      V1.raptor_free_serializer(ptr)
     end
 
     ##
     # @param  [Proc] handler
     # @return [void]
     def error_handler=(handler)
-      V1_4.raptor_serializer_set_error_handler(self, self, handler)
+      V1.raptor_serializer_set_error_handler(self, self, handler)
     end
 
     ##
     # @param  [Proc] handler
     # @return [void]
     def warning_handler=(handler)
-      V1_4.raptor_serializer_set_warning_handler(self, self, handler)
+      V1.raptor_serializer_set_warning_handler(self, self, handler)
     end
 
     ##
@@ -72,19 +72,19 @@ module RDF::Raptor::FFI::V1_4
     #   any additional options for serializing (see {#start_to})
     # @return [void]
     def start_to_stream(stream, options = {})
-      iostream = V1_4::IOStream.new(V1_4::IOStreamHandler.new(stream))
+      iostream = V1::IOStream.new(V1::IOStreamHandler.new(stream))
       start_to_iostream(iostream, options)
     end
 
     ##
-    # @param  [V1_4::IOStream] iostream
+    # @param  [V1::IOStream] iostream
     # @param  [Hash{Symbol => Object}] options
     #   any additional options for serializing (see {#start_to})
     # @return [void]
     def start_to_iostream(iostream, options = {})
       @iostream = iostream # prevents premature GC
-      @base_uri = options[:base_uri].to_s.empty? ? nil : V1_4::URI.new(options[:base_uri].to_s)
-      if V1_4.raptor_serialize_start_to_iostream(self, @base_uri, @iostream).nonzero?
+      @base_uri = options[:base_uri].to_s.empty? ? nil : V1::URI.new(options[:base_uri].to_s)
+      if V1.raptor_serialize_start_to_iostream(self, @base_uri, @iostream).nonzero?
         raise RDF::WriterError, "raptor_serialize_start_to_iostream() failed"
       end
     end
@@ -92,7 +92,7 @@ module RDF::Raptor::FFI::V1_4
     ##
     # @return [void]
     def finish
-      if V1_4.raptor_serialize_end(self).nonzero?
+      if V1.raptor_serialize_end(self).nonzero?
         raise RDF::WriterError, "raptor_serialize_end() failed"
       end
       @iostream = @base_uri = nil # allows GC
@@ -104,7 +104,7 @@ module RDF::Raptor::FFI::V1_4
     # @param  [RDF::Term]     object
     # @return [void]
     def serialize_triple(subject, predicate, object)
-      raptor_statement = V1_4::Statement.new
+      raptor_statement = V1::Statement.new
       raptor_statement.subject   = subject
       raptor_statement.predicate = predicate
       raptor_statement.object    = object
@@ -117,12 +117,12 @@ module RDF::Raptor::FFI::V1_4
     end
 
     ##
-    # @param  [V1_4::Statement] statement
+    # @param  [V1::Statement] statement
     # @return [void]
     def serialize_raw_statement(statement)
-      if V1_4.raptor_serialize_statement(self, statement).nonzero?
+      if V1.raptor_serialize_statement(self, statement).nonzero?
         raise RDF::WriterError, "raptor_serialize_statement() failed"
       end
     end
   end # Serializer
-end # RDF::Raptor::FFI::V1_4
+end # RDF::Raptor::FFI::V1

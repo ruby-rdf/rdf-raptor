@@ -3,13 +3,13 @@ module RDF::Raptor::FFI
   # A foreign-function interface (FFI) to `libraptor` 1.4.x.
   #
   # @see http://librdf.org/raptor/libraptor.html
-  module V1_4
-    autoload :IOStream,        'rdf/raptor/ffi/v1_4/iostream'
-    autoload :IOStreamHandler, 'rdf/raptor/ffi/v1_4/iostream_handler'
-    autoload :Parser,          'rdf/raptor/ffi/v1_4/parser'
-    autoload :Serializer,      'rdf/raptor/ffi/v1_4/serializer'
-    autoload :Statement,       'rdf/raptor/ffi/v1_4/statement'
-    autoload :URI,             'rdf/raptor/ffi/v1_4/uri'
+  module V1
+    autoload :IOStream,        'rdf/raptor/ffi/v1/iostream'
+    autoload :IOStreamHandler, 'rdf/raptor/ffi/v1/iostream_handler'
+    autoload :Parser,          'rdf/raptor/ffi/v1/parser'
+    autoload :Serializer,      'rdf/raptor/ffi/v1/serializer'
+    autoload :Statement,       'rdf/raptor/ffi/v1/statement'
+    autoload :URI,             'rdf/raptor/ffi/v1/uri'
 
     extend ::FFI::Library
     ffi_lib RDF::Raptor::LIBRAPTOR
@@ -118,7 +118,7 @@ module RDF::Raptor::FFI
     #
     # @return [FFI::Pointer]
     def raptor_new_string(str)
-      ptr = V1_4.raptor_alloc_memory(str.bytesize + 1)
+      ptr = V1.raptor_alloc_memory(str.bytesize + 1)
       ptr.put_string(0, str)
       ptr
     end
@@ -126,5 +126,5 @@ module RDF::Raptor::FFI
 
     alias_method :raptor_free_string, :raptor_free_memory
     module_function :raptor_free_string
-  end # V1_4
+  end # V1
 end # RDF::Raptor::FFI

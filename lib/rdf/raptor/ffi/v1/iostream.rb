@@ -1,4 +1,4 @@
-module RDF::Raptor::FFI::V1_4
+module RDF::Raptor::FFI::V1
   ##
   # This class provides an I/O stream that can write to filenames, `FILE*`,
   # strings and user-defined output via callbacks.
@@ -13,7 +13,7 @@ module RDF::Raptor::FFI::V1_4
     #   @param  [FFI::Pointer] ptr
     #
     # @overload initialize(handler)
-    #   @param  [V1_4::IOStreamHandler] handler
+    #   @param  [V1::IOStreamHandler] handler
     #
     # @overload initialize(file)
     #   @param  [File, Tempfile] file
@@ -22,13 +22,13 @@ module RDF::Raptor::FFI::V1_4
       ptr = case ptr_or_obj
         when FFI::Pointer
           ptr_or_obj
-        when V1_4::IOStreamHandler
+        when V1::IOStreamHandler
           @handler = ptr_or_obj # prevents premature GC
-          V1_4.raptor_new_iostream_from_handler2(self, @handler)
+          V1.raptor_new_iostream_from_handler2(self, @handler)
         when File, Tempfile
-          V1_4.raptor_new_iostream_to_filename(File.expand_path(ptr_or_obj.path))
+          V1.raptor_new_iostream_to_filename(File.expand_path(ptr_or_obj.path))
         when false
-          V1_4.raptor_new_iostream_to_sink()
+          V1.raptor_new_iostream_to_sink()
         else nil
       end
       raise ArgumentError, "invalid argument: #{ptr_or_obj.inspect}" if ptr.nil? || ptr.null?
@@ -41,7 +41,7 @@ module RDF::Raptor::FFI::V1_4
     # @param  [FFI::Pointer] ptr
     # @return [void]
     def self.release(ptr)
-      V1_4.raptor_free_iostream(ptr)
+      V1.raptor_free_iostream(ptr)
     end
   end # IOStream
-end # RDF::Raptor::FFI::V1_4
+end # RDF::Raptor::FFI::V1
