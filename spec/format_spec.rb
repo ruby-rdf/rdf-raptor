@@ -1,5 +1,19 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
+describe RDF::Raptor::NTriples::Format do
+  it "should be discoverable" do
+    formats = [
+      #RDF::Format.for(:ntriples), # This is broken until the RDF gem can be patched to support overriding the :ntriples format
+      RDF::Format.for("input.nt"),
+      RDF::Format.for(:file_name      => "input.nt"),
+      RDF::Format.for(:file_extension => "nt"),
+      RDF::Format.for(:content_type   => "text/plain"),
+      RDF::Format.for(:content_type   => "application/n-triples"),
+    ]
+    formats.each { |format| format.should == RDF::Raptor::NTriples::Format }
+  end
+end
+
 describe RDF::Raptor::RDFXML::Format do
   it "should be discoverable" do
     formats = [

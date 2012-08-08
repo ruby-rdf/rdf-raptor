@@ -125,7 +125,7 @@ module RDF
       end
     end # Format
 
-    #require 'rdf/raptor/ntriples'
+    require 'rdf/raptor/ntriples'
     require 'rdf/raptor/turtle'
     require 'rdf/raptor/rdfxml'
     require 'rdf/raptor/rdfa'

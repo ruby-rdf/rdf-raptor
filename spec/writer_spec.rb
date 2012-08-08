@@ -1,5 +1,19 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
+describe RDF::Raptor::NTriples::Writer do
+  it "should be discoverable" do
+    writers = [
+      #RDF::Writer.for(:ntriples), # This is broken until the RDF gem can be patched to support overriding the :ntriples format
+      RDF::Writer.for("output.nt"),
+      RDF::Writer.for(:file_name      => "output.nt"),
+      RDF::Writer.for(:file_extension => "nt"),
+      RDF::Writer.for(:content_type   => "text/plain"),
+      RDF::Writer.for(:content_type   => "application/n-triples"),
+    ]
+    writers.each { |writer| writer.should == RDF::Raptor::NTriples::Writer }
+  end
+end
+
 describe RDF::Raptor::RDFXML::Writer do
   it "should be discoverable" do
     writers = [
