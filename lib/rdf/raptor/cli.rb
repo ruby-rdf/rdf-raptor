@@ -191,7 +191,7 @@ module RDF::Raptor
           chunk_size = @options[:chunk_size] || 4096 # bytes
           begin
             loop do
-              @output.write(may_block ? @rapper.readpartial(chunk_size) : @rapper.read_nonblock(chunk_size))
+              @output.write(may_block ? @rapper.sysread(chunk_size) : @rapper.read_nonblock(chunk_size))
             end
           rescue EOFError => e
             @rapper.close

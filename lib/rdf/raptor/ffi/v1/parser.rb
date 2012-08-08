@@ -150,7 +150,7 @@ module RDF::Raptor::FFI::V1
       begin
         parse_start!((options[:base_uri] || BASE_URI).to_s)
         loop do
-          parse_chunk(stream.readpartial(BUFFER_SIZE))
+          parse_chunk(stream.sysread(BUFFER_SIZE))
         end
       rescue EOFError => e
         parse_end!
