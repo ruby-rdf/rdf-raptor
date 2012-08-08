@@ -72,6 +72,14 @@ Examples
       end
     end
 
+### Obtaining the NTriples format specification class
+
+    RDF::Format.for(:ntriples)      #=> RDF::Raptor::NTriples::Format
+    RDF::Format.for("input.nt")
+    RDF::Format.for(:file_name      => "input.nt")
+    RDF::Format.for(:file_extension => "nt")
+    RDF::Format.for(:content_type   => "application/n-triples")
+
 ### Obtaining the RDF/XML format specification class
 
     RDF::Format.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Format
@@ -113,7 +121,7 @@ Dependencies
 
 * [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.3.0)
 * [FFI](http://rubygems.org/gems/ffi) (>= 1.0.0)
-* [Raptor][] (>= 1.4.16), the `libraptor` library or the `rapper` binary
+* [Raptor][] (>= 1.4.21), the `libraptor` library or the `rapper` binary
 
 Installation
 ------------
