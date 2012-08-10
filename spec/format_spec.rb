@@ -1,9 +1,17 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
+require 'rdf/spec/format'
 
 describe RDF::Raptor::NTriples::Format do
+  before(:each) do
+    @format_class = RDF::Raptor::NTriples::Format
+  end
+  
+  # @see lib/rdf/spec/format.rb in rdf-spec
+  it_should_behave_like RDF_Format
+  
   it "should be discoverable" do
     formats = [
-      #RDF::Format.for(:ntriples), # This is broken until the RDF gem can be patched to support overriding the :ntriples format
+      RDF::Format.for(:ntriples),
       RDF::Format.for("input.nt"),
       RDF::Format.for(:file_name      => "input.nt"),
       RDF::Format.for(:file_extension => "nt"),

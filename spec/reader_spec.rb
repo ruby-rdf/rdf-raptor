@@ -1,6 +1,18 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
+require 'rdf/spec/reader'
 
 describe RDF::Raptor::NTriples::Reader do
+  before(:each) do
+    @reader = RDF::Raptor::NTriples::Reader.new
+  end
+  
+  # @see lib/rdf/spec/reader.rb in rdf-spec
+  it_should_behave_like RDF_Reader
+  
+  it "should return :ntriples for to_sym" do
+    @reader.class.to_sym.should == :ntriples
+  end
+  
   it "should be discoverable" do
     readers = [
       #RDF::Reader.for(:ntriples), # This is broken until the RDF gem can be patched to support overriding the :ntriples format
