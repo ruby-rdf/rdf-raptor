@@ -1,27 +1,6 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 require 'rdf/spec/format'
 
-describe RDF::Raptor::NTriples::Format do
-  before(:each) do
-    @format_class = RDF::Raptor::NTriples::Format
-  end
-  
-  # @see lib/rdf/spec/format.rb in rdf-spec
-  it_should_behave_like RDF_Format
-  
-  it "should be discoverable" do
-    formats = [
-      RDF::Format.for(:ntriples),
-      RDF::Format.for("input.nt"),
-      RDF::Format.for(:file_name      => "input.nt"),
-      RDF::Format.for(:file_extension => "nt"),
-      RDF::Format.for(:content_type   => "text/plain"),
-      RDF::Format.for(:content_type   => "application/n-triples"),
-    ]
-    formats.each { |format| format.should == RDF::Raptor::NTriples::Format }
-  end
-end
-
 describe RDF::Raptor::Turtle::Format do
   it "should be discoverable" do
     formats = [
