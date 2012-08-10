@@ -22,19 +22,6 @@ describe RDF::Raptor::NTriples::Format do
   end
 end
 
-describe RDF::Raptor::RDFXML::Format do
-  it "should be discoverable" do
-    formats = [
-      RDF::Format.for(:rdfxml),
-      RDF::Format.for("input.rdf"),
-      RDF::Format.for(:file_name      => "input.rdf"),
-      RDF::Format.for(:file_extension => "rdf"),
-      RDF::Format.for(:content_type   => "application/rdf+xml"),
-    ]
-    formats.each { |format| format.should == RDF::Raptor::RDFXML::Format }
-  end
-end
-
 describe RDF::Raptor::Turtle::Format do
   it "should be discoverable" do
     formats = [

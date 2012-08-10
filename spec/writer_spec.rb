@@ -27,19 +27,6 @@ describe RDF::Raptor::NTriples::Writer do
   end
 end
 
-describe RDF::Raptor::RDFXML::Writer do
-  it "should be discoverable" do
-    writers = [
-      RDF::Writer.for(:rdfxml),
-      RDF::Writer.for("output.rdf"),
-      RDF::Writer.for(:file_name      => "output.rdf"),
-      RDF::Writer.for(:file_extension => "rdf"),
-      RDF::Writer.for(:content_type   => "application/rdf+xml"),
-    ]
-    writers.each { |writer| writer.should == RDF::Raptor::RDFXML::Writer }
-  end
-end
-
 describe RDF::Raptor::Turtle::Writer do
   it "should be discoverable" do
     writers = [
