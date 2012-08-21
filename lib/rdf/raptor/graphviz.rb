@@ -24,7 +24,9 @@ module RDF::Raptor
     #   RDF::Format.for(:content_type   => "text/vnd.graphviz")
     #
     # @see http://www.iana.org/assignments/media-types/text/vnd.graphviz
-    class Format < RDF::Raptor::Format
+    class Format < RDF::Format
+      extend RDF::Raptor::Format
+      
       content_type     'text/vnd.graphviz', :aliases => ['application/x-graphviz', 'text/x-graphviz'], :extension => :dot # TODO: also .gv
       content_encoding 'utf-8'
       rapper_format    :dot

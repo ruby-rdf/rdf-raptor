@@ -31,7 +31,9 @@ module RDF::Raptor
     #   RDF::Format.for(:file_extension => "ttl")
     #   RDF::Format.for(:content_type   => "text/turtle")
     #
-    class Format < RDF::Raptor::Format
+    class Format < RDF::Format
+      extend RDF::Raptor::Format
+      
       content_type     'text/turtle', :aliases => ['application/x-turtle', 'application/turtle'], :extension => :ttl
       content_encoding 'utf-8'
       rapper_format    :turtle

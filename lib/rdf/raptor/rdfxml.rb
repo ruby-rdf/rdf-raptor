@@ -31,7 +31,9 @@ module RDF::Raptor
     #   RDF::Format.for(:file_extension => "rdf")
     #   RDF::Format.for(:content_type   => "application/rdf+xml")
     #
-    class Format < RDF::Raptor::Format
+    class Format < RDF::Format
+      extend RDF::Raptor::Format
+      
       content_type     'application/rdf+xml', :extension => :rdf
       content_encoding 'utf-8'
       rapper_format    :rdfxml

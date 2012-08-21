@@ -31,7 +31,9 @@ module RDF::Raptor
     #   RDF::Format.for(:file_extension => "nt")
     #   RDF::Format.for(:content_type   => "text/plain")
     #
-    class Format < RDF::Raptor::Format
+    class Format < RDF::Format
+      extend RDF::Raptor::Format
+      
       content_type     'application/n-triples', :extension => :nt, :alias => ['text/plain']
       content_encoding 'utf-8'
       rapper_format    :ntriples

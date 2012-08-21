@@ -107,8 +107,8 @@ module RDF
     end
 
     ##
-    # Format base class.
-    class Format < RDF::Format
+    # RDF::Raptor::Format mixin.
+    module Format
       ##
       # @overload rapper_format
       #
@@ -116,7 +116,7 @@ module RDF
       #   @param  [Symbol] format
       #
       # @return [void]
-      def self.rapper_format(format = nil)
+      def rapper_format(format = nil)
         unless format
           @rapper_format
         else

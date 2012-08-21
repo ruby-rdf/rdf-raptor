@@ -24,7 +24,9 @@ module RDF::Raptor
     #   RDF::Format.for(:file_extension => "html")
     #   RDF::Format.for(:content_type   => "application/xhtml+xml")
     #
-    class Format < RDF::Raptor::Format
+    class Format < RDF::Format
+      extend RDF::Raptor::Format
+      
       content_type     'application/xhtml+xml', :aliases => ['text/html'], :extension => :html
       content_encoding 'utf-8'
       rapper_format    :rdfa
