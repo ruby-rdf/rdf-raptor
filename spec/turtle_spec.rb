@@ -57,7 +57,7 @@ describe RDF::Raptor::Turtle::Writer do
   it_should_behave_like RDF_Writer
 
   it "should return :ttl for to_sym" do
-    @writer_class.to_sym.should == :ttl
+    @writer_class.to_sym.should == :turtle
   end
   
   it "should be discoverable" do
