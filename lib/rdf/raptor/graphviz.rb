@@ -32,6 +32,7 @@ module RDF::Raptor
       rapper_format    :dot
 
       writer { RDF::Raptor::Graphviz::Writer }
+      reader { RDF::Raptor::Graphviz::Reader }
     end # Format
 
     ##
@@ -54,5 +55,13 @@ module RDF::Raptor
     class Writer < RDF::Raptor::Writer
       format RDF::Raptor::Graphviz::Format
     end # Writer
+    
+    ##
+    # Raptor does not implement a Graphviz reader, but we need one in
+    # order for the Format to pass specs. This class should always
+    # raise a NoMethodError to indicate it shouldn't be used.
+    #
+    class Reader
+    end
   end # Graphviz
 end # RDF::Raptor

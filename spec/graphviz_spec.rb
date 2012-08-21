@@ -47,3 +47,14 @@ describe RDF::Raptor::Graphviz::Writer do
     writers.each { |writer| writer.should == RDF::Raptor::Graphviz::Writer }
   end
 end
+
+describe RDF::Raptor::Graphviz::Reader do
+  before(:each) do
+    @reader = RDF::Raptor::Graphviz::Reader.new
+  end
+  
+  # Raptor has no implementation for a Graphviz reader
+  it "should raise a NoMethodError" do
+    expect {@reader.open}.to raise_error(NoMethodError)
+  end
+end
