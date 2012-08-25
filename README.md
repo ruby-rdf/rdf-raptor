@@ -5,7 +5,7 @@ This is an [RDF.rb][] plugin that adds support for parsing/serializing
 [RDF/XML][], [Turtle][] and [RDFa][] data using the [Raptor RDF Parser][Raptor]
 library.
 
-* <http://github.com/bendiken/rdf-raptor>
+* <http://github.com/ruby-rdf/rdf-raptor>
 * <http://blog.datagraph.org/2010/04/parsing-rdf-with-ruby>
 
 Features
@@ -44,7 +44,7 @@ Examples
       end
     end
 
-### Extracting RDF statements from an XHTML+RDFa document
+### Extracting RDF statements from an HTML+RDFa document
 
     RDF::Reader.open(url = "http://bblfish.net/", :format => :rdfa, :base_uri => url) do |reader|
       reader.each_statement do |statement|
@@ -138,6 +138,7 @@ Mac and the most common Linux and BSD distributions:
 
     % [sudo] port install raptor             # Mac OS X with MacPorts
     % [sudo] fink install raptor-bin         # Mac OS X with Fink
+    % brew install raptor                    # Mac OS X with Homebrew
     % [sudo] aptitude install raptor-utils   # Ubuntu / Debian
     % [sudo] yum install raptor              # Fedora / CentOS / RHEL
     % [sudo] zypper install raptor           # openSUSE
@@ -151,12 +152,12 @@ Download
 
 To get a local working copy of the development repository, do:
 
-    % git clone git://github.com/bendiken/rdf-raptor.git
+    % git clone git://github.com/ruby-rdf/rdf-raptor.git
 
 Alternatively, download the latest development version as a tarball as
 follows:
 
-    % wget http://github.com/bendiken/rdf-raptor/tarball/master
+    % wget http://github.com/ruby-rdf/rdf-raptor/tarball/master
 
 Mailing List
 ------------
@@ -173,6 +174,8 @@ Contributors
 ------------
 
 * [Ben Lavender](http://github.com/bhuga) - <http://bhuga.net/>
+* [David Butler](http://github.com/dwbutler) - <http://www.tomeofwisdom.com/>
+* [Gregg Kellogg](http://github.com/gkellogg) - <http://greggkellogg.net/>
 
 License
 -------
