@@ -1,6 +1,6 @@
 module RDF; module Raptor
   module VERSION
-    VERSION_FILE = File.expand_path("../../../VERSION", __FILE__)
+    VERSION_FILE = File.expand_path("../../../../VERSION", __FILE__)
     MAJOR, MINOR, TINY, EXTRA = File.read(VERSION_FILE).chop.split(".")
     STRING = [MAJOR, MINOR, TINY, EXTRA].compact.join('.')
 
