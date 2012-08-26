@@ -28,15 +28,17 @@ module RDF::Raptor::FFI::V1
     #   @param  [IO, StringIO] io
     #
     def initialize(ptr_or_io = nil)
-      ptr = case ptr_or_io
+      ptr = if ptr_or_io.respond_to?(:write)
+        @io = ptr_or_io
+        nil
+      else
+        case ptr_or_io
         when FFI::Pointer
           ptr_or_io
-        when IO, StringIO
-          @io = ptr_or_io
-          nil
         when nil then nil
         else
           raise ArgumentError, "invalid argument: #{ptr_or_io.inspect}"
+        end
       end
       super(ptr)
       initialize!

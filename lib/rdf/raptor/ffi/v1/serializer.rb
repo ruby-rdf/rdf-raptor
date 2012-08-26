@@ -58,11 +58,10 @@ module RDF::Raptor::FFI::V1
     #   the base URI to use when resolving relative URIs
     # @return [void]
     def start_to(output, options = {})
-      case output
-        when IO, StringIO
-          start_to_stream(output, options)
-        else
-          raise ArgumentError, "don't know how to serialize to #{output.inspect}"
+      if output.respond_to?(:write)
+        start_to_stream(output, options)
+       else
+        raise ArgumentError, "don't know how to serialize to #{output.inspect}"
       end
     end
 
