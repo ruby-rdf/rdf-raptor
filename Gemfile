@@ -7,4 +7,4 @@ group :development do
 end
 
 #gem 'rdf', :git => 'http://github.com/ruby-rdf/rdf'
-gem 'rdf-spec', :git => 'http://github.com/ruby-rdf/rdf-spec.git'
+gem 'rdf-spec', :git => 'http://github.com/ruby-rdf/rdf-spec'
