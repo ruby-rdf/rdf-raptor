@@ -7,19 +7,22 @@
 
 <> a doap:Project ;
   doap:name          "RDF::Raptor" ;
-  doap:homepage      <http://rdf.rubyforge.org/raptor/> ;
+  doap:homepage      <http://ruby-rdf.github.com/rdf-raptor> ;
   doap:license       <http://creativecommons.org/licenses/publicdomain/> ;
   doap:shortdesc     "Raptor RDF Parser plugin for RDF.rb."@en ;
   doap:description   "RDF.rb plugin for parsing/serializing RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library."@en ;
   doap:created       "2010-03-23" ;
   doap:platform      "Ruby" ;
-  doap:download-page <http://rubyforge.org/projects/rdf/> ;
-  doap:bug-database  <http://github.com/bendiken/rdf-raptor/issues> ;
+  doap:download-page <http://rubygems.org/gems/rdf-turtle> ;
+  doap:bug-database  <http://github.com/ruby-rdf/rdf-raptor/issues> ;
   doap:blog          <http://ar.to/>, <http://blog.datagraph.org/> ;
-  doap:developer     <http://ar.to/#self>, _:jfieber ;
+  doap:developer     <http://ar.to/#self>,
+                     _:jfieber,
+                     <http://greggkellogg.net/foaf#me> ;
   doap:maintainer    <http://ar.to/#self> ;
   doap:documenter    <http://ar.to/#self> ;
-  doap:helper        <http://bhuga.net/#ben> ;
+  doap:helper        <http://bhuga.net/#ben>,
+                     <http://greggkellogg.net/foaf#me> ;
   foaf:maker         <http://ar.to/#self> ;
   dc:creator         <http://ar.to/#self> .
 
@@ -43,3 +46,10 @@ _:jfieber a foaf:Person ;
   foaf:mbox          <mailto:jrf@ursamaris.org> ;
   foaf:mbox_sha1sum "f7653fc1ac0e82ebb32f092389bd5fc728eaae12" ;
   foaf:homepage      <http://ursamaris.org/> .
+
+<http://greggkellogg.net/foaf#me> a foaf:Person ;
+  foaf:name          "Gregg Kellogg" ;
+  foaf:mbox          <mailto:gregg@greggkellogg.net> ;
+  foaf:mbox_sha1sum  "35bc44e6d0070e5ad50ccbe0d24403c96af2b9bd" ;
+  foaf:homepage      <http://greggkellogg.net/>;
+  rdfs:isDefinedBy   <http://greggkellogg.net/foaf> .
