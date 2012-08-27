@@ -78,7 +78,7 @@ module RDF
   # @author [Arto Bendiken](http://github.com/bendiken)
   # @author [John Fieber](http://github.com/jfieber)
   module Raptor
-    LIBRAPTOR = ENV['RDF_RAPTOR_LIBPATH'] || 'libraptor22'  unless const_defined?(:LIBRAPTOR)
+    LIBRAPTOR = ENV['RDF_RAPTOR_LIBPATH'] || 'libraptor2'  unless const_defined?(:LIBRAPTOR)
     RAPPER    = ENV['RDF_RAPTOR_BINPATH'] || 'rapper'     unless const_defined?(:RAPPER)
 
     require 'rdf/raptor/version'
