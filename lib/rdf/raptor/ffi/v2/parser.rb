@@ -24,8 +24,8 @@ module RDF::Raptor::FFI::V2
     def initialize(ptr_or_name)
       ptr = case ptr_or_name
         when FFI::Pointer then ptr_or_name
-        when Symbol       then V2.raptor_new_parser(ptr_or_name.to_s)
-        when String       then V2.raptor_new_parser(ptr_or_name)
+        when Symbol       then V2.raptor_new_parser(V2.world, ptr_or_name.to_s)
+        when String       then V2.raptor_new_parser(V2.world, ptr_or_name)
         else nil
       end
       raise ArgumentError, "invalid argument: #{ptr_or_name.inspect}" if ptr.nil? || ptr.null?
@@ -45,21 +45,21 @@ module RDF::Raptor::FFI::V2
     # @param  [Proc] handler
     # @return [void]
     def error_handler=(handler)
-      V2.raptor_set_error_handler(self, self, handler)
+      #V2.raptor_set_error_handler(self, self, handler)
     end
 
     ##
     # @param  [Proc] handler
     # @return [void]
     def warning_handler=(handler)
-      V2.raptor_set_warning_handler(self, self, handler)
+      #V2.raptor_set_warning_handler(self, self, handler)
     end
 
     ##
     # @param  [Proc] handler
     # @return [void]
     def statement_handler=(handler)
-      V2.raptor_set_statement_handler(self, self, handler)
+      V2.raptor_parser_set_statement_handler(self, self, handler)
     end
 
     ##
@@ -107,7 +107,7 @@ module RDF::Raptor::FFI::V2
       data_url = V2::URI.new((url.respond_to?(:to_uri) ? url.to_uri : url).to_s)
       base_uri = options[:base_uri].to_s.empty? ? nil : V2::URI.new(options[:base_uri].to_s)
 
-      result = V2.raptor_parse_uri(self, data_url, base_uri)
+      result = V2.raptor_parser_parse_uri(self, data_url, base_uri)
       # TODO: error handling if result.nonzero?
     end
     alias_method :parse_uri, :parse_url
@@ -129,7 +129,7 @@ module RDF::Raptor::FFI::V2
       data_url = V2::URI.new("file://#{File.expand_path(file.path)}")
       base_uri = options[:base_uri].to_s.empty? ? nil : V2::URI.new(options[:base_uri].to_s)
 
-      result = V2.raptor_parse_file(self, data_url, base_uri)
+      result = V2.raptor_parser_parse_file(self, data_url, base_uri)
       # TODO: error handling if result.nonzero?
     end
 
@@ -181,7 +181,7 @@ module RDF::Raptor::FFI::V2
     # @param  [String] base_uri
     # @return [void]
     def parse_start!(base_uri = BASE_URI)
-      result = V2.raptor_start_parse(self, base_uri)
+      result = V2.raptor_parser_parse_start(self, base_uri)
       # TODO: error handling if result.nonzero?
     end
 
@@ -191,7 +191,7 @@ module RDF::Raptor::FFI::V2
     #   the input chunk to parse
     # @return [void]
     def parse_chunk(buffer)
-      result = V2.raptor_parse_chunk(self, buffer, buffer.bytesize, 0)
+      result = V2.raptor_parser_parse_chunk(self, buffer, buffer.bytesize, 0)
       # TODO: error handling if result.nonzero?
     end
 
@@ -199,7 +199,7 @@ module RDF::Raptor::FFI::V2
     # @private
     # @return [void]
     def parse_end!
-      result = V2.raptor_parse_chunk(self, nil, 0, 1) # EOF
+      result = V2.raptor_parser_parse_chunk(self, nil, 0, 1) # EOF
     end
   end # Parser
 end # RDF::Raptor::FFI::V2

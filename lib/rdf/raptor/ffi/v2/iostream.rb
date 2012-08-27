@@ -24,7 +24,7 @@ module RDF::Raptor::FFI::V2
           ptr_or_obj
         when V2::IOStreamHandler
           @handler = ptr_or_obj # prevents premature GC
-          V2.raptor_new_iostream_from_handler2(self, @handler)
+          V2.raptor_new_iostream_from_handler(self, @handler)
         when File, Tempfile
           V2.raptor_new_iostream_to_filename(File.expand_path(ptr_or_obj.path))
         when false

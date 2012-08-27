@@ -59,7 +59,7 @@ module RDF::Raptor::FFI::V1
     # @param  [Proc] handler
     # @return [void]
     def statement_handler=(handler)
-      V1.raptor_set_statement_handler(self, self, handler)
+      V1.raptor_parser_set_statement_handler(self, self, handler)
     end
 
     ##

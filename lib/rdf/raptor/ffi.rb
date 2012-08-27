@@ -148,8 +148,8 @@ module RDF::Raptor
       def initialize(output = $stdout, options = {}, &block)
         @format = self.class.format.rapper_format
         @serializer = V2::Serializer.new(@format)
-        @serializer.error_handler   = ERROR_HANDLER
-        @serializer.warning_handler = WARNING_HANDLER
+        #@serializer.error_handler   = ERROR_HANDLER
+        #@serializer.warning_handler = WARNING_HANDLER
         @serializer.start_to(output, options)
         super
       end

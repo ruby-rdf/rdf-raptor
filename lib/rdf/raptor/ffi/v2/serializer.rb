@@ -83,7 +83,7 @@ module RDF::Raptor::FFI::V2
     def start_to_iostream(iostream, options = {})
       @iostream = iostream # prevents premature GC
       @base_uri = options[:base_uri].to_s.empty? ? nil : V2::URI.new(options[:base_uri].to_s)
-      if V2.raptor_serialize_start_to_iostream(self, @base_uri, @iostream).nonzero?
+      if V2.raptor_serializer_start_to_iostream(self, @base_uri, @iostream).nonzero?
         raise RDF::WriterError, "raptor_serialize_start_to_iostream() failed"
       end
     end
@@ -91,7 +91,7 @@ module RDF::Raptor::FFI::V2
     ##
     # @return [void]
     def finish
-      if V2.raptor_serialize_end(self).nonzero?
+      if V2.raptor_serializer_serialize_end(self).nonzero?
         raise RDF::WriterError, "raptor_serialize_end() failed"
       end
       @iostream = @base_uri = nil # allows GC
@@ -119,7 +119,7 @@ module RDF::Raptor::FFI::V2
     # @param  [V2::Statement] statement
     # @return [void]
     def serialize_raw_statement(statement)
-      if V2.raptor_serialize_statement(self, statement).nonzero?
+      if V2.raptor_serializer_serialize_statement(self, statement).nonzero?
         raise RDF::WriterError, "raptor_serialize_statement() failed"
       end
     end
