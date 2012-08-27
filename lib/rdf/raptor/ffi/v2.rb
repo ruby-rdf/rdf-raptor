@@ -24,7 +24,7 @@ module RDF::Raptor::FFI
 
     # @see http://librdf.org/raptor/api/tutorial-initialising-finishing.html
     typedef :pointer, :raptor_world
-    attach_function :raptor_new_world, [], :raptor_world
+    attach_function :raptor_new_world_internal, [], :raptor_world
     attach_function :raptor_free_world, [], :void
     attach_function :raptor_alloc_memory, [:size_t], :pointer
     attach_function :raptor_calloc_memory, [:size_t, :size_t], :pointer
@@ -58,8 +58,8 @@ module RDF::Raptor::FFI
     typedef :pointer, :raptor_identifier
     typedef :pointer, :raptor_statement
     attach_function :raptor_statement_compare, [:raptor_statement, :raptor_statement], :int
-    attach_function :raptor_print_statement, [:raptor_statement, :pointer], :void
-    attach_function :raptor_print_statement_as_ntriples, [:pointer, :pointer], :void
+    attach_function :raptor_statement_print, [:raptor_statement, :pointer], :void
+    attach_function :raptor_statement_print_as_ntriples, [:pointer, :pointer], :void
     attach_function :raptor_statement_part_as_string, [:pointer, :raptor_identifier_type, :raptor_uri, :pointer], :string
 
     # @see http://librdf.org/raptor/api-1.4/raptor-section-parser.html
@@ -109,7 +109,7 @@ module RDF::Raptor::FFI
     # We do this exactly once and never release because we can't delegate
     # any memory management to the Ruby GC.
     # Internally `raptor_init`/`raptor_finish` work with reference counts.
-    raptor_new_world
+    @world = raptor_new_world_internal
 
     ##
     # Allocates memory for the string `str` inside `libraptor`, copying the
