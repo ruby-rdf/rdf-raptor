@@ -22,8 +22,9 @@ module RDF::Raptor::FFI
     RAPTOR_IDENTIFIER_TYPE_ANONYMOUS = 2
     RAPTOR_IDENTIFIER_TYPE_LITERAL   = 5
 
-    # @see http://librdf.org/raptor/api-1.4/tutorial-initialising-finishing.html
-    attach_function :raptor_new_world, [], :void
+    # @see http://librdf.org/raptor/api/tutorial-initialising-finishing.html
+    typedef :pointer, :raptor_world
+    attach_function :raptor_new_world, [], :raptor_world
     attach_function :raptor_free_world, [], :void
     attach_function :raptor_alloc_memory, [:size_t], :pointer
     attach_function :raptor_calloc_memory, [:size_t, :size_t], :pointer
@@ -64,7 +65,7 @@ module RDF::Raptor::FFI
     # @see http://librdf.org/raptor/api-1.4/raptor-section-parser.html
     callback :raptor_statement_handler, [:pointer, :raptor_statement], :void
     typedef :pointer, :raptor_parser
-    attach_function :raptor_new_parser, [:string], :raptor_parser
+    attach_function :raptor_new_parser, [:raptor_world, :string], :raptor_parser
     attach_function :raptor_set_error_handler, [:raptor_parser, :pointer, :raptor_message_handler], :void
     attach_function :raptor_set_warning_handler, [:raptor_parser, :pointer, :raptor_message_handler], :void
     attach_function :raptor_set_statement_handler, [:raptor_parser, :pointer, :raptor_statement_handler], :void
