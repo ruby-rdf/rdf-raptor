@@ -9,7 +9,8 @@ module RDF::Raptor::FFI::V2
     layout :world, :pointer # the actual layout is private
 
     # The default base URI
-    BASE_URI    = 'file:///dev/stdin'
+    #BASE_URI    = 'file:///dev/stdin'
+    BASE_URI = V2::URI.new('file:///dev/stdin')
 
     # The maximum chunk size for `#parse_stream`
     BUFFER_SIZE = 64 * 1024
@@ -199,7 +200,7 @@ module RDF::Raptor::FFI::V2
     # @private
     # @return [void]
     def parse_end!
-      result = V2.raptor_parser_parse_chunk(self, nil, 0, 1) # EOF
+      result = V2.raptor_parser_parse_chunk(self, NULL, 0, 1) # EOF
     end
   end # Parser
 end # RDF::Raptor::FFI::V2

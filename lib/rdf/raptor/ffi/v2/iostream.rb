@@ -24,11 +24,11 @@ module RDF::Raptor::FFI::V2
           ptr_or_obj
         when V2::IOStreamHandler
           @handler = ptr_or_obj # prevents premature GC
-          V2.raptor_new_iostream_from_handler(self, @handler)
+          V2.raptor_new_iostream_from_handler(V2.world, self, @handler)
         when File, Tempfile
-          V2.raptor_new_iostream_to_filename(File.expand_path(ptr_or_obj.path))
+          V2.raptor_new_iostream_to_filename(V2.world, File.expand_path(ptr_or_obj.path))
         when false
-          V2.raptor_new_iostream_to_sink()
+          V2.raptor_new_iostream_to_sink(V2.world)
         else nil
       end
       raise ArgumentError, "invalid argument: #{ptr_or_obj.inspect}" if ptr.nil? || ptr.null?

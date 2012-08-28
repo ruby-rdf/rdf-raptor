@@ -20,8 +20,8 @@ module RDF::Raptor::FFI::V2
     def initialize(ptr_or_name)
       ptr = case ptr_or_name
         when FFI::Pointer then ptr_or_name
-        when RDF::URI     then V2.raptor_new_uri(ptr_or_name.to_s)
-        when String       then V2.raptor_new_uri(ptr_or_name)
+        when RDF::URI     then V2.raptor_new_uri(V2.world, ptr_or_name.to_s)
+        when String       then V2.raptor_new_uri(V2.world, ptr_or_name)
         else nil
       end
       raise ArgumentError, "invalid argument: #{ptr_or_name.inspect}" if ptr.nil? || ptr.null?

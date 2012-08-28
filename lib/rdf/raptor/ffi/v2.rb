@@ -24,7 +24,8 @@ module RDF::Raptor::FFI
 
     # @see http://librdf.org/raptor/api/tutorial-initialising-finishing.html
     typedef :pointer, :raptor_world
-    attach_function :raptor_new_world_internal, [], :raptor_world
+    typedef :int, :raptor_version
+    attach_function :raptor_new_world_internal, [:raptor_version], :raptor_world
     attach_function :raptor_free_world, [], :void
     attach_function :raptor_alloc_memory, [:size_t], :pointer
     attach_function :raptor_calloc_memory, [:size_t, :size_t], :pointer
@@ -37,6 +38,7 @@ module RDF::Raptor::FFI
     attach_function :raptor_locator_byte, [:raptor_locator], :int
 
     # @see http://librdf.org/raptor/api-1.4/raptor-section-general.html
+    attach_variable :raptor_version_string, :string
     attach_variable :raptor_version_major, :int
     attach_variable :raptor_version_minor, :int
     attach_variable :raptor_version_release, :int
@@ -45,7 +47,7 @@ module RDF::Raptor::FFI
 
     # @see http://librdf.org/raptor/api-1.4/raptor-section-uri.html
     typedef :pointer, :raptor_uri
-    attach_function :raptor_new_uri, [:string], :raptor_uri
+    attach_function :raptor_new_uri, [:raptor_world, :string], :raptor_uri
     attach_function :raptor_uri_copy, [:raptor_uri], :raptor_uri
     attach_function :raptor_uri_equals, [:raptor_uri, :raptor_uri], :int
     attach_function :raptor_uri_as_string, [:raptor_uri], :string
@@ -84,7 +86,9 @@ module RDF::Raptor::FFI
 
     # @see http://librdf.org/raptor/api/raptor2-section-iostream.html
     typedef :pointer, :raptor_iostream
-    attach_function :raptor_new_iostream_from_handler, [:pointer, :pointer], :raptor_iostream
+    attach_function :raptor_new_iostream_from_handler, [:raptor_world, :pointer, :pointer], :raptor_iostream
+    attach_function :raptor_new_iostream_to_filename, [:raptor_world, :string], :raptor_iostream
+    attach_function :raptor_new_iostream_to_sink, [:raptor_world], :raptor_iostream
     attach_function :raptor_free_iostream, [:raptor_iostream], :void
     callback        :raptor_iostream_init_func, [:pointer], :int
     callback        :raptor_iostream_finish_func, [:pointer], :void
@@ -99,7 +103,7 @@ module RDF::Raptor::FFI
 
     # @see http://librdf.org/raptor/api/raptor2-section-serializer.html
     typedef :pointer, :raptor_serializer
-    attach_function :raptor_new_serializer, [:string], :raptor_serializer
+    attach_function :raptor_new_serializer, [:raptor_world, :string], :raptor_serializer
     attach_function :raptor_free_serializer, [:raptor_serializer], :void
     attach_function :raptor_serializer_start_to_iostream, [:raptor_serializer, :raptor_uri, :raptor_iostream], :int
     attach_function :raptor_serializer_start_to_filename, [:raptor_serializer, :string], :int
@@ -112,7 +116,7 @@ module RDF::Raptor::FFI
     # We do this exactly once and never release because we can't delegate
     # any memory management to the Ruby GC.
     # Internally `raptor_init`/`raptor_finish` work with reference counts.
-    @world = raptor_new_world_internal
+    @world = raptor_new_world_internal(raptor_version_decimal)
     def self.world
       @world
     end
