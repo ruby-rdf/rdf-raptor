@@ -8,5 +8,5 @@ rvm:
   - rbx-18mode
   - rbx-19mode
 before_install:
-  - sudo apt-get install libraptor1
-  - sudo ln -s /usr/lib/libraptor.so.1 /usr/lib/libraptor.so
+  - sudo apt-get install libraptor2-0
+  - sudo ln -s /usr/lib/libraptor2.so.0 /usr/lib/libraptor2.so
