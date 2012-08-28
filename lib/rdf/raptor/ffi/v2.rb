@@ -76,7 +76,7 @@ module RDF::Raptor::FFI
     attach_function :raptor_parser_parse_file, [:raptor_parser, :raptor_uri, :raptor_uri], :int
     attach_function :raptor_parser_parse_file_stream, [:raptor_parser, :pointer, :string, :raptor_uri], :int
     attach_function :raptor_parser_parse_uri, [:raptor_parser, :raptor_uri, :raptor_uri], :int
-    attach_function :raptor_parser_parse_start, [:raptor_parser, :string], :int
+    attach_function :raptor_parser_parse_start, [:raptor_parser, :raptor_uri], :int
     attach_function :raptor_parser_parse_chunk, [:raptor_parser, :string, :size_t, :int], :int
     #attach_function :raptor_get_mime_type, [:raptor_parser], :string
     #attach_function :raptor_set_parser_strict, [:raptor_parser, :int], :void
