@@ -20,7 +20,6 @@ module RDF
       
       def detect(sample)
         parser_name = RDF::Raptor::FFI::V1.raptor_guess_parser_name(nil, nil, sample, sample.length, nil)
-        debugger
         parser_name == rapper_format.to_s
       end
     end # Format
