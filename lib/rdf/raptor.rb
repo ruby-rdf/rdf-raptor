@@ -1,4 +1,5 @@
 require 'rdf' # @see http://rubygems.org/gems/rdf
+require 'rdf/raptor/format'
 
 module RDF
   ##
@@ -105,25 +106,6 @@ module RDF
     def self.available?
       !!version
     end
-
-    ##
-    # RDF::Raptor::Format mixin.
-    module Format
-      ##
-      # @overload rapper_format
-      #
-      # @overload rapper_format(format)
-      #   @param  [Symbol] format
-      #
-      # @return [void]
-      def rapper_format(format = nil)
-        unless format
-          @rapper_format
-        else
-          @rapper_format = format
-        end
-      end
-    end # Format
 
     require 'rdf/raptor/ntriples'
     require 'rdf/raptor/turtle'
