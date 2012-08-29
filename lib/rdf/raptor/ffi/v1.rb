@@ -64,7 +64,10 @@ module RDF::Raptor::FFI
     # @see http://librdf.org/raptor/api-1.4/raptor-section-parser.html
     callback :raptor_statement_handler, [:pointer, :raptor_statement], :void
     typedef :pointer, :raptor_parser
+    typedef :string, :mime_type
+    typedef :string, :buffer
     attach_function :raptor_new_parser, [:string], :raptor_parser
+    attach_function :raptor_guess_parser_name, [:raptor_uri, :mime_type, :buffer, :size_t, :string], :string
     attach_function :raptor_set_error_handler, [:raptor_parser, :pointer, :raptor_message_handler], :void
     attach_function :raptor_set_warning_handler, [:raptor_parser, :pointer, :raptor_message_handler], :void
     attach_function :raptor_set_statement_handler, [:raptor_parser, :pointer, :raptor_statement_handler], :void
