@@ -62,7 +62,9 @@ end
 
 describe RDF::Raptor::NTriples::Reader do
   before(:each) do
-    @reader = RDF::Raptor::NTriples::Reader.new("<http://example.org/resource1> <http://example.org/property> <http://example.org/resource2> .")
+    @reader = RDF::Raptor::NTriples::Reader.new(%q(<http://rubygems.org/gems/rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
+    <http://rubygems.org/gems/rdf> <http://usefulinc.com/ns/doap#name> "RDF.rb" .
+    ))
   end
   
   # @see lib/rdf/spec/reader.rb in rdf-spec
@@ -84,11 +86,20 @@ describe RDF::Raptor::NTriples::Reader do
     readers.each { |reader| reader.should == RDF::Raptor::NTriples::Reader }
   end
   
-  it 'should be able to read ntriples data' do
+  it 'should yield statements' do
     inner = mock("inner")
-    inner.should_receive(:called).with(RDF::Statement).once
+    inner.should_receive(:called).with(RDF::Statement).twice
     @reader.each_statement do |statement|
       inner.called(statement.class)
+    end
+  end
+  
+  it "should yield triples" do
+    inner = mock("inner")
+    inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::URI).once
+    inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).once
+    @reader.each_triple do |subject, predicate, object|
+      inner.called(subject.class, predicate.class, object.class)
     end
   end
 end
