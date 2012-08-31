@@ -17,10 +17,10 @@ module RDF::Raptor::FFI
     # TODO: Ideally this would be an enum, but the JRuby FFI (as of
     # version 1.4.0) has problems with enums as part of structs:
     #   `Unknown field type: #<FFI::Enum> (ArgumentError)`
-    RAPTOR_IDENTIFIER_TYPE_UNKNOWN   = 0
-    RAPTOR_IDENTIFIER_TYPE_RESOURCE  = 1
-    RAPTOR_IDENTIFIER_TYPE_ANONYMOUS = 2
-    RAPTOR_IDENTIFIER_TYPE_LITERAL   = 5
+    RAPTOR_TERM_TYPE_UNKNOWN  = 0
+    RAPTOR_TERM_TYPE_URI      = 1
+    RAPTOR_TERM_TYPE_LITERAL  = 2
+    RAPTOR_TERM_TYPE_BLANK    = 4
 
     # @see http://librdf.org/raptor/api/tutorial-initialising-finishing.html
     typedef :pointer, :raptor_world
@@ -55,16 +55,24 @@ module RDF::Raptor::FFI
     attach_function :raptor_uri_print, [:raptor_uri, :pointer], :void
     attach_function :raptor_free_uri, [:raptor_uri], :void
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-triples.html
+    # @see http://librdf.org/raptor/api/raptor2-section-triples.html
     typedef :int,     :raptor_identifier_type
     typedef :pointer, :raptor_identifier
     typedef :pointer, :raptor_statement
-    typedef :pointer, :raptor_term
     attach_function :raptor_statement_compare, [:raptor_statement, :raptor_statement], :int
     attach_function :raptor_statement_print, [:raptor_statement, :pointer], :void
     attach_function :raptor_statement_print_as_ntriples, [:pointer, :pointer], :void
     #attach_function :raptor_statement_part_as_string, [:pointer, :raptor_identifier_type, :raptor_uri, :pointer], :string
+    typedef :pointer, :raptor_term
+    typedef :string, :literal
+    typedef :pointer, :datatype
+    typedef :string, :language
+    typedef :string, :blank
     attach_function :raptor_term_to_string, [:raptor_term], :string
+    attach_function :raptor_new_term_from_uri, [:raptor_world, :raptor_uri], :raptor_term
+    attach_function :raptor_new_term_from_uri_string, [:raptor_world, :string], :raptor_term
+    attach_function :raptor_new_term_from_literal, [:raptor_world, :literal, :datatype, :language], :raptor_term
+    attach_function :raptor_new_term_from_blank, [:raptor_world, :blank], :raptor_term
 
     # @see http://librdf.org/raptor/api/raptor2-section-parser.html
     callback :raptor_statement_handler, [:pointer, :raptor_statement], :void
