@@ -43,19 +43,13 @@ describe RDF::Raptor::RDFXML::Reader do
   context :interface do
     before(:each) do
       @reader = RDF::Raptor::RDFXML::Reader.new(%q(<?xml version="1.0" ?>
-        <GenericXML xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ex="http://example.org/">
-          <rdf:RDF>
-            <rdf:Description rdf:about="http://example.org/one">
-              <ex:name>Foo</ex:name>
-            </rdf:Description>
-          </rdf:RDF>
-          <blablabla />
-          <rdf:RDF>
-            <rdf:Description rdf:about="http://example.org/two">
-              <ex:name>Bar</ex:name>
-            </rdf:Description>
-          </rdf:RDF>
-        </GenericXML>))
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:ex="http://www.example.org/" xml:lang="en" xml:base="http://www.example.org/foo">
+          <ex:Thing rdf:about="http://example.org/joe" ex:name="bar">
+            <ex:belongsTo rdf:resource="http://tommorris.org/" />
+            <ex:sampleText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">foo</ex:sampleText>
+          </ex:Thing>
+        </rdf:RDF>))
     end
 
     it "should return reader" do
@@ -64,7 +58,7 @@ describe RDF::Raptor::RDFXML::Reader do
 
     it "should yield statements" do
       inner = mock("inner")
-      inner.should_receive(:called).with(RDF::Statement).twice
+      inner.should_receive(:called).with(RDF::Statement).exactly(4).times
       @reader.each_statement do |statement|
         inner.called(statement.class)
       end
@@ -72,6 +66,7 @@ describe RDF::Raptor::RDFXML::Reader do
 
     it "should yield triples" do
       inner = mock("inner")
+      inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::URI).twice
       inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).twice
       @reader.each_triple do |subject, predicate, object|
         inner.called(subject.class, predicate.class, object.class)

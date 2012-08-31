@@ -40,6 +40,11 @@ module RDF::Raptor
 
       reader { RDF::Raptor::RDFXML::Reader }
       writer { RDF::Raptor::RDFXML::Writer }
+      
+      def self.detect(sample)
+        # Raptor guess is not fully supported
+        sample.match(/<(\w+:)?(RDF)/)
+      end
     end # Format
 
     ##
