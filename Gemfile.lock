@@ -1,8 +1,8 @@
 GIT
   remote: http://github.com/ruby-rdf/rdf-spec
-  revision: a09c6934287885bd161cb0cf28b972a22c50583c
+  revision: e0e93b6749ad42865cdb36acb18dee2cf2839a83
   specs:
-    rdf-spec (0.3.7)
+    rdf-spec (0.3.8)
       rspec (>= 2.8.0)
 
 PATH
