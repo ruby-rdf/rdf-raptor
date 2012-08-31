@@ -62,7 +62,7 @@ end
 
 describe RDF::Raptor::NTriples::Reader do
   before(:each) do
-    @reader = RDF::Raptor::NTriples::Reader.new
+    @reader = RDF::Raptor::NTriples::Reader.new("<http://example.org/resource1> <http://example.org/property> <http://example.org/resource2> .")
   end
   
   # @see lib/rdf/spec/reader.rb in rdf-spec
@@ -82,6 +82,14 @@ describe RDF::Raptor::NTriples::Reader do
       RDF::Reader.for(:content_type   => "application/n-triples"),
     ]
     readers.each { |reader| reader.should == RDF::Raptor::NTriples::Reader }
+  end
+  
+  it 'should be able to read ntriples data' do
+    inner = mock("inner")
+    inner.should_receive(:called).with(RDF::Statement).once
+    @reader.each_statement do |statement|
+      inner.called(statement.class)
+    end
   end
 end
 
