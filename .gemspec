@@ -28,7 +28,7 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version      = '>= 1.8.1'
   gem.requirements               = ['libraptor (>= 1.4.21)']
   gem.add_runtime_dependency     'ffi',      '>= 1.0'
-  gem.add_runtime_dependency     'rdf',      '~> 0.3.0'
+  gem.add_runtime_dependency     'rdf',      '~> 0.3.8'
   gem.add_development_dependency 'yard' ,    '>= 0.6.0'
   gem.add_development_dependency 'rspec',    '>= 2.1.0'
   #gem.add_development_dependency 'rdf-spec', '~> 0.3.0'
