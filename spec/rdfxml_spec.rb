@@ -48,21 +48,6 @@ describe RDF::Raptor::RDFXML::Reader do
           <ex:Thing rdf:about="http://example.org/joe" ex:name="bar">
             <ex:belongsTo rdf:resource="http://tommorris.org/" />
             <ex:sampleText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">foo</ex:sampleText>
-            <ex:hadADodgyRelationshipWith>
-              <rdf:Description>
-                <ex:name>Tom</ex:name>
-                <ex:hadADodgyRelationshipWith>
-                  <rdf:Description>
-                    <ex:name>Rob</ex:name>
-                    <ex:hadADodgyRelationshipWith>
-                      <rdf:Description>
-                        <ex:name>Mary</ex:name>
-                      </rdf:Description>
-                    </ex:hadADodgyRelationshipWith>
-                  </rdf:Description>
-                </ex:hadADodgyRelationshipWith>
-              </rdf:Description>
-            </ex:hadADodgyRelationshipWith>
           </ex:Thing>
         </rdf:RDF>))
     end
@@ -73,7 +58,7 @@ describe RDF::Raptor::RDFXML::Reader do
 
     it "should yield statements" do
       inner = mock("inner")
-      inner.should_receive(:called).with(RDF::Statement).exactly(3).times
+      inner.should_receive(:called).with(RDF::Statement).exactly(4).times
       @reader.each_statement do |statement|
         inner.called(statement.class)
       end
@@ -81,8 +66,8 @@ describe RDF::Raptor::RDFXML::Reader do
 
     it "should yield triples" do
       inner = mock("inner")
-      inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::URI).once
-      inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).once
+      inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::URI).twice
+      inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).twice
       @reader.each_triple do |subject, predicate, object|
         inner.called(subject.class, predicate.class, object.class)
       end
