@@ -40,6 +40,11 @@ module RDF::Raptor
 
       reader { RDF::Raptor::NTriples::Reader }
       writer { RDF::Raptor::NTriples::Writer }
+      
+      def self.detect(sample)
+        # Raptor's format guessing isn't fully supported
+        RDF::NTriples::Format.detect(sample)
+      end
     end # Format
 
     ##
