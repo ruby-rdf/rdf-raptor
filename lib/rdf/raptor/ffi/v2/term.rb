@@ -5,19 +5,37 @@ module RDF::Raptor::FFI::V2
     include RDF::Raptor::FFI
     
     class LiteralValue < ::FFI::Struct
+      include RDF::Raptor::FFI
+      
       layout  :string, :string,
               :string_len, :int,
               :datatype, V2::URI,
               :language, :string,
               :language_len, :char
       
+      def to_str
+        self[:string].unpack('U*').pack('U*')
+      end
+      
+      def language
+        if self[:language] && !self[:language].null?
+          self[:language]
+        end
+      end
+      
+      def datatype
+        if self[:datatype] && !self[:datatype].null? && self[:datatype].to_s
+          self[:datatype].to_rdf
+        end
+      end
+      
       def to_rdf
-        str = self.string.unpack('U*').pack('U*')
+        str = self.to_str
         case
-          when !self[:language].null?
-            RDF::Literal.new(str, :language => self[:language])
-          when !literal[:datatype].null?
-            RDF::Literal.new(str, :datatype => self[:datatype].to_rdf)
+          when language = self.language
+            RDF::Literal.new(str, :language => language)
+          when datatype = self.datatype
+            RDF::Literal.new(str, :datatype => datatype)
           else
             RDF::Literal.new(str)
         end
@@ -34,6 +52,8 @@ module RDF::Raptor::FFI::V2
     end
 
     class Value < ::FFI::Union
+      include RDF::Raptor::FFI
+      
       layout :uri, V2::URI,
              :literal, LiteralValue,
              :blank, BlankValue
