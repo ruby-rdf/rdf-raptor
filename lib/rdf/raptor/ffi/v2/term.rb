@@ -25,7 +25,7 @@ module RDF::Raptor::FFI::V2
       
       def datatype
         if self[:datatype] && !self[:datatype].null?
-          RDF::URI.intern(V2.raptor_term_as_string(self[:datatype]))
+          RDF::URI.intern(V2.raptor_term_to_string(self[:datatype]))
         end
       end
       
