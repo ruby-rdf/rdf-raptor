@@ -10,6 +10,7 @@ module RDF::Raptor::FFI
     autoload :Serializer,      'rdf/raptor/ffi/v2/serializer'
     autoload :Statement,       'rdf/raptor/ffi/v2/statement'
     autoload :URI,             'rdf/raptor/ffi/v2/uri'
+    autoload :Term,            'rdf/raptor/ffi/v2/term'
 
     extend ::FFI::Library
     ffi_lib RDF::Raptor::LIBRAPTOR
@@ -63,6 +64,7 @@ module RDF::Raptor::FFI
     attach_function :raptor_statement_print, [:raptor_statement, :pointer], :void
     attach_function :raptor_statement_print_as_ntriples, [:pointer, :pointer], :void
     #attach_function :raptor_statement_part_as_string, [:pointer, :raptor_identifier_type, :raptor_uri, :pointer], :string
+    attach_function :raptor_free_statement, [:raptor_statement], :void
     typedef :pointer, :raptor_term
     typedef :string, :literal
     typedef :pointer, :datatype

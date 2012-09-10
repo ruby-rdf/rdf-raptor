@@ -1,12 +1,14 @@
 module RDF::Raptor::FFI::V2
   ##
   # @see http://librdf.org/raptor/api-1.4/raptor-section-triples.html
-  class Statement < ::FFI::Struct
+  class Statement < ::FFI::ManagedStruct
     include RDF::Raptor::FFI
-    layout :subject, :pointer,
-           :predicate, :pointer,
-           :object, :pointer,
-           :graph, :pointer
+    layout  :world, :pointer,
+            :usage, :int,
+            :subject, :pointer,
+            :predicate, :pointer,
+            :object, :pointer,
+            :graph, :pointer
 
     ##
     # @param  [FFI::Pointer] ptr
@@ -34,12 +36,7 @@ module RDF::Raptor::FFI::V2
     ##
     # @return [RDF::Resource]
     def subject
-      @subject ||= case self[:subject][:type]
-        when RAPTOR_TERM_TYPE_BLANK
-          @factory.create_node(self[:subject].read_string)
-        when RAPTOR_TERM_TYPE_URI
-          @factory.create_uri(V2.raptor_uri_as_string(self[:subject]))
-      end
+      @subject ||= V2::Term.new(self[:subject], @factory).value
     end
 
     ##
@@ -65,10 +62,7 @@ module RDF::Raptor::FFI::V2
     ##
     # @return [RDF::URI]
     def predicate
-      @predicate ||= case self[:predicate][:type]
-        when RAPTOR_TERM_TYPE_URI
-          RDF::URI.intern(V2.raptor_uri_as_string(self[:predicate]))
-      end
+      @predicate ||= V2::Term.new(self[:predicate], @factory).value
     end
 
     ##
@@ -87,22 +81,7 @@ module RDF::Raptor::FFI::V2
     ##
     # @return [RDF::Term]
     def object
-      @object ||= case self[:object][:type]
-        when RAPTOR_TERM_TYPE_BLANK
-          @factory.create_node(self[:object].read_string)
-        when RAPTOR_TERM_TYPE_URI
-          @factory.create_uri(V2.raptor_uri_as_string(self[:object]))
-        when RAPTOR_TERM_TYPE_LITERAL
-          str = self[:object].read_string.unpack('U*').pack('U*')
-          case
-            when !self[:object][:language].null?
-              RDF::Literal.new(str, :language => self[:object][:language].read_string)
-            when !self[:object_literal_datatype].null?
-              RDF::Literal.new(str, :datatype => V2.raptor_uri_as_string(self[:object_literal_datatype]))
-            else
-              RDF::Literal.new(str)
-          end
-      end
+      @object ||= V2::Term.new(self[:object], @factory).value
     end
 
     ##
@@ -163,38 +142,7 @@ module RDF::Raptor::FFI::V2
     #
     # @return [void]
     def free
-      if self[:subject_type].nonzero? && !(self[:subject].null?)
-        self[:subject] = case self[:subject_type]
-          when RAPTOR_TERM_TYPE_BLANK
-            V2.raptor_free_string(self[:subject])
-          when RAPTOR_TERM_TYPE_URI
-            V2.raptor_free_uri(self[:subject])
-        end
-        self[:subject_type] = RAPTOR_TERM_TYPE_UNKNOWN
-      end
-
-      if self[:predicate_type].nonzero? && !(self[:predicate].null?)
-        self[:predicate] = V2.raptor_free_uri(self[:predicate])
-        self[:predicate_type] = RAPTOR_TERM_TYPE_UNKNOWN
-      end
-
-      if self[:object_type].nonzero? && !(self[:object].null?)
-        self[:object] = case self[:object_type]
-          when RAPTOR_TERM_TYPE_BLANK
-            V2.raptor_free_string(self[:object])
-          when RAPTOR_TERM_TYPE_URI
-            V2.raptor_free_uri(self[:object])
-          when RAPTOR_TERM_TYPE_LITERAL
-            V2.raptor_free_string(self[:object])
-            unless self[:object_literal_datatype].null?
-              self[:object_literal_datatype] = V2.raptor_free_uri(self[:object_literal_datatype])
-            end
-            unless self[:object_literal_language].null?
-              self[:object_literal_language] = V2.raptor_free_string(self[:object_literal_language])
-            end
-        end
-        self[:object_type] = RAPTOR_TERM_TYPE_UNKNOWN
-      end
+      V2.raptor_free_statement(self)
     end
     alias_method :release, :free
   end # Statement
