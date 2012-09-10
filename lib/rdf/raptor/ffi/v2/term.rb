@@ -9,7 +9,7 @@ module RDF::Raptor::FFI::V2
       
       layout  :string, :string,
               :string_len, :int,
-              :datatype, V2::URI,
+              :datatype, :pointer,
               :language, :string,
               :language_len, :char
       
@@ -24,8 +24,8 @@ module RDF::Raptor::FFI::V2
       end
       
       def datatype
-        if self[:datatype] && !self[:datatype].null? && self[:datatype].to_s
-          self[:datatype].to_rdf
+        if self[:datatype] && !self[:datatype].null?
+          RDF::URI.intern(V2.raptor_term_as_string(self[:datatype]))
         end
       end
       
@@ -54,7 +54,7 @@ module RDF::Raptor::FFI::V2
     class Value < ::FFI::Union
       include RDF::Raptor::FFI
       
-      layout :uri, V2::URI,
+      layout :uri, :pointer,
              :literal, LiteralValue,
              :blank, BlankValue
     end
@@ -74,12 +74,16 @@ module RDF::Raptor::FFI::V2
     def value
       case self[:type]
         when RAPTOR_TERM_TYPE_BLANK
-          @factory.create_node(self[:value][:blank].to_str)
+          @factory.create_node(self.to_str)
         when RAPTOR_TERM_TYPE_URI
-          @factory.create_uri(self[:value][:uri].to_str)
+          @factory.create_uri(self.to_str)
         when RAPTOR_TERM_TYPE_LITERAL
           self[:value][:literal].to_rdf
       end
+    end
+    
+    def to_str
+      V2.raptor_term_to_string(self)
     end
 
     ##
