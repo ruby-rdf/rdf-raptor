@@ -25,7 +25,6 @@ module RDF::Raptor
        V1.raptor_version_minor,
        V1.raptor_version_release].join('.').freeze
     end
-    module_function :version
 
     ##
     # FFI reader implementation.
