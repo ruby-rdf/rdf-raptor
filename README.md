@@ -17,7 +17,7 @@ Features
 * Extracts RDF statements from XHTML+RDFa documents.
 * Provides serialization format autodetection for RDF/XML, Turtle and RDFa.
 * Compatible with any operating system supported by Raptor and Ruby.
-* Compatible with MRI 1.8.x, 1.9.x and JRuby (tested with JRuby 1.4).
+* Compatible with MRI 1.8.x, 1.9.x and JRuby (tested with JRuby 1.8 and 1.9 mode).
 
 Examples
 --------
