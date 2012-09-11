@@ -31,6 +31,9 @@ module RDF::Raptor::FFI::V1
           V1.raptor_new_iostream_to_sink()
         else nil
       end
+      
+      @free_iostream = options[:free_iostream] || true
+      
       raise ArgumentError, "invalid argument: #{ptr_or_obj.inspect}" if ptr.nil? || ptr.null?
       super(ptr)
     end
@@ -41,7 +44,9 @@ module RDF::Raptor::FFI::V1
     # @param  [FFI::Pointer] ptr
     # @return [void]
     def self.release(ptr)
-      V1.raptor_free_iostream(ptr)
+      if @free_iostrem
+        V1.raptor_free_iostream(ptr)
+      end
     end
   end # IOStream
 end # RDF::Raptor::FFI::V1
