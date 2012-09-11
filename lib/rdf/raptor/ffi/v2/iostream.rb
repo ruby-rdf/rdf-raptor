@@ -6,7 +6,12 @@ module RDF::Raptor::FFI::V2
   # @see http://librdf.org/raptor/api-1.4/raptor-section-iostream.html
   class IOStream < ::FFI::ManagedStruct
     include RDF::Raptor::FFI
-    layout :user_data, :pointer # the actual layout is private
+    layout  :world, :pointer,
+            :user_data, :pointer,
+            :handler, :pointer,
+            :offset, :size_t,
+            :mode, :int,
+            :flags, :int
 
     ##
     # @overload initialize(ptr)
@@ -32,6 +37,8 @@ module RDF::Raptor::FFI::V2
         else nil
       end
       raise ArgumentError, "invalid argument: #{ptr_or_obj.inspect}" if ptr.nil? || ptr.null?
+      
+      @free_iostream = options[:free_iostream] || true
       super(ptr)
     end
 
@@ -41,7 +48,9 @@ module RDF::Raptor::FFI::V2
     # @param  [FFI::Pointer] ptr
     # @return [void]
     def self.release(ptr)
-      V2.raptor_free_iostream(ptr)
+      if @free_iostream
+        V2.raptor_free_iostream(ptr)
+      end
     end
   end # IOStream
 end # RDF::Raptor::FFI::V2
