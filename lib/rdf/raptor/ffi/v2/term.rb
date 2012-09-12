@@ -18,7 +18,7 @@ module RDF::Raptor::FFI::V2
       end
       
       def language
-        if self[:language] && !self[:language].null?
+        unless self[:language].empty?
           self[:language]
         end
       end
