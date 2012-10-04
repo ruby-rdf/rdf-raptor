@@ -6,7 +6,17 @@ module RDF::Raptor::FFI::V2
   # @see http://librdf.org/raptor/api-1.4/raptor-section-serializer.html
   class Serializer < ::FFI::ManagedStruct
     include RDF::Raptor::FFI
-    layout :world, :pointer # the actual layout is private
+
+    # Note this layout is private
+    layout  :world, :pointer,
+            :locator, :pointer,
+            :failed, :bool,
+            :base_uri, :pointer,
+            :context, :pointer,
+            :iostream, :pointer,
+            :free_iostream_on_end, :bool,
+            :factory, :pointer,
+            :options, :pointer
 
     ##
     # @overload initialize(ptr)
@@ -71,7 +81,7 @@ module RDF::Raptor::FFI::V2
     #   any additional options for serializing (see {#start_to})
     # @return [void]
     def start_to_stream(stream, options = {})
-      iostream = V2::IOStream.new(V2::IOStreamHandler.new(stream), :free_iostream => false)
+      iostream = V2::IOStream.new(V2::IOStreamHandler.new(stream), :free_iostream => self[:free_iostream_on_end])
       start_to_iostream(iostream, options)
     end
 
