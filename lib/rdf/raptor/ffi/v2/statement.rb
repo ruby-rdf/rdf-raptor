@@ -143,6 +143,7 @@ module RDF::Raptor::FFI::V2
     # @return [void]
     def free
       V2.raptor_free_statement(self)
+      @subject = @predicate = @object = nil # Allow GC to start
     end
     alias_method :release, :free
   end # Statement
