@@ -22,11 +22,8 @@ module RDF::Raptor
     #
     # @return [String] an "x.y.z" version string
     def version
-      [V2.raptor_version_major,
-       V2.raptor_version_minor,
-       V2.raptor_version_release].join('.').freeze
+      V2.raptor_version_string.freeze
     end
-    module_function :version
 
     ##
     # FFI reader implementation.

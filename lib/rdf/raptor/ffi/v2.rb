@@ -38,7 +38,7 @@ module RDF::Raptor::FFI
     attach_function :raptor_locator_column, [:raptor_locator], :int
     attach_function :raptor_locator_byte, [:raptor_locator], :int
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-general.html
+    # @see http://librdf.org/raptor/api/raptor2-section-general.html
     attach_variable :raptor_version_string, :string
     attach_variable :raptor_version_major, :int
     attach_variable :raptor_version_minor, :int
