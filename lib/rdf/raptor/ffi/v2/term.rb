@@ -76,7 +76,7 @@ module RDF::Raptor::FFI::V2
         when RAPTOR_TERM_TYPE_BLANK
           @factory.create_node(self.to_str)
         when RAPTOR_TERM_TYPE_URI
-          @factory.create_uri(self.to_str)
+          @factory.create_uri(V2.raptor_uri_as_string(self[:value][:uri]))
         when RAPTOR_TERM_TYPE_LITERAL
           self[:value][:literal].to_rdf
       end
