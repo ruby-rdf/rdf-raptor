@@ -1,7 +1,7 @@
 module RDF::Raptor::FFI::V2
   ##
   # @see http://librdf.org/raptor/api-1.4/raptor-section-triples.html
-  class Statement < ::FFI::ManagedStruct
+  class Statement < ::FFI::Struct
     include RDF::Raptor::FFI
     layout  :world, :pointer,
             :usage, :int,
@@ -21,10 +21,9 @@ module RDF::Raptor::FFI::V2
     ##
     # Releases `libraptor` memory associated with this structure.
     #
-    # @param  [FFI::Pointer] ptr
     # @return [void]
-    def self.release(ptr)
-      raptor_free_memory(ptr) unless ptr.null?
+    def release
+      V2.raptor_free_statement(ptr) unless ptr.null?
     end
 
     # @return [Object]

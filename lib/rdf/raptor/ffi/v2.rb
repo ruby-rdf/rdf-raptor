@@ -75,6 +75,7 @@ module RDF::Raptor::FFI
     attach_function :raptor_new_term_from_uri_string, [:raptor_world, :string], :raptor_term
     attach_function :raptor_new_term_from_literal, [:raptor_world, :literal, :datatype, :language], :raptor_term
     attach_function :raptor_new_term_from_blank, [:raptor_world, :blank], :raptor_term
+    attach_function :raptor_free_term, [:raptor_term], :void
 
     # @see http://librdf.org/raptor/api/raptor2-section-parser.html
     callback :raptor_statement_handler, [:pointer, :raptor_statement], :void

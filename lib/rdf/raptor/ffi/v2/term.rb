@@ -1,7 +1,7 @@
 module RDF::Raptor::FFI::V2
   ##
   # @see http://librdf.org/raptor/api-1.4/raptor-section-triples.html
-  class Term < ::FFI::ManagedStruct
+  class Term < ::FFI::Struct
     include RDF::Raptor::FFI
     
     class LiteralValue < ::FFI::Struct
@@ -91,8 +91,8 @@ module RDF::Raptor::FFI::V2
     #
     # @param  [FFI::Pointer] ptr
     # @return [void]
-    def self.release(ptr)
-      raptor_free_memory(ptr) unless ptr.null?
+    def release
+      V2.raptor_free_term(self) unless ptr.null?
     end
     
   end # Term
