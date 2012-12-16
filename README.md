@@ -175,7 +175,7 @@ Contributors
 ------------
 
 * [Ben Lavender](http://github.com/bhuga) - <http://bhuga.net/>
-* [David Butler](http://github.com/dwbutler) - <http://www.tomeofwisdom.com/>
+* [David Butler](http://github.com/dwbutler)
 * [Gregg Kellogg](http://github.com/gkellogg) - <http://greggkellogg.net/>
 
 License
