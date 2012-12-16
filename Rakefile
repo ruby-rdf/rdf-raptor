@@ -14,6 +14,11 @@ task :build do
   sh "gem build .gemspec"
 end
 
+desc "Run memory leak test with valgrind"
+task :memtest do
+  sh "valgrind --log-file=valgrind.log --trace-children=yes --leak-check=full ruby memtest.rb && grep -C 20 raptor_ valgrind.log"
+end
+
 require 'rspec/core/rake_task'
 desc 'Default: run specs.'
 task :default => :spec

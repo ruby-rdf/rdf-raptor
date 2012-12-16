@@ -4,4 +4,4 @@
 pkg
 tmp
 Gemfile.lock
-
+valgrind.log
