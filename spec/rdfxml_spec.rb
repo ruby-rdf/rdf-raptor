@@ -8,7 +8,7 @@ describe RDF::Raptor::RDFXML::Format do
     @format_class = RDF::Raptor::RDFXML::Format
   end
 
-  it_should_behave_like RDF_Format
+  include RDF_Format
   
   it "should be discoverable" do
     formats = [
@@ -27,7 +27,7 @@ describe RDF::Raptor::RDFXML::Reader do
     @reader = RDF::Raptor::RDFXML::Reader.new(StringIO.new(""))
   end
 
-  it_should_behave_like RDF_Reader
+  include RDF_Reader
   
   it "should be discoverable" do
     readers = [
@@ -82,7 +82,7 @@ describe RDF::Raptor::RDFXML::Writer do
     @writer_class = RDF::Raptor::RDFXML::Writer
   end
   
-  it_should_behave_like RDF_Writer
+  include RDF_Writer
   
   it "should be discoverable" do
     writers = [

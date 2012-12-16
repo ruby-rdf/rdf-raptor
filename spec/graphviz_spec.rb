@@ -9,7 +9,7 @@ describe RDF::Raptor::Graphviz::Format do
   end
   
   # @see lib/rdf/spec/format.rb in rdf-spec
-  it_should_behave_like RDF_Format
+  include RDF_Format
   
   it "should be discoverable" do
     formats = [
@@ -30,7 +30,7 @@ describe RDF::Raptor::Graphviz::Writer do
   end
   
   # @see lib/rdf/spec/writer.rb in rdf-spec
-  it_should_behave_like RDF_Writer
+  include RDF_Writer
 
   it "should return :graphviz for to_sym" do
     @writer_class.to_sym.should == :graphviz

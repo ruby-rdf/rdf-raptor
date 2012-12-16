@@ -9,7 +9,7 @@ describe RDF::Raptor::RDFa::Format do
   end
   
   # @see lib/rdf/spec/format.rb in rdf-spec
-  it_should_behave_like RDF_Format
+  include RDF_Format
   
   it "should be discoverable" do
     formats = [
@@ -29,7 +29,7 @@ describe RDF::Raptor::RDFa::Reader do
   end
   
   # @see lib/rdf/spec/reader.rb in rdf-spec
-  it_should_behave_like RDF_Reader
+  include RDF_Reader
   
   it "should return :rdfa for to_sym" do
     @reader.class.to_sym.should == :rdfa
