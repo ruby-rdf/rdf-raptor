@@ -51,7 +51,6 @@ module RDF::Raptor::FFI::V2
       if @free_iostream
         V2.raptor_free_iostream(ptr)
       end
-      @handler = nil
     end
   end # IOStream
 end # RDF::Raptor::FFI::V2

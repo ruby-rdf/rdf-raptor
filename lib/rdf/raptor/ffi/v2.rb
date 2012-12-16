@@ -70,7 +70,6 @@ module RDF::Raptor::FFI
     typedef :pointer, :datatype
     typedef :string, :language
     typedef :string, :blank
-    attach_function :raptor_term_to_string, [:raptor_term], :string
     attach_function :raptor_new_term_from_uri, [:raptor_world, :raptor_uri], :raptor_term
     attach_function :raptor_new_term_from_uri_string, [:raptor_world, :string], :raptor_term
     attach_function :raptor_new_term_from_literal, [:raptor_world, :literal, :datatype, :language], :raptor_term
@@ -143,7 +142,7 @@ module RDF::Raptor::FFI
     #
     # @return [FFI::Pointer]
     def raptor_new_string(str)
-      ptr = v2.raptor_alloc_memory(str.bytesize + 1)
+      ptr = V2.raptor_alloc_memory(str.bytesize + 1)
       ptr.put_string(0, str)
       ptr
     end

@@ -74,16 +74,12 @@ module RDF::Raptor::FFI::V2
     def value
       case self[:type]
         when RAPTOR_TERM_TYPE_BLANK
-          @factory.create_node(self.to_str)
+          @factory.create_node(self[:value][:blank].to_str)
         when RAPTOR_TERM_TYPE_URI
           @factory.create_uri(V2.raptor_uri_as_string(self[:value][:uri]))
         when RAPTOR_TERM_TYPE_LITERAL
           self[:value][:literal].to_rdf
       end
-    end
-    
-    def to_str
-      V2.raptor_term_to_string(self)
     end
 
     ##
