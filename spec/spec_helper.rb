@@ -1,4 +1,12 @@
 require 'bundler/setup'
+
+begin
+  require 'simplecov'
+  SimpleCov.start
+rescue LoadError
+  # SimpleCov only works in Ruby 1.9+
+end
+
 require 'rdf/raptor'
 require 'rdf/spec'
 require 'rdf/spec/matchers'
