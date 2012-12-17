@@ -11,6 +11,7 @@ module RDF::Raptor::FFI
     autoload :Statement,       'rdf/raptor/ffi/v2/statement'
     autoload :URI,             'rdf/raptor/ffi/v2/uri'
     autoload :Term,            'rdf/raptor/ffi/v2/term'
+    autoload :World,           'rdf/raptor/ffi/v2/world'
 
     extend ::FFI::Library
     ffi_lib RDF::Raptor::LIBRAPTOR
@@ -129,9 +130,9 @@ module RDF::Raptor::FFI
     # We do this exactly once and never release because we can't delegate
     # any memory management to the Ruby GC.
     # Internally `raptor_init`/`raptor_finish` work with reference counts.
-    @world = raptor_new_world_internal(raptor_version_decimal)
+    @world = nil
     def self.world
-      @world
+      @world ||= World.new
     end
 
     ##
