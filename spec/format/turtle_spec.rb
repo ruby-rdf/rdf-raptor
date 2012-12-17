@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
+require File.join(File.dirname(__FILE__), '../spec_helper')
 require 'rdf/spec/format'
 require 'rdf/spec/reader'
 require 'rdf/spec/writer'

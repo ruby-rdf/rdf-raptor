@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:doap="http://usefulinc.com/ns/doap#" xmlns:dc="http://purl.org/dc/terms/" xmlns:xhv="http://www.w3.org/1999/xhtml/vocab#" xmlns:foaf="http://xmlns.com/foaf/0.1/">
+  <doap:Project rdf:about="http://rubygems.org/gems/rdf-rdfxml">
+    <dc:creator rdf:resource="http://greggkellogg.net/foaf#me"/>
+    <doap:blog rdf:resource="http://greggkellogg.net/"/>
+    <doap:bug-database rdf:resource="http://github.com/ruby-rdf/rdf-rdfxml/issues"/>
+    <doap:category rdf:resource="http://dbpedia.org/resource/Resource_Description_Framework"/>
+    <doap:category>
+      <rdf:Description rdf:about="http://dbpedia.org/resource/Ruby_(programming_language)">
+        <doap:programming-language>Ruby</doap:programming-language>
+      </rdf:Description>
+    </doap:category>
+    <doap:created rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2010-06-03</doap:created>
+    <doap:description xml:lang="en">
+      RDF::RDFXML is an RDF/XML reader/writer for Ruby using the RDF.rb library suite.
+    </doap:description>
+    <doap:developer rdf:resource="http://greggkellogg.net/foaf#me"/>
+    <doap:helper rdf:resource="http://njh.me/"/>
+    <doap:documenter rdf:resource="http://greggkellogg.net/foaf#me"/>
+    <doap:download-page rdf:resource="http://rubygems.org/gems/rdf-rdfxml"/>
+    <doap:homepage rdf:resource="http://github.com/gkellogg/rdf-rdfxml"/>
+    <doap:mailing-list rdf:resource="http://lists.w3.org/Archives/Public/public-rdf-ruby/"/>
+    <doap:maintainer rdf:resource="http://greggkellogg.net/foaf#me"/>
+    <doap:name>RDF::RDFXML</doap:name>
+    <doap:shortdesc xml:lang="en">RDF/XML reader/writer for Ruby.</doap:shortdesc>
+    <xhv:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+    <foaf:maker rdf:resource="http://greggkellogg.net/foaf#me"/>
+  </doap:Project>
+</rdf:RDF>

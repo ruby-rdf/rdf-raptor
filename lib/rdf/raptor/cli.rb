@@ -19,7 +19,6 @@ module RDF::Raptor
         [$1, $2, $3].join('.')
       end
     end
-    module_function :version
 
     ##
     # CLI reader implementation.

@@ -16,4 +16,8 @@ RSpec.configure do |config|
   config.exclusion_filter = {:ruby => lambda { |version|
     RUBY_VERSION.to_s !~ /^#{version}/
   }}
+  
+  unless ENV['RDF_RAPTOR_ENGINE'] == 'cli'
+    config.filter_run_excluding :cli => true
+  end
 end
