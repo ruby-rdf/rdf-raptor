@@ -102,6 +102,13 @@ describe RDF::Raptor::NTriples::Reader do
       inner.called(subject.class, predicate.class, object.class)
     end
   end
+  
+  it "should open and parse a file" do
+    RDF::Reader.open("etc/doap.nt") do |reader|
+      reader.should be_a subject.class
+      reader.count.should be > 0
+    end
+  end
 end
 
 describe RDF::Raptor::NTriples::Writer do

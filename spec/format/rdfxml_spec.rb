@@ -72,6 +72,13 @@ describe RDF::Raptor::RDFXML::Reader do
         inner.called(subject.class, predicate.class, object.class)
       end
     end
+    
+    it "should open and parse a file" do
+      RDF::Reader.open("etc/doap.xml") do |reader|
+        reader.should be_a subject.class
+        reader.count.should be > 0
+      end
+    end
   end
 end
 
