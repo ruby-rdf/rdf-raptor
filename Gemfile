@@ -11,6 +11,8 @@ end
 gem 'rdf-spec', :git => 'http://github.com/ruby-rdf/rdf-spec'
 #gem 'rdf-spec', :path => '../rdf-spec'
 
-gem 'debugger', :platform => :ruby_19
-gem 'ruby-debug', :platform => :ruby_18
-gem 'simplecov', :platforms => [:mri_19, :jruby]
+group :development do
+  gem 'debugger', :platform => :ruby_19
+  gem 'ruby-debug', :platform => :ruby_18
+  gem 'simplecov', :platforms => [:mri_19, :jruby]
+end
