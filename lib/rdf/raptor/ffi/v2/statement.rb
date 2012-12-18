@@ -47,11 +47,9 @@ module RDF::Raptor::FFI::V2
       @subject = nil
       case resource
         when RDF::Node
-          self[:subject_type] = RAPTOR_TERM_TYPE_BLANK
-          self[:subject] = V2.raptor_new_string(resource.id.to_s)
+          self[:subject] = V2.raptor_new_term_from_blank(V2.world, resource.id.to_s)
         when RDF::URI
-          self[:subject_type] = RAPTOR_TERM_TYPE_URI
-          self[:subject] = V2.raptor_new_uri(resource.to_s)
+          self[:subject] = V2.raptor_new_term_from_uri_string(V2.world, resource.to_s)
         else
           raise ArgumentError, "subject term must be an RDF::Node or RDF::URI"
       end
@@ -72,8 +70,7 @@ module RDF::Raptor::FFI::V2
     def predicate=(uri)
       @predicate = nil
       raise ArgumentError, "predicate term must be an RDF::URI" unless uri.is_a?(RDF::URI)
-      self[:predicate_type] = RAPTOR_TERM_TYPE_URI
-      self[:predicate] = V2.raptor_new_uri(uri.to_s)
+      self[:predicate] = V2.raptor_new_term_from_uri_string(V2.world, uri.to_s)
       @predicate = uri
     end
 
@@ -94,16 +91,13 @@ module RDF::Raptor::FFI::V2
       @object = nil
       case value
         when RDF::Node
-          self[:object_type] = RAPTOR_TERM_TYPE_BLANK
-          self[:object] = V2.raptor_new_string(value.id.to_s)
+          self[:object] = V2.raptor_new_term_from_blank(V2.world, value.id.to_s)
         when RDF::URI
-          self[:object_type] = RAPTOR_TERM_TYPE_URI
-          self[:object] = V2.raptor_new_uri(value.to_s)
+          self[:object] = V2.raptor_new_term_from_uri_string(V2.world, value.to_s)
         when RDF::Literal
-          self[:object_type] = RAPTOR_TERM_TYPE_LITERAL
-          self[:object] = V2.raptor_new_string(value.value)
-          self[:object_literal_datatype] = V2.raptor_new_uri(value.datatype.to_s) if value.datatype
-          self[:object_literal_language] = V2.raptor_new_string(value.language.to_s) if value.language?
+          self[:object] = V2.raptor_new_term_from_literal(V2.world, value.to_s,
+            value.datatype? ? V2.raptor_new_uri(value.datatype.to_s) : nil,
+            value.language? ? V2.raptor_new_string(value.language.to_s) : nil)
         else
           raise ArgumentError, "object term must be an RDF::Node, RDF::URI, or RDF::Literal"
       end
