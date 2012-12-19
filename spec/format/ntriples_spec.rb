@@ -62,9 +62,10 @@ end
 
 describe RDF::Raptor::NTriples::Reader do
   before(:each) do
-    @reader = RDF::Raptor::NTriples::Reader.new(%q(<http://rubygems.org/gems/rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
+    @input = %q(<http://rubygems.org/gems/rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
     <http://rubygems.org/gems/rdf> <http://usefulinc.com/ns/doap#name> "RDF.rb" .
-    ))
+    )
+    @reader = RDF::Raptor::NTriples::Reader.new(@input)
   end
   
   # @see lib/rdf/spec/reader.rb in rdf-spec
@@ -94,6 +95,12 @@ describe RDF::Raptor::NTriples::Reader do
     end
   end
   
+  it 'should yield raw statements' do
+    @reader.each_statement(:raw => true) do |statement|
+      statement.should be_a RDF::Raptor::FFI::V2::Statement
+    end
+  end
+  
   it "should yield triples" do
     inner = mock("inner")
     inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::URI).once
@@ -108,6 +115,18 @@ describe RDF::Raptor::NTriples::Reader do
       reader.should be_a subject.class
       reader.count.should be > 0
     end
+  end
+  
+  it "should parse a URI" do
+    reader = RDF::Raptor::NTriples::Reader.new
+    result = reader.parse("http://dbpedia.org/data/Michael_Jackson.ntriples")
+    result.should == 0
+  end
+  
+  it "should parse a String" do
+    reader = RDF::Raptor::NTriples::Reader.new
+    result = reader.parse(@input)
+    result.should == 0
   end
 end
 

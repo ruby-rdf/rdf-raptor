@@ -77,7 +77,7 @@ module RDF::Raptor::FFI::V2
     # @return [void]
     def parse(input, options = {}, &block)
       case input
-        when RDF::URI, %r(^(file|https|http|ftp)://)
+        when RDF::URI, URI, %r(^(file|https|http|ftp)://)
           parse_url(input, options, &block)
         when File, Tempfile
           parse_file(input, options, &block)
