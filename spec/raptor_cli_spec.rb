@@ -1,5 +1,5 @@
-ENV['RDF_RAPTOR_ENGINE'] = 'cli'
 require File.join(File.dirname(__FILE__), 'spec_helper')
+ENV['RDF_RAPTOR_ENGINE'] = 'cli'
 require 'rdf/raptor/cli'
 require 'rdf/raptor/ffi'
 
