@@ -6,3 +6,4 @@ tmp
 Gemfile.lock
 valgrind.log
 coverage
+.rbx/
