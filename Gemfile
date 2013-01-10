@@ -13,4 +13,4 @@ group :development do
   gem 'simplecov', :platforms => [:mri_19, :jruby]
 end
 
-gem 'ffi', '~> 1.3.0', :platforms => [:rbx]
+gem 'ffi', '~> 1.3.1', :platforms => [:rbx]
