@@ -12,5 +12,3 @@ group :development do
   #gem 'ruby-debug', :platform => :ruby_18
   gem 'simplecov', :platforms => [:mri_19, :jruby]
 end
-
-gem 'ffi', '~> 1.3.0', :platforms => [:rbx]
