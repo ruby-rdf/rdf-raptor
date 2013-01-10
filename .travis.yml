@@ -13,7 +13,3 @@ before_install:
   - sudo apt-get install libraptor2-0
   - sudo ln -s /usr/lib/libraptor2.so.0 /usr/lib/libraptor2.so
 #bundler_args: --without development
-matrix:
-	allow_failures:
-	  - rvm: rbx-18mode
-	  - rvm:  rbx-19mode
