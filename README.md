@@ -2,7 +2,7 @@ Raptor RDF Parser Plugin for RDF.rb
 ===================================
 [![Build Status](https://secure.travis-ci.org/ruby-rdf/rdf-raptor.png?branch=master)](http://travis-ci.org/ruby-rdf/rdf-raptor)
 
-This is an [RDF.rb][] plugin that adds support for parsing/serializing
+This is an [RDF.rb][] plugin that adds support for parsing/serializing [NTriples][]
 [RDF/XML][], [Turtle][] and [RDFa][] data using the [Raptor RDF Parser][Raptor]
 library.
 
@@ -12,12 +12,12 @@ library.
 Features
 --------
 
-* Requires the [Raptor][] library and/or command-line utilities.
+* Uses the fast [Raptor][] C library.
 * Parses and serializes RDF data from/into the RDF/XML or Turtle formats.
 * Extracts RDF statements from XHTML+RDFa documents.
 * Provides serialization format autodetection for RDF/XML, Turtle and RDFa.
 * Compatible with any operating system supported by Raptor and Ruby.
-* Compatible with MRI 1.8.x, 1.9.x and JRuby (tested with JRuby 1.8 and 1.9 mode).
+* Compatible with MRI 1.8.x, 1.9.x, REE, JRuby and Rubinius (1.8 and 1.9 mode).
 
 Examples
 --------
@@ -27,7 +27,15 @@ Examples
 ### Ensuring Raptor is installed and obtaining the version number
 
     RDF::Raptor.available?         #=> true
-    RDF::Raptor.version            #=> "1.4.21"
+    RDF::Raptor.version            #=> "2.0.8"
+
+### Parsing RDF statements from an NTriples file
+
+    RDF::Reader.open("http://datagraph.org/jhacker/foaf.nt") do |reader|
+      reader.each_statement do |statement|
+        puts statement.inspect
+      end
+    end
 
 ### Parsing RDF statements from an RDF/XML file
 
@@ -120,9 +128,9 @@ Documentation
 Dependencies
 ------------
 
-* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.3.0)
+* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.3.8)
 * [FFI](http://rubygems.org/gems/ffi) (>= 1.0.0)
-* [Raptor][] (>= 1.4.21), the `libraptor` library or the `rapper` binary
+* [Raptor][] (>= 2.0), the `libraptor` library or the `rapper` binary
 
 Installation
 ------------
@@ -140,7 +148,8 @@ Mac and the most common Linux and BSD distributions:
     % [sudo] port install raptor             # Mac OS X with MacPorts
     % [sudo] fink install raptor-bin         # Mac OS X with Fink
     % brew install raptor                    # Mac OS X with Homebrew
-    % [sudo] aptitude install raptor-utils   # Ubuntu / Debian
+    % [sudo] aptitude install raptor-utils   # Ubuntu / Debian with aptitude
+    % [sudo] apt-get install libraptor2-0    # Ubuntu / Debian with apt-get
     % [sudo] yum install raptor              # Fedora / CentOS / RHEL
     % [sudo] zypper install raptor           # openSUSE
     % [sudo] emerge raptor                   # Gentoo Linux
@@ -185,6 +194,7 @@ This is free and unencumbered public domain software. For more information,
 see <http://unlicense.org/> or the accompanying {file:UNLICENSE} file.
 
 [RDF.rb]:   http://rdf.rubyforge.org/
+[NTriples]: http://en.wikipedia.org/wiki/N-Triples
 [RDF/XML]:  http://www.w3.org/TR/REC-rdf-syntax/
 [Turtle]:   http://en.wikipedia.org/wiki/Turtle_(syntax)
 [RDFa]:     http://rdfa.info/

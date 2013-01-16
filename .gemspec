@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.homepage           = 'http://rdf.rubyforge.org/raptor/'
   gem.license            = 'Public Domain' if gem.respond_to?(:license=)
   gem.summary            = 'Raptor RDF Parser plugin for RDF.rb.'
-  gem.description        = 'RDF.rb plugin for parsing/serializing RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library.'
+  gem.description        = 'RDF.rb plugin for parsing/serializing NTriples, RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library.'
   gem.rubyforge_project  = 'rdf'
 
   gem.authors            = ['Arto Bendiken', 'John Fieber']
@@ -26,7 +26,7 @@ Gem::Specification.new do |gem|
   gem.has_rdoc           = false
 
   gem.required_ruby_version      = '>= 1.8.1'
-  gem.requirements               = ['libraptor (>= 1.4.21)']
+  gem.requirements               = ['libraptor (>= 2.0)']
   gem.add_runtime_dependency     'ffi',      '>= 1.0' unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
   gem.add_runtime_dependency     'rdf',      '~> 0.3.8'
   gem.add_development_dependency 'yard' ,    '>= 0.6.0'
