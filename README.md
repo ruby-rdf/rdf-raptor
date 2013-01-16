@@ -184,14 +184,14 @@ Contributors
 ------------
 
 * [Ben Lavender](http://github.com/bhuga) - <http://bhuga.net/>
-* [David Butler](http://github.com/dwbutler)
+* [David Butler](http://github.com/dwbutler) - <http://github.com/dwbutler>
 * [Gregg Kellogg](http://github.com/gkellogg) - <http://greggkellogg.net/>
 
 License
 -------
 
 This is free and unencumbered public domain software. For more information,
-see <http://unlicense.org/> or the accompanying {file:UNLICENSE} file.
+see <http://unlicense.org/> or the accompanying [UNLICENSE][] file.
 
 [RDF.rb]:   http://rdf.rubyforge.org/
 [NTriples]: http://en.wikipedia.org/wiki/N-Triples
@@ -200,3 +200,4 @@ see <http://unlicense.org/> or the accompanying {file:UNLICENSE} file.
 [RDFa]:     http://rdfa.info/
 [Raptor]:   http://librdf.org/raptor/
 [rapper]:   http://librdf.org/raptor/rapper.html
+[UNLICENSE]:https://github.com/ruby-rdf/rdf-raptor/blob/master/UNLICENSE
