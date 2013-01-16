@@ -3,7 +3,7 @@ Raptor RDF Parser Plugin for RDF.rb
 [![Build Status](https://secure.travis-ci.org/ruby-rdf/rdf-raptor.png?branch=master)](http://travis-ci.org/ruby-rdf/rdf-raptor)
 
 This is an [RDF.rb][] plugin that adds support for parsing/serializing [NTriples][],
-[RDF/XML][], [Turtle][] and [RDFa][] data using the [Raptor RDF Parser][Raptor]
+[RDF/XML][], [Turtle][], [RDFa][], and [Graphviz][] data using the [Raptor RDF Parser][Raptor]
 library.
 
 * <http://github.com/ruby-rdf/rdf-raptor>
@@ -13,8 +13,9 @@ Features
 --------
 
 * Uses the fast [Raptor][] C library.
-* Parses and serializes RDF data from/into the RDF/XML or Turtle formats.
+* Parses and serializes RDF data from/into the NTriples, RDF/XML, and Turtle formats.
 * Extracts RDF statements from XHTML+RDFa documents.
+* Serializes RDF statements into Graphviz format.
 * Provides serialization format autodetection for RDF/XML, Turtle and RDFa.
 * Compatible with any operating system supported by Raptor and Ruby.
 * Compatible with MRI 1.8.x, 1.9.x, REE, JRuby and Rubinius (1.8 and 1.9 mode).
@@ -113,6 +114,14 @@ Examples
     RDF::Format.for(:file_extension => "html")
     RDF::Format.for(:content_type   => "application/xhtml+xml")
 
+### Obtaining the Graphviz format specification class
+
+    RDF::Format.for(:graphviz)     #=> RDF::Raptor::Graphviz::Format
+    RDF::Format.for("output.dot")
+    RDF::Format.for(:file_name      => "output.dot")
+    RDF::Format.for(:file_extension => "")
+    RDF::Format.for(:content_type   => "text/vnd.graphviz")
+
 Documentation
 -------------
 
@@ -198,6 +207,7 @@ see <http://unlicense.org/> or the accompanying [UNLICENSE][] file.
 [RDF/XML]:  http://www.w3.org/TR/REC-rdf-syntax/
 [Turtle]:   http://en.wikipedia.org/wiki/Turtle_(syntax)
 [RDFa]:     http://rdfa.info/
+[Graphviz]: http://www.graphviz.org/
 [Raptor]:   http://librdf.org/raptor/
 [rapper]:   http://librdf.org/raptor/rapper.html
 [UNLICENSE]:https://github.com/ruby-rdf/rdf-raptor/blob/master/UNLICENSE
