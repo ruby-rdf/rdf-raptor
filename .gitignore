@@ -4,6 +4,6 @@
 pkg
 tmp
 Gemfile.lock
-valgrind.log
+*.log
 coverage
 .rbx/
