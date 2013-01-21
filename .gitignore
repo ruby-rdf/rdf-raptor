@@ -4,4 +4,7 @@
 pkg
 tmp
 Gemfile.lock
+*.log
+.rbx
+/coverage
 
