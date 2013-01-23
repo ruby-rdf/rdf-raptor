@@ -8,11 +8,8 @@ rescue LoadError => e
 end
 
 require 'rdf/raptor'
-
-desc "Build the rdf-raptor-#{File.read('VERSION').chomp}.gem file"
-task :build do
-  sh "gem build .gemspec"
-end
+require 'bundler/gem_helper'
+Bundler::GemHelper.install_tasks :name => "rdf-raptor"
 
 desc "Run memory leak test with valgrind"
 task :memtest do
