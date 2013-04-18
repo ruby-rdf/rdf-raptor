@@ -1,6 +1,5 @@
 Raptor RDF Parser Plugin for RDF.rb
 ===================================
-[![Build Status](https://secure.travis-ci.org/ruby-rdf/rdf-raptor.png?branch=master)](http://travis-ci.org/ruby-rdf/rdf-raptor)
 
 This is an [RDF.rb][] plugin that adds support for parsing/serializing [NTriples][],
 [RDF/XML][], [Turtle][], [RDFa][], and [Graphviz][] data using the [Raptor RDF Parser][Raptor]
@@ -8,6 +7,9 @@ library.
 
 * <http://github.com/ruby-rdf/rdf-raptor>
 * <http://blog.datagraph.org/2010/04/parsing-rdf-with-ruby>
+
+[![Gem Version](https://badge.fury.io/rb/rdf-raptor.png)][gem]
+[![Build Status](https://travis-ci.org/ruby-rdf/rdf-raptor.png?branch=master)](http://travis-ci.org/ruby-rdf/rdf-raptor)
 
 Features
 --------
