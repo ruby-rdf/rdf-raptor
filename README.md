@@ -8,7 +8,7 @@ library.
 * <http://github.com/ruby-rdf/rdf-raptor>
 * <http://blog.datagraph.org/2010/04/parsing-rdf-with-ruby>
 
-[![Gem Version](https://badge.fury.io/rb/rdf-raptor.png)][gem]
+[![Gem Version](https://badge.fury.io/rb/rdf-raptor.png)](http://badge.fury.io/rb/rdf-raptor)
 [![Build Status](https://travis-ci.org/ruby-rdf/rdf-raptor.png?branch=master)](http://travis-ci.org/ruby-rdf/rdf-raptor)
 
 Features
