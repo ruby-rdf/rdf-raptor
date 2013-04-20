@@ -28,10 +28,10 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version      = '>= 1.8.1'
   gem.requirements               = ['libraptor (>= 2.0)']
   gem.add_runtime_dependency     'ffi',      '>= 1.0' unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
-  gem.add_runtime_dependency     'rdf',      '>= 0.3.8'
-  gem.add_development_dependency 'yard' ,    '>= 0.6.0'
-  gem.add_development_dependency 'rspec',    '>= 2.1.0'
-  #gem.add_development_dependency 'rdf-spec', '~> 0.3.0'
+  gem.add_runtime_dependency     'rdf',      '>= 1.0.0'
+  gem.add_development_dependency 'yard' ,    '>= 0.8.6'
+  gem.add_development_dependency 'rspec',    '>= 2.13.0'
+  #gem.add_development_dependency 'rdf-spec', '~> 1.0'
   gem.add_development_dependency 'rake'
   gem.post_install_message       = nil
 end

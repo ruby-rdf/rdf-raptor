@@ -139,7 +139,7 @@ Documentation
 Dependencies
 ------------
 
-* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.3.8)
+* [RDF.rb](http://rubygems.org/gems/rdf) (>= 1.0.0)
 * [FFI](http://rubygems.org/gems/ffi) (>= 1.0.0)
 * [Raptor][] (>= 2.0), the `libraptor` library or the `rapper` binary
 
@@ -204,7 +204,7 @@ License
 This is free and unencumbered public domain software. For more information,
 see <http://unlicense.org/> or the accompanying [UNLICENSE][] file.
 
-[RDF.rb]:   http://rdf.rubyforge.org/
+[RDF.rb]:   http://ruby-rdf.github.com/rdf
 [NTriples]: http://en.wikipedia.org/wiki/N-Triples
 [RDF/XML]:  http://www.w3.org/TR/REC-rdf-syntax/
 [Turtle]:   http://en.wikipedia.org/wiki/Turtle_(syntax)
