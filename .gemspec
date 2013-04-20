@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.date               = File.mtime('VERSION').strftime('%Y-%m-%d')
 
   gem.name               = 'rdf-raptor'
-  gem.homepage           = 'http://rdf.rubyforge.org/raptor/'
+  gem.homepage           = 'http://ruby-rdf.github.com/rdf-raptor'
   gem.license            = 'Public Domain' if gem.respond_to?(:license=)
   gem.summary            = 'Raptor RDF Parser plugin for RDF.rb.'
   gem.description        = 'RDF.rb plugin for parsing/serializing NTriples, RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library.'
