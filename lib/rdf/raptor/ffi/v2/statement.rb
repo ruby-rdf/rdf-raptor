@@ -96,7 +96,7 @@ module RDF::Raptor::FFI::V2
           self[:object] = V2.raptor_new_term_from_uri_string(V2.world, value.to_s)
         when RDF::Literal
           self[:object] = V2.raptor_new_term_from_literal(V2.world, value.to_s,
-            value.datatype? ? V2.raptor_new_uri(value.datatype.to_s) : nil,
+            value.datatype? ? V2.raptor_new_uri(V2.world, value.datatype.to_s) : nil,
             value.language? ? V2.raptor_new_string(value.language.to_s) : nil)
         else
           raise ArgumentError, "object term must be an RDF::Node, RDF::URI, or RDF::Literal"
