@@ -41,7 +41,7 @@ module RDF::Raptor::FFI::V2
     ##
     # Sets the subject term from an `RDF::Resource`.
     #
-    # @param  [RDF::Resource] value
+    # @param  [RDF::Resource] resource
     # @return [void]
     def subject=(resource)
       @subject = nil
@@ -65,7 +65,7 @@ module RDF::Raptor::FFI::V2
     ##
     # Sets the predicate term from an `RDF::URI`.
     #
-    # @param  [RDF::URI] value
+    # @param  [RDF::URI] uri
     # @return [void]
     def predicate=(uri)
       @predicate = nil
