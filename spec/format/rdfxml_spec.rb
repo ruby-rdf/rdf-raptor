@@ -57,7 +57,7 @@ describe RDF::Raptor::RDFXML::Reader do
     end
 
     it "should yield statements" do
-      inner = mock("inner")
+      inner = double("inner")
       inner.should_receive(:called).with(RDF::Statement).exactly(4).times
       @reader.each_statement do |statement|
         inner.called(statement.class)
@@ -65,7 +65,7 @@ describe RDF::Raptor::RDFXML::Reader do
     end
 
     it "should yield triples" do
-      inner = mock("inner")
+      inner = double("inner")
       inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::URI).twice
       inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).twice
       @reader.each_triple do |subject, predicate, object|
