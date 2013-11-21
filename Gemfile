@@ -13,5 +13,3 @@ group :debug do
   gem 'debugger', :platform => [:mri_19]
   gem 'ruby-debug', :platform => [:mri_18]
 end
-
-gem 'ffi', '~> 1.3.1', :platforms => [:rbx]
