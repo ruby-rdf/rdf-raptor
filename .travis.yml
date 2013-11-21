@@ -7,8 +7,7 @@ rvm:
   - 1.9.3
   - 2.0.0
   - jruby-19mode
-  #- rbx-19mode
-  #- rbx-2.1.1
+  - rbx
 before_install:
   - sudo apt-get install libraptor2-0
   - sudo ln -s /usr/lib/libraptor2.so.0 /usr/lib/libraptor2.so

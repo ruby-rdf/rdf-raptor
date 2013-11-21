@@ -25,13 +25,23 @@ Gem::Specification.new do |gem|
   gem.test_files         = %w()
   gem.has_rdoc           = false
 
-  gem.required_ruby_version      = '>= 1.8.1'
+  gem.required_ruby_version      = '>= 1.9.2'
   gem.requirements               = ['libraptor (>= 2.0)']
   gem.add_runtime_dependency     'ffi',      '>= 1.0' unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
-  gem.add_runtime_dependency     'rdf',      '>= 1.0.0'
+  gem.add_runtime_dependency     'rdf',      '>= 1.1.0'
   gem.add_development_dependency 'yard' ,    '>= 0.8.6'
   gem.add_development_dependency 'rspec',    '>= 2.13.0'
   #gem.add_development_dependency 'rdf-spec', '~> 1.0'
   gem.add_development_dependency 'rake'
+
+  # Rubinius has it's own dependencies
+  if RUBY_ENGINE == "rbx" && RUBY_VERSION >= "2.1.0"
+    gem.add_runtime_dependency     "rubysl-bigdecimal"
+    gem.add_runtime_dependency     "rubysl-digest"
+    gem.add_runtime_dependency     "rubysl-enumerator"
+    gem.add_development_dependency "rubysl-open-uri"
+    gem.add_development_dependency "rubysl-prettyprint"
+  end
+
   gem.post_install_message       = nil
 end
