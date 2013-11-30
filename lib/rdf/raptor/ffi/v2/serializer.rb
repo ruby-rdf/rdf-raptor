@@ -99,6 +99,17 @@ module RDF::Raptor::FFI::V2
     end
 
     ##
+    # @param  [Hash{namespace => uri}] prefixes
+    # @return [void]
+    def prefix(prefixes)
+      prefixes.each do |name, uri|
+        if V2.raptor_serializer_set_namespace(self, V2::URI.new(uri.to_s), name.to_s).nonzero?
+          raise RDF::WriterError, "raptor_serializer_set_namespace() failed"
+        end
+      end
+    end
+
+    ##
     # @return [void]
     def finish
       if V2.raptor_serializer_serialize_end(self).nonzero?
