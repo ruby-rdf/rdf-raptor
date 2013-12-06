@@ -77,4 +77,45 @@ describe RDF::Raptor::Turtle::Writer do
     ]
     writers.each { |writer| writer.should == RDF::Raptor::Turtle::Writer }
   end
+
+  it "should not use pname URIs without prefix" do
+    input = %(<http://xmlns.com/foaf/0.1/b> <http://xmlns.com/foaf/0.1/c> <http://xmlns.com/foaf/0.1/d> .)
+    serialize(input, nil,
+      [%r(^<http://xmlns.com/foaf/0.1/b>\s+<http://xmlns.com/foaf/0.1/c>\s+<http://xmlns.com/foaf/0.1/d> \.$)],
+      :prefixes => { }
+    )
+  end
+
+  it "should use pname URIs with prefix" do
+    input = %(<http://xmlns.com/foaf/0.1/b> <http://xmlns.com/foaf/0.1/c> <http://xmlns.com/foaf/0.1/d> .)
+    serialize(input, nil,
+      [%r(^@prefix foaf: <http://xmlns.com/foaf/0.1/> \.$),
+      %r(^foaf:b\s+foaf:c\s+foaf:d \.$)],
+      :prefixes => { :foaf => RDF::FOAF}
+    )
+  end
+
+  def parse(input, options = {})
+    graph = RDF::Graph.new
+    RDF::Raptor::Turtle::Reader.new(input, options).each do |statement|
+      graph << statement
+    end
+    graph
+  end
+
+  # Serialize ntstr to a string and compare against regexps
+  def serialize(ntstr, base = nil, regexps = [], options = {})
+    prefixes = options[:prefixes] || {nil => ""}
+    g = parse(ntstr, :base_uri => base, :prefixes => prefixes, :validate => false)
+    @debug = []
+    result = RDF::Raptor::Turtle::Writer.buffer(options.merge(:base_uri => base, :prefixes => prefixes)) do |writer|
+      writer << g
+    end
+    
+    regexps.each do |re|
+      expect(result).to match(re)
+    end
+    
+    result
+  end
 end

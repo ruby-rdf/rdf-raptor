@@ -88,7 +88,7 @@ describe RDF::Raptor::NTriples::Reader do
   end
   
   it 'should yield statements' do
-    inner = mock("inner")
+    inner = double("inner")
     inner.should_receive(:called).with(RDF::Statement).twice
     @reader.each_statement do |statement|
       inner.called(statement.class)
@@ -102,7 +102,7 @@ describe RDF::Raptor::NTriples::Reader do
   end
   
   it "should yield triples" do
-    inner = mock("inner")
+    inner = double("inner")
     inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::URI).once
     inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).once
     @reader.each_triple do |subject, predicate, object|
