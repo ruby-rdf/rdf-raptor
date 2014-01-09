@@ -13,3 +13,8 @@ group :debug do
   gem 'debugger', :platform => [:mri_19]
   gem 'ruby-debug', :platform => [:mri_18]
 end
+
+platforms :rbx do
+  gem 'rubysl', '~> 2.0'
+  gem 'rubinius', '~> 2.0'
+end

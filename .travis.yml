@@ -15,3 +15,4 @@ matrix:
 before_install:
   - sudo apt-get install libraptor2-0
   - sudo ln -s /usr/lib/libraptor2.so.0 /usr/lib/libraptor2.so
+cache: bundler
