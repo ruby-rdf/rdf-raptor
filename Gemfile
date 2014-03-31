@@ -2,8 +2,8 @@ source "http://rubygems.org"
 
 gemspec :name => ""
 
-gem 'rdf', :git => 'http://github.com/ruby-rdf/rdf', :branch => "develop"
-gem 'rdf-spec', :git => 'http://github.com/ruby-rdf/rdf-spec', :branch => "develop"
+gem 'rdf', :github => 'ruby-rdf/rdf', :branch => "develop"
+gem 'rdf-spec', :github => 'ruby-rdf/rdf-spec', :branch => "develop"
 
 group :development do
   gem 'simplecov', :platforms => [:mri_19, :jruby]
