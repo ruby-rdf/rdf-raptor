@@ -177,9 +177,16 @@ module RDF::Raptor
 
       ##
       # @return [void]
+      # @see    RDF::Writer#write_prologue
+      def write_prologue
+        @serializer.prefix(self.prefixes)
+        super
+      end
+
+      ##
+      # @return [void]
       # @see    RDF::Writer#write_epilogue
       def write_epilogue
-        @serializer.prefix(self.prefixes)
         @serializer.finish
         super
       end

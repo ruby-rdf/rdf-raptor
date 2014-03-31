@@ -117,13 +117,14 @@ module RDF::Raptor::FFI
 
     # @see http://librdf.org/raptor/api/raptor2-section-serializer.html
     typedef :pointer, :raptor_serializer
+    typedef :string, :prefix
     attach_function :raptor_new_serializer, [:raptor_world, :string], :raptor_serializer
     attach_function :raptor_free_serializer, [:raptor_serializer], :void
     attach_function :raptor_serializer_start_to_iostream, [:raptor_serializer, :raptor_uri, :raptor_iostream], :int
     attach_function :raptor_serializer_start_to_filename, [:raptor_serializer, :string], :int
     attach_function :raptor_serializer_serialize_statement, [:raptor_serializer, :raptor_statement], :int
     attach_function :raptor_serializer_serialize_end, [:raptor_serializer], :int
-    attach_function :raptor_serializer_set_namespace, [:raptor_serializer, :raptor_uri, :string], :int
+    attach_function :raptor_serializer_set_namespace, [:raptor_serializer, :raptor_uri, :prefix], :int
     #attach_function :raptor_serializer_set_error_handler, [:raptor_serializer, :pointer, :raptor_message_handler], :void
     #attach_function :raptor_serializer_set_warning_handler, [:raptor_serializer, :pointer, :raptor_message_handler], :void
 
