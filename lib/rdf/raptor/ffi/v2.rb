@@ -11,6 +11,7 @@ module RDF::Raptor::FFI
     autoload :Statement,       'rdf/raptor/ffi/v2/statement'
     autoload :URI,             'rdf/raptor/ffi/v2/uri'
     autoload :Term,            'rdf/raptor/ffi/v2/term'
+    autoload :Namespace,       'rdf/raptor/ffi/v2/namespace'
     autoload :World,           'rdf/raptor/ffi/v2/world'
 
     extend ::FFI::Library
@@ -77,13 +78,19 @@ module RDF::Raptor::FFI
     attach_function :raptor_new_term_from_blank, [:raptor_world, :blank], :raptor_term
     attach_function :raptor_free_term, [:raptor_term], :void
 
+    # @see http://librdf.org/raptor/api/raptor2-section-xml-namespace.html
+    typedef :pointer, :raptor_namespace
+    attach_function :raptor_free_namespace, [:raptor_namespace], :void
+
     # @see http://librdf.org/raptor/api/raptor2-section-parser.html
     callback :raptor_statement_handler, [:pointer, :raptor_statement], :void
+    callback :raptor_namespace_handler, [:pointer, :raptor_namespace], :void
     typedef :pointer, :raptor_parser
     typedef :string, :mime_type
     typedef :string, :buffer
     attach_function :raptor_new_parser, [:raptor_world, :string], :raptor_parser
     attach_function :raptor_world_guess_parser_name, [:raptor_world, :raptor_uri, :mime_type, :buffer, :size_t, :string], :string
+    attach_function :raptor_parser_set_namespace_handler, [:raptor_parser, :pointer, :raptor_namespace_handler], :void
     #attach_function :raptor_set_error_handler, [:raptor_parser, :pointer, :raptor_message_handler], :void
     #attach_function :raptor_set_warning_handler, [:raptor_parser, :pointer, :raptor_message_handler], :void
     attach_function :raptor_parser_set_statement_handler, [:raptor_parser, :pointer, :raptor_statement_handler], :void
@@ -111,9 +118,6 @@ module RDF::Raptor::FFI
     callback        :raptor_iostream_write_end_func, [:pointer], :void
     callback        :raptor_iostream_read_bytes_func, [:pointer, :pointer, :size_t, :size_t], :int
     callback        :raptor_iostream_read_eof_func, [:pointer], :int
-
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-xml-namespace.html
-    typedef :pointer, :raptor_namespace
 
     # @see http://librdf.org/raptor/api/raptor2-section-serializer.html
     typedef :pointer, :raptor_serializer

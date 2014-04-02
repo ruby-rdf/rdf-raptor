@@ -41,8 +41,14 @@ module RDF::Raptor
       def initialize(input = $stdin, options = {}, &block)
         @format = self.class.format.rapper_format
         @parser = V2::Parser.new(@format)
-        @parser.error_handler   = ERROR_HANDLER
+        @parser.error_handler = ERROR_HANDLER
         @parser.warning_handler = WARNING_HANDLER
+        
+        @parser.namespace_handler = Proc.new do |user_data, raptor_namespace|
+          namespace = V2::Namespace.new(raptor_namespace)
+          prefix(namespace.prefix, namespace.uri) if namespace.prefix_length > 0
+        end
+
         super
       end
 
