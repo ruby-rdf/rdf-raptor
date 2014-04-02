@@ -1,5 +1,5 @@
 require 'bundler/setup'
-require 'pry' rescue nil
+require 'pry' rescue LoadError
 
 begin
   require 'simplecov'
