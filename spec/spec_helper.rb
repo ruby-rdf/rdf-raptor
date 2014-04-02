@@ -1,4 +1,5 @@
 require 'bundler/setup'
+require 'pry' rescue nil
 
 begin
   require 'simplecov'

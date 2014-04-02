@@ -10,8 +10,7 @@ group :development do
 end
 
 group :debug do
-  gem 'debugger', :platform => [:mri_19]
-  gem 'ruby-debug', :platform => [:mri_18]
+  gem 'pry'
 end
 
 platforms :rbx do
