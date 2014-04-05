@@ -5,7 +5,7 @@ This is an [RDF.rb][] extension that adds support for parsing/serializing [NTrip
 [RDF/XML][], [Turtle][], [RDFa][], and [Graphviz][] data using the [Raptor RDF Parser][Raptor]
 library.
 
-* <http://github.com/ruby-rdf/rdf-raptor>
+* <https://github.com/ruby-rdf/rdf-raptor>
 * <http://blog.datagraph.org/2010/04/parsing-rdf-with-ruby>
 
 [![Gem Version](https://badge.fury.io/rb/rdf-raptor.png)](http://badge.fury.io/rb/rdf-raptor)
@@ -173,12 +173,12 @@ Download
 
 To get a local working copy of the development repository, do:
 
-    % git clone git://github.com/ruby-rdf/rdf-raptor.git
+    % git clone git@github.com:ruby-rdf/rdf-raptor.git
 
 Alternatively, download the latest development version as a tarball as
 follows:
 
-    % wget http://github.com/ruby-rdf/rdf-raptor/tarball/master
+    % wget https://github.com/ruby-rdf/rdf-raptor/tarball/master
 
 Mailing List
 ------------
@@ -188,15 +188,15 @@ Mailing List
 Authors
 -------
 
-* [Arto Bendiken](http://github.com/bendiken) - <http://ar.to/>
-* [John Fieber](http://github.com/jfieber) - <http://github.com/jfieber>
+* [Arto Bendiken](https://github.com/bendiken) - <http://ar.to/>
+* [John Fieber](https://github.com/jfieber) - <http://github.com/jfieber>
 
 Contributors
 ------------
 
-* [Ben Lavender](http://github.com/bhuga) - <http://bhuga.net/>
-* [David Butler](http://github.com/dwbutler) - <http://github.com/dwbutler>
-* [Gregg Kellogg](http://github.com/gkellogg) - <http://greggkellogg.net/>
+* [Ben Lavender](https://github.com/bhuga) - <http://bhuga.net/>
+* [David Butler](https://github.com/dwbutler) - <http://github.com/dwbutler>
+* [Gregg Kellogg](https://github.com/gkellogg) - <http://greggkellogg.net/>
 
 License
 -------
@@ -204,10 +204,10 @@ License
 This is free and unencumbered public domain software. For more information,
 see <http://unlicense.org/> or the accompanying [UNLICENSE][] file.
 
-[RDF.rb]:   http://ruby-rdf.github.com/rdf
-[NTriples]: http://en.wikipedia.org/wiki/N-Triples
+[RDF.rb]:   https://ruby-rdf.github.io/rdf
+[NTriples]: https://en.wikipedia.org/wiki/N-Triples
 [RDF/XML]:  http://www.w3.org/TR/REC-rdf-syntax/
-[Turtle]:   http://en.wikipedia.org/wiki/Turtle_(syntax)
+[Turtle]:   https://en.wikipedia.org/wiki/Turtle_(syntax)
 [RDFa]:     http://rdfa.info/
 [Graphviz]: http://www.graphviz.org/
 [Raptor]:   http://librdf.org/raptor/
