@@ -1,4 +1,4 @@
-Raptor RDF Parser Plugin for RDF.rb
+Raptor RDF Extension for RDF.rb
 ===================================
 
 This is an [RDF.rb][] extension that adds support for parsing/serializing [NTriples][],
