@@ -72,11 +72,18 @@ describe RDF::Raptor::RDFXML::Reader do
         inner.called(subject.class, predicate.class, object.class)
       end
     end
+
+    it "reads prefixes" do
+      @reader.each_triple.map {}
+      expect(@reader.prefixes[:rdf]).to eq(RDF)
+      expect(@reader.prefixes[:ex]).to eq(RDF::URI.new('http://www.example.org/'))
+    end
     
-    it "should open and parse a file" do
+    it "opens and parses a file" do
       RDF::Reader.open("etc/doap.xml") do |reader|
-        reader.should be_a subject.class
-        reader.count.should be > 0
+        expect(reader).to be_a subject.class
+        expect(reader.statements.count).to_not be_zero
+        expect(reader.prefixes[:doap]).to eq(RDF::DOAP)
       end
     end
   end

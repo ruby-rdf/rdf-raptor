@@ -46,10 +46,22 @@ describe RDF::Raptor::RDFa::Reader do
     readers.each { |reader| reader.should == RDF::Raptor::RDFa::Reader }
   end
   
-  it "should open and parse a file" do
-    RDF::Reader.open("etc/doap.html") do |reader|
-      reader.should be_a subject.class
-      reader.count.should be > 0
+  context "when opening and parsing a file" do
+    let(:reader) { RDF::Reader.open("etc/doap.html") }
+    before { reader.statements.to_a }
+    after { reader.close }
+    
+    specify { expect(reader).to be_a subject.class }
+    specify { expect(reader.statements.count).to_not be_zero }
+    
+    it "reads xml namespaces" do
+      expect(reader.prefixes[:foaf]).to eq(RDF::FOAF)
+    end
+
+    it "reads HTML5 prefixes" do
+      pending 'libraptor does not support prefixes for HTML 5 + RDFa 1.1' do
+        expect(reader.prefixes[:doap]).to eq(RDF::DOAP)
+      end
     end
   end
 end

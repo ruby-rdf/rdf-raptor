@@ -3,7 +3,7 @@ module RDF::Raptor::FFI::V2
   # This class provides the functionality of turning syntaxes into RDF
   # triples - RDF parsing.
   #
-  # @see http://librdf.org/raptor/api-1.4/raptor-section-parser.html
+  # @see http://librdf.org/raptor/api/raptor2-section-parser.html
   class Parser < ::FFI::ManagedStruct
     include RDF::Raptor::FFI
     layout :world, :pointer # the actual layout is private
@@ -60,6 +60,13 @@ module RDF::Raptor::FFI::V2
     # @return [void]
     def statement_handler=(handler)
       V2.raptor_parser_set_statement_handler(self, self, handler)
+    end
+
+    ##
+    # @param  [Proc] handler
+    # @return [void]
+    def namespace_handler=(handler)
+      V2.raptor_parser_set_namespace_handler(self, self, handler)
     end
 
     ##
