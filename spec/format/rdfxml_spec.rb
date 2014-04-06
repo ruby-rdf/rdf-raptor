@@ -82,7 +82,7 @@ describe RDF::Raptor::RDFXML::Reader do
     it "opens and parses a file" do
       RDF::Reader.open("etc/doap.xml") do |reader|
         expect(reader).to be_a subject.class
-        expect(reader).to_not be_empty
+        expect(reader.statements).to_not be_empty
         expect(reader.prefixes[:doap]).to eq(RDF::DOAP)
       end
     end
