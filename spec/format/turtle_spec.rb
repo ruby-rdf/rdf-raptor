@@ -46,10 +46,11 @@ describe RDF::Raptor::Turtle::Reader do
     readers.each { |reader| reader.should == RDF::Raptor::Turtle::Reader }
   end
   
-  it "should open and parse a file" do
+  it "opens and parses a file" do
     RDF::Reader.open("etc/doap.ttl") do |reader|
-      reader.should be_a subject.class
-      reader.count.should be > 0
+      expect(reader).to be_a subject.class
+      expect(reader).to_not be_empty
+      expect(reader.prefixes[:doap]).to eq(RDF::DOAP)
     end
   end
 end
