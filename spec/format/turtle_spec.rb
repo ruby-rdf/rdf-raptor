@@ -24,8 +24,13 @@ describe RDF::Raptor::Turtle::Format do
 end
 
 describe RDF::Raptor::Turtle::Reader do
+  let!(:doap) {File.expand_path("../../../etc/doap.ttl", __FILE__)}
+  let!(:doap_count) {45}
+
   before(:each) do
-    @reader = RDF::Raptor::Turtle::Reader.new
+    @reader_input = File.read(doap)
+    @reader = RDF::Raptor::Turtle::Reader.new(@reader_input)
+    @reader_count = doap_count
   end
   
   # @see lib/rdf/spec/reader.rb in rdf-spec

@@ -62,10 +62,11 @@ end
 
 describe RDF::Raptor::NTriples::Reader do
   before(:each) do
-    @input = %q(<http://rubygems.org/gems/rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
+    @reader_input = %q(<http://rubygems.org/gems/rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
     <http://rubygems.org/gems/rdf> <http://usefulinc.com/ns/doap#name> "RDF.rb" .
     )
-    @reader = RDF::Raptor::NTriples::Reader.new(@input)
+    @reader = RDF::Raptor::NTriples::Reader.new(@reader_input)
+    @reader_count = 2
   end
   
   # @see lib/rdf/spec/reader.rb in rdf-spec
@@ -125,7 +126,7 @@ describe RDF::Raptor::NTriples::Reader do
   
   it "should parse a String" do
     reader = RDF::Raptor::NTriples::Reader.new
-    result = reader.parse(@input)
+    result = reader.parse(@reader_input)
     result.should == 0
   end
 end

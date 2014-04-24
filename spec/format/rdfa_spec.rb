@@ -24,8 +24,13 @@ describe RDF::Raptor::RDFa::Format do
 end
 
 describe RDF::Raptor::RDFa::Reader do
+  let!(:doap) {File.expand_path("../../../etc/doap.html", __FILE__)}
+  let!(:doap_count) {27}
+
   before(:each) do
-    @reader = RDF::Raptor::RDFa::Reader.new
+    @reader_input = File.read(doap)
+    @reader = RDF::Raptor::RDFa::Reader.new(@reader_input)
+    @reader_count = doap_count
   end
   
   # @see lib/rdf/spec/reader.rb in rdf-spec

@@ -23,8 +23,13 @@ describe RDF::Raptor::RDFXML::Format do
 end
 
 describe RDF::Raptor::RDFXML::Reader do
-  before :each do
-    @reader = RDF::Raptor::RDFXML::Reader.new(StringIO.new(""))
+  let!(:doap) {File.expand_path("../../../etc/doap.xml", __FILE__)}
+  let!(:doap_count) {20}
+
+  before(:each) do
+    @reader_input = File.read(doap)
+    @reader = RDF::Raptor::RDFXML::Reader.new(@reader_input)
+    @reader_count = doap_count
   end
 
   include RDF_Reader
