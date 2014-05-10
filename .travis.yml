@@ -11,7 +11,7 @@ rvm:
   - rbx-2
 matrix:
   allow_failures:
-    - rvm: rbx
+    - rvm: rbx-2
 before_install:
   - sudo apt-get install libraptor2-0
   - sudo ln -s /usr/lib/libraptor2.so.0 /usr/lib/libraptor2.so
