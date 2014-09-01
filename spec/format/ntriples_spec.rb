@@ -20,7 +20,7 @@ describe RDF::Raptor::NTriples::Format do
       RDF::Format.for(:content_type   => "text/plain"),
       RDF::Format.for(:content_type   => "application/n-triples"),
     ]
-    formats.each { |format| format.should == @format_class }
+    formats.each { |format| expect(format).to eq(@format_class) }
   end
   
   {
@@ -29,7 +29,7 @@ describe RDF::Raptor::NTriples::Format do
     :multi_line => %(<a>\n  <b>\n  "literal"\n .),
   }.each do |sym, str|
     it "detects #{sym}" do
-      @format_class.for {str}.should == @format_class
+      expect(@format_class.for {str}).to eq(@format_class)
     end
   end
   
@@ -40,7 +40,7 @@ describe RDF::Raptor::NTriples::Format do
       :multi_line => %(<a>\n  <b>\n  "literal"\n .),
     }.each do |sym, str|
       it "detects #{sym}" do
-        @format_class.detect(str).should be_true
+        expect(@format_class.detect(str)).to be true
       end
     end
 
@@ -54,7 +54,7 @@ describe RDF::Raptor::NTriples::Format do
       :n3            => '@prefix foo: <bar> .\nfoo:bar = {<a> <b> <c>} .',
     }.each do |sym, str|
       it "does not detect #{sym}" do
-        @format_class.detect(str).should be_false
+        expect(@format_class.detect(str)).to be false
       end
     end
   end
@@ -73,7 +73,7 @@ describe RDF::Raptor::NTriples::Reader do
   include RDF_Reader
   
   it "should return :ntriples for to_sym" do
-    @reader.class.to_sym.should == :ntriples
+    expect(@reader.class.to_sym).to eq(:ntriples)
   end
   
   it "should be discoverable" do
@@ -85,12 +85,12 @@ describe RDF::Raptor::NTriples::Reader do
       RDF::Reader.for(:content_type   => "text/plain"),
       RDF::Reader.for(:content_type   => "application/n-triples"),
     ]
-    readers.each { |reader| reader.should == RDF::Raptor::NTriples::Reader }
+    readers.each { |reader| expect(reader).to eq(RDF::Raptor::NTriples::Reader) }
   end
   
   it 'should yield statements' do
     inner = double("inner")
-    inner.should_receive(:called).with(RDF::Statement).twice
+    expect(inner).to receive(:called).with(RDF::Statement).twice
     @reader.each_statement do |statement|
       inner.called(statement.class)
     end
@@ -98,14 +98,14 @@ describe RDF::Raptor::NTriples::Reader do
   
   it 'should yield raw statements' do
     @reader.each_statement(:raw => true) do |statement|
-      statement.should be_a RDF::Raptor::FFI::V2::Statement
+      expect(statement).to be_a RDF::Raptor::FFI::V2::Statement
     end
   end
   
   it "should yield triples" do
     inner = double("inner")
-    inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::URI).once
-    inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).once
+    expect(inner).to receive(:called).with(RDF::URI, RDF::URI, RDF::URI).once
+    expect(inner).to receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).once
     @reader.each_triple do |subject, predicate, object|
       inner.called(subject.class, predicate.class, object.class)
     end
@@ -113,21 +113,21 @@ describe RDF::Raptor::NTriples::Reader do
   
   it "should open and parse a file" do
     RDF::Reader.open("etc/doap.nt") do |reader|
-      reader.should be_a subject.class
-      reader.count.should be > 0
+      expect(reader).to be_a subject.class
+      expect(reader.count).to be > 0
     end
   end
   
   it "should parse a URI" do
     reader = RDF::Raptor::NTriples::Reader.new
     result = reader.parse("http://dbpedia.org/data/Michael_Jackson.ntriples")
-    result.should == 0
+    expect(result).to eq(0)
   end
   
   it "should parse a String" do
     reader = RDF::Raptor::NTriples::Reader.new
     result = reader.parse(@reader_input)
-    result.should == 0
+    expect(result).to eq(0)
   end
 end
 
@@ -141,7 +141,7 @@ describe RDF::Raptor::NTriples::Writer do
   include RDF_Writer
 
   it "should return :ntriples for to_sym" do
-    @writer_class.to_sym.should == :ntriples
+    expect(@writer_class.to_sym).to eq(:ntriples)
   end
   
   it "should be discoverable" do
@@ -153,7 +153,7 @@ describe RDF::Raptor::NTriples::Writer do
       RDF::Writer.for(:content_type   => "text/plain"),
       RDF::Writer.for(:content_type   => "application/n-triples"),
     ]
-    writers.each { |writer| writer.should == RDF::Raptor::NTriples::Writer }
+    writers.each { |writer| expect(writer).to eq(RDF::Raptor::NTriples::Writer) }
   end
 end
 
@@ -207,25 +207,25 @@ describe RDF::Raptor::NTriples do
 
     it "should output statements to a string buffer" do
       output = @writer.buffer { |writer| writer << @stmt }
-      output.should == "#{@stmt_string}\n"
+      expect(output).to eq("#{@stmt_string}\n")
     end
 
     it "should dump statements to a string buffer" do
       output = StringIO.new
       @writer.dump(@graph, output)
-      output.string.should == "#{@stmt_string}\n"
+      expect(output.string).to eq("#{@stmt_string}\n")
     end
 
     it "should dump arrays of statements to a string buffer" do
       output = StringIO.new
       @writer.dump(@graph.to_a, output)
-      output.string.should == "#{@stmt_string}\n"
+      expect(output.string).to eq("#{@stmt_string}\n")
     end
 
     it "should dump statements to a file" do
       require 'tmpdir' # for Dir.tmpdir
       @writer.dump(@graph, filename = File.join(Dir.tmpdir, "test.nt"))
-      File.read(filename).should == "#{@stmt_string}\n"
+      expect(File.read(filename)).to eq("#{@stmt_string}\n")
       File.unlink(filename)
     end
   end

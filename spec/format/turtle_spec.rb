@@ -19,7 +19,7 @@ describe RDF::Raptor::Turtle::Format do
       RDF::Format.for(:file_extension => "ttl"),
       RDF::Format.for(:content_type   => "text/turtle"),
     ]
-    formats.each { |format| format.should == RDF::Raptor::Turtle::Format }
+    formats.each { |format| expect(format).to eq(RDF::Raptor::Turtle::Format) }
   end
 end
 
@@ -37,7 +37,7 @@ describe RDF::Raptor::Turtle::Reader do
   include RDF_Reader
   
   it "should return :turtle for to_sym" do
-    @reader.class.to_sym.should == :turtle
+    expect(@reader.class.to_sym).to eq(:turtle)
   end
   
   it "should be discoverable" do
@@ -48,7 +48,7 @@ describe RDF::Raptor::Turtle::Reader do
       RDF::Reader.for(:file_extension => "ttl"),
       RDF::Reader.for(:content_type   => "text/turtle"),
     ]
-    readers.each { |reader| reader.should == RDF::Raptor::Turtle::Reader }
+    readers.each { |reader| expect(reader).to eq(RDF::Raptor::Turtle::Reader) }
   end
   
   it "opens and parses a file" do
@@ -70,7 +70,7 @@ describe RDF::Raptor::Turtle::Writer do
   include RDF_Writer
 
   it "should return :ttl for to_sym" do
-    @writer_class.to_sym.should == :turtle
+    expect(@writer_class.to_sym).to eq(:turtle)
   end
   
   it "should be discoverable" do
@@ -81,7 +81,7 @@ describe RDF::Raptor::Turtle::Writer do
       RDF::Writer.for(:file_extension => "ttl"),
       RDF::Writer.for(:content_type   => "text/turtle"),
     ]
-    writers.each { |writer| writer.should == RDF::Raptor::Turtle::Writer }
+    writers.each { |writer| expect(writer).to eq(RDF::Raptor::Turtle::Writer) }
   end
 
   it "should not use pname URIs without prefix" do

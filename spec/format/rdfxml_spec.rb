@@ -18,7 +18,7 @@ describe RDF::Raptor::RDFXML::Format do
       RDF::Format.for(:file_extension => "rdf"),
       RDF::Format.for(:content_type   => "application/rdf+xml"),
     ]
-    formats.each { |format| format.should == RDF::Raptor::RDFXML::Format }
+    formats.each { |format| expect(format).to eq(RDF::Raptor::RDFXML::Format) }
   end
 end
 
@@ -42,10 +42,10 @@ describe RDF::Raptor::RDFXML::Reader do
       RDF::Reader.for(:file_extension => "rdf"),
       RDF::Reader.for(:content_type   => "application/rdf+xml"),
     ]
-    readers.each { |reader| reader.should == RDF::Raptor::RDFXML::Reader }
+    readers.each { |reader| expect(reader).to eq(RDF::Raptor::RDFXML::Reader) }
   end
   
-  context :interface do
+  context 'interface' do
     before(:each) do
       @reader = RDF::Raptor::RDFXML::Reader.new(%q(<?xml version="1.0" ?>
         <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -58,12 +58,12 @@ describe RDF::Raptor::RDFXML::Reader do
     end
 
     it "should return reader" do
-      @reader.should be_a(RDF::Raptor::RDFXML::Reader)
+      expect(@reader).to be_a(RDF::Raptor::RDFXML::Reader)
     end
 
     it "should yield statements" do
       inner = double("inner")
-      inner.should_receive(:called).with(RDF::Statement).exactly(4).times
+      expect(inner).to receive(:called).with(RDF::Statement).exactly(4).times
       @reader.each_statement do |statement|
         inner.called(statement.class)
       end
@@ -71,8 +71,8 @@ describe RDF::Raptor::RDFXML::Reader do
 
     it "should yield triples" do
       inner = double("inner")
-      inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::URI).twice
-      inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).twice
+      expect(inner).to receive(:called).with(RDF::URI, RDF::URI, RDF::URI).twice
+      expect(inner).to receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).twice
       @reader.each_triple do |subject, predicate, object|
         inner.called(subject.class, predicate.class, object.class)
       end
@@ -111,6 +111,6 @@ describe RDF::Raptor::RDFXML::Writer do
       RDF::Writer.for(:file_extension => "rdf"),
       RDF::Writer.for(:content_type   => "application/rdf+xml"),
     ]
-    writers.each { |writer| writer.should == RDF::Raptor::RDFXML::Writer }
+    writers.each { |writer| expect(writer).to eq(RDF::Raptor::RDFXML::Writer) }
   end
 end

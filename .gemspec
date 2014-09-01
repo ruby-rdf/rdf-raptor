@@ -31,6 +31,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency     'rdf',      '>= 1.1.0'
   gem.add_development_dependency 'yard' ,    '>= 0.8.6'
   gem.add_development_dependency 'rspec',    '>= 2.14.0'
+  gem.add_development_dependency 'rspec-its'
   gem.add_development_dependency 'rdf-spec', '>= 1.1.0'
   gem.add_development_dependency 'rake'
 

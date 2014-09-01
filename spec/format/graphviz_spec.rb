@@ -19,7 +19,7 @@ describe RDF::Raptor::Graphviz::Format do
       RDF::Format.for(:file_extension => "dot"),
       RDF::Format.for(:content_type   => "text/vnd.graphviz"),
     ]
-    formats.each { |format| format.should == RDF::Raptor::Graphviz::Format }
+    formats.each { |format| expect(format).to eq(RDF::Raptor::Graphviz::Format) }
   end
 end
 
@@ -33,7 +33,7 @@ describe RDF::Raptor::Graphviz::Writer do
   include RDF_Writer
 
   it "should return :graphviz for to_sym" do
-    @writer_class.to_sym.should == :graphviz
+    expect(@writer_class.to_sym).to eq(:graphviz)
   end
   
   it "should be discoverable" do
@@ -44,7 +44,7 @@ describe RDF::Raptor::Graphviz::Writer do
       RDF::Writer.for(:file_extension => "dot"),
       RDF::Writer.for(:content_type   => "text/vnd.graphviz"),
     ]
-    writers.each { |writer| writer.should == RDF::Raptor::Graphviz::Writer }
+    writers.each { |writer| expect(writer).to eq(RDF::Raptor::Graphviz::Writer) }
   end
 end
 

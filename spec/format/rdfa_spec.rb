@@ -19,7 +19,7 @@ describe RDF::Raptor::RDFa::Format do
       RDF::Format.for(:file_extension => "html"),
       RDF::Format.for(:content_type   => "application/xhtml+xml"),
     ]
-    formats.each { |format| format.should == RDF::Raptor::RDFa::Format }
+    formats.each { |format| expect(format).to eq(RDF::Raptor::RDFa::Format) }
   end
 end
 
@@ -38,7 +38,7 @@ describe RDF::Raptor::RDFa::Reader do
   #include RDF_Reader
   
   it "should return :rdfa for to_sym" do
-    @reader.class.to_sym.should == :rdfa
+    expect(@reader.class.to_sym).to eq(:rdfa)
   end
   
   it "should be discoverable" do
@@ -49,7 +49,7 @@ describe RDF::Raptor::RDFa::Reader do
       RDF::Reader.for(:file_extension => "html"),
       RDF::Reader.for(:content_type   => "application/xhtml+xml"),
     ]
-    readers.each { |reader| reader.should == RDF::Raptor::RDFa::Reader }
+    readers.each { |reader| expect(reader).to eq(RDF::Raptor::RDFa::Reader) }
   end
   
   context "when opening and parsing a file" do
@@ -65,9 +65,8 @@ describe RDF::Raptor::RDFa::Reader do
     end
 
     it "reads HTML5 prefixes" do
-      pending 'libraptor does not support prefixes for HTML 5 + RDFa 1.1' do
-        expect(reader.prefixes[:doap]).to eq(RDF::DOAP)
-      end
+      pending 'libraptor does not support prefixes for HTML 5 + RDFa 1.1'
+      expect(reader.prefixes[:doap]).to eq(RDF::DOAP)
     end
   end
 end
