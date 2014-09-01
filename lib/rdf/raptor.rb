@@ -57,15 +57,15 @@ module RDF
   #   RDF::Format.for(:content_type   => "application/xhtml+xml")
   #
   # {RDF::Raptor} includes an FFI implementation, which loads the
-  # `libraptor` library into the Ruby process, as well as a CLI
+  # `libraptor2` library into the Ruby process, as well as a CLI
   # implementation, which drives the `rapper` command-line tool in a
   # sub-process.
   #
-  # The FFI implementation is used by default unless the `libraptor` library
+  # The FFI implementation is used by default unless the `libraptor2` library
   # cannot be found, or if the `RDF_RAPTOR_ENGINE` environment variable is
   # explicitly set to `'cli'`.
   #
-  # If the `libraptor` library is in the standard library search path, and
+  # If the `libraptor2` library is in the standard library search path, and
   # the `rapper` command is in the standard command search path, all should
   # be well and work fine out of the box. However, if either is in a
   # non-standard location, be sure to set the `RDF_RAPTOR_LIBPATH` and/or

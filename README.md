@@ -168,6 +168,13 @@ Mac and the most common Linux and BSD distributions:
     % [sudo] pkg_add -r raptor               # FreeBSD
     % [sudo] pkg_add raptor                  # OpenBSD / NetBSD
 
+If the `libraptor2` library is in the standard library search path, and
+the `rapper` command is in the standard command search path, all should
+be well and work fine out of the box. However, if either is in a
+non-standard location, be sure to set the `RDF_RAPTOR_LIBPATH` and/or
+`RDF_RAPTOR_BINPATH` environment variables appropriately before
+requiring `rdf/raptor`.
+
 Download
 --------
 
