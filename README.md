@@ -161,7 +161,7 @@ Mac and the most common Linux and BSD distributions:
     % brew install raptor                    # Mac OS X with Homebrew
     % [sudo] aptitude install raptor-utils   # Ubuntu / Debian with aptitude
     % [sudo] apt-get install libraptor2-0    # Ubuntu / Debian with apt-get
-    % [sudo] yum install raptor              # Fedora / CentOS / RHEL
+    % [sudo] yum install raptor2             # Fedora / CentOS / RHEL
     % [sudo] zypper install raptor           # openSUSE
     % [sudo] emerge raptor                   # Gentoo Linux
     % [sudo] pacman -S raptor                # Arch Linux
