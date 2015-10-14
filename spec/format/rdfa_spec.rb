@@ -25,11 +25,11 @@ describe RDF::Raptor::RDFa::Reader do
   let!(:doap_count) {27}
 
   # @see lib/rdf/spec/reader.rb in rdf-spec
-  it_behaves_like 'an RDF::Reader', skip: "Travis reports wrong statement" do
-    let(:reader) {RDF::Raptor::RDFa::Reader.new(@reader_input)}
-    let(:reader_input) {File.read(doap)}
-    let(:reader_count) {doap_count}
-  end
+  #it_behaves_like 'an RDF::Reader', skip: "Travis reports wrong statement" do
+  #  let(:reader) {RDF::Raptor::RDFa::Reader.new(@reader_input)}
+  #  let(:reader_input) {File.read(doap)}
+  #  let(:reader_count) {doap_count}
+  #end
 
   it "should return :rdfa for to_sym" do
     expect(described_class.to_sym).to eq(:rdfa)
