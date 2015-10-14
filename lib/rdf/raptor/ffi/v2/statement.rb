@@ -30,7 +30,7 @@ module RDF::Raptor::FFI::V2
     attr_accessor :id
 
     # @return [RDF::Resource]
-    attr_accessor :context
+    attr_accessor :graph_name
 
     ##
     # @return [RDF::Resource]
@@ -115,19 +115,19 @@ module RDF::Raptor::FFI::V2
     # @return [Array(RDF::Resource, RDF::URI, RDF::Term, nil)]
     # @see    RDF::Statement#to_quad
     def to_quad
-      [subject, predicate, object, context]
+      [subject, predicate, object, graph_name]
     end
 
     ##
     # @return [RDF::Statement]
     def to_rdf
-      RDF::Statement.new(subject, predicate, object, :context => context)
+      RDF::Statement.new(subject, predicate, object, graph_name: graph_name)
     end
 
     ##
     # @return [void]
     def reset!
-      @subject = @predicate = @object = @context = nil
+      @subject = @predicate = @object = @graph_name = nil
     end
 
     ##

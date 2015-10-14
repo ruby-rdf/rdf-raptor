@@ -27,14 +27,14 @@ module RDF::Raptor
     # @example Obtaining an RDF/XML format class
     #   RDF::Format.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Format
     #   RDF::Format.for("input.rdf")
-    #   RDF::Format.for(:file_name      => "input.rdf")
-    #   RDF::Format.for(:file_extension => "rdf")
-    #   RDF::Format.for(:content_type   => "application/rdf+xml")
+    #   RDF::Format.for(file_name:      "input.rdf")
+    #   RDF::Format.for(file_extension: "rdf")
+    #   RDF::Format.for(content_type:   "application/rdf+xml")
     #
     class Format < RDF::Format
       extend RDF::Raptor::Format
       
-      content_type     'application/rdf+xml', :extension => :rdf
+      content_type     'application/rdf+xml', extension: :rdf
       content_encoding 'utf-8'
       rapper_format    :rdfxml
 
@@ -53,9 +53,9 @@ module RDF::Raptor
     # @example Obtaining an RDF/XML reader class
     #   RDF::Reader.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Reader
     #   RDF::Reader.for("input.rdf")
-    #   RDF::Reader.for(:file_name      => "input.rdf")
-    #   RDF::Reader.for(:file_extension => "rdf")
-    #   RDF::Reader.for(:content_type   => "application/rdf+xml")
+    #   RDF::Reader.for(file_name:      "input.rdf")
+    #   RDF::Reader.for(file_extension: "rdf")
+    #   RDF::Reader.for(content_type:   "application/rdf+xml")
     #
     # @example Parsing RDF statements from an RDF/XML file
     #   RDF::Reader.open("input.rdf") do |reader|
@@ -74,9 +74,9 @@ module RDF::Raptor
     # @example Obtaining an RDF/XML writer class
     #   RDF::Writer.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Writer
     #   RDF::Writer.for("output.rdf")
-    #   RDF::Writer.for(:file_name      => "output.rdf")
-    #   RDF::Writer.for(:file_extension => "rdf")
-    #   RDF::Writer.for(:content_type   => "application/rdf+xml")
+    #   RDF::Writer.for(file_name:      "output.rdf")
+    #   RDF::Writer.for(file_extension: "rdf")
+    #   RDF::Writer.for(content_type:   "application/rdf+xml")
     #
     # @example Serializing RDF statements into an RDF/XML file
     #   RDF::Writer.open("output.rdf") do |writer|

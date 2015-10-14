@@ -33,7 +33,7 @@ module RDF::Raptor::FFI::V1
     attr_accessor :id
 
     # @return [RDF::Resource]
-    attr_accessor :context
+    attr_accessor :graph_name
 
     ##
     # @return [RDF::Resource]
@@ -118,9 +118,9 @@ module RDF::Raptor::FFI::V1
           str = self[:object].read_string.unpack('U*').pack('U*')
           case
             when !self[:object_literal_language].null?
-              RDF::Literal.new(str, :language => self[:object_literal_language].read_string)
+              RDF::Literal.new(str, language: self[:object_literal_language].read_string)
             when !self[:object_literal_datatype].null?
-              RDF::Literal.new(str, :datatype => V1.raptor_uri_as_string(self[:object_literal_datatype]))
+              RDF::Literal.new(str, datatype: V1.raptor_uri_as_string(self[:object_literal_datatype]))
             else
               RDF::Literal.new(str)
           end
@@ -175,19 +175,19 @@ module RDF::Raptor::FFI::V1
     # @return [Array(RDF::Resource, RDF::URI, RDF::Term, nil)]
     # @see    RDF::Statement#to_quad
     def to_quad
-      [subject, predicate, object, context]
+      [subject, predicate, object, graph_name]
     end
 
     ##
     # @return [RDF::Statement]
     def to_rdf
-      RDF::Statement.new(subject, predicate, object, :context => context)
+      RDF::Statement.new(subject, predicate, object, graph_name: graph_name)
     end
 
     ##
     # @return [void]
     def reset!
-      @subject = @predicate = @object = @context = nil
+      @subject = @predicate = @object = @graph_name = nil
     end
 
     ##

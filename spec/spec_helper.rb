@@ -18,11 +18,11 @@ require 'rdf/spec/matchers'
 
 RSpec.configure do |config|
   config.include(RDF::Spec::Matchers)
-  config.exclusion_filter = {:ruby => lambda { |version|
+  config.exclusion_filter = {ruby: lambda { |version|
     RUBY_VERSION.to_s !~ /^#{version}/
   }}
   
   unless ENV['RDF_RAPTOR_ENGINE'] == 'cli'
-    config.filter_run_excluding :cli => true
+    config.filter_run_excluding cli: true
   end
 end

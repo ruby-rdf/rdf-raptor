@@ -58,7 +58,7 @@ Examples
 
 ### Extracting RDF statements from an HTML+RDFa document
 
-    RDF::Reader.open(url = "http://bblfish.net/", :format => :rdfa, :base_uri => url) do |reader|
+    RDF::Reader.open(url = "http://bblfish.net/", format: :rdfa, base_uri: url) do |reader|
       reader.each_statement do |statement|
         puts statement.inspect
       end
@@ -88,41 +88,41 @@ Examples
 
     RDF::Format.for(:ntriples)      #=> RDF::Raptor::NTriples::Format
     RDF::Format.for("input.nt")
-    RDF::Format.for(:file_name      => "input.nt")
-    RDF::Format.for(:file_extension => "nt")
-    RDF::Format.for(:content_type   => "application/n-triples")
+    RDF::Format.for(file_name:      "input.nt")
+    RDF::Format.for(file_extension: "nt")
+    RDF::Format.for(content_type:   "application/n-triples")
 
 ### Obtaining the RDF/XML format specification class
 
     RDF::Format.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Format
     RDF::Format.for("input.rdf")
-    RDF::Format.for(:file_name      => "input.rdf")
-    RDF::Format.for(:file_extension => "rdf")
-    RDF::Format.for(:content_type   => "application/rdf+xml")
+    RDF::Format.for(file_name:      "input.rdf")
+    RDF::Format.for(file_extension: "rdf")
+    RDF::Format.for(content_type:   "application/rdf+xml")
 
 ### Obtaining the Turtle format specification class
 
     RDF::Format.for(:turtle)       #=> RDF::Raptor::Turtle::Format
     RDF::Format.for("input.ttl")
-    RDF::Format.for(:file_name      => "input.ttl")
-    RDF::Format.for(:file_extension => "ttl")
-    RDF::Format.for(:content_type   => "text/turtle")
+    RDF::Format.for(file_name:      "input.ttl")
+    RDF::Format.for(file_extension: "ttl")
+    RDF::Format.for(content_type:   "text/turtle")
 
 ### Obtaining the RDFa format specification class
 
     RDF::Format.for(:rdfa)         #=> RDF::Raptor::RDFa::Format
     RDF::Format.for("input.html")
-    RDF::Format.for(:file_name      => "input.html")
-    RDF::Format.for(:file_extension => "html")
-    RDF::Format.for(:content_type   => "application/xhtml+xml")
+    RDF::Format.for(file_name:      "input.html")
+    RDF::Format.for(file_extension: "html")
+    RDF::Format.for(content_type:   "application/xhtml+xml")
 
 ### Obtaining the Graphviz format specification class
 
     RDF::Format.for(:graphviz)     #=> RDF::Raptor::Graphviz::Format
     RDF::Format.for("output.dot")
-    RDF::Format.for(:file_name      => "output.dot")
-    RDF::Format.for(:file_extension => "")
-    RDF::Format.for(:content_type   => "text/vnd.graphviz")
+    RDF::Format.for(file_name:      "output.dot")
+    RDF::Format.for(file_extension: "")
+    RDF::Format.for(content_type:   "text/vnd.graphviz")
 
 Documentation
 -------------

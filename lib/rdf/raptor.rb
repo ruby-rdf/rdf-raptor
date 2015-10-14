@@ -31,30 +31,30 @@ module RDF
   # @example Obtaining an N-Triples format class
   #   RDF::Format.for(:ntriples)     #=> RDF::Raptor::NTriples::Format
   #   RDF::Format.for("input.nt")
-  #   RDF::Format.for(:file_name      => "input.nt")
-  #   RDF::Format.for(:file_extension => "nt")
-  #   RDF::Format.for(:content_type   => "text/plain")
+  #   RDF::Format.for(file_name:      "input.nt")
+  #   RDF::Format.for(file_extension: "nt")
+  #   RDF::Format.for(content_type:   "text/plain")
   #
   # @example Obtaining a Turtle format class
   #   RDF::Format.for(:turtle)       #=> RDF::Raptor::Turtle::Format
   #   RDF::Format.for("input.ttl")
-  #   RDF::Format.for(:file_name      => "input.ttl")
-  #   RDF::Format.for(:file_extension => "ttl")
-  #   RDF::Format.for(:content_type   => "text/turtle")
+  #   RDF::Format.for(file_name:      "input.ttl")
+  #   RDF::Format.for(file_extension: "ttl")
+  #   RDF::Format.for(content_type:   "text/turtle")
   #
   # @example Obtaining an RDF/XML format class
   #   RDF::Format.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Format
   #   RDF::Format.for("input.rdf")
-  #   RDF::Format.for(:file_name      => "input.rdf")
-  #   RDF::Format.for(:file_extension => "rdf")
-  #   RDF::Format.for(:content_type   => "application/rdf+xml")
+  #   RDF::Format.for(file_name:      "input.rdf")
+  #   RDF::Format.for(file_extension: "rdf")
+  #   RDF::Format.for(content_type:   "application/rdf+xml")
   #
   # @example Obtaining an RDFa format class
   #   RDF::Format.for(:rdfa)       #=> RDF::Raptor::RDFa::Format
   #   RDF::Format.for("input.html")
-  #   RDF::Format.for(:file_name      => "input.html")
-  #   RDF::Format.for(:file_extension => "html")
-  #   RDF::Format.for(:content_type   => "application/xhtml+xml")
+  #   RDF::Format.for(file_name:      "input.html")
+  #   RDF::Format.for(file_extension: "html")
+  #   RDF::Format.for(content_type:   "application/xhtml+xml")
   #
   # {RDF::Raptor} includes an FFI implementation, which loads the
   # `libraptor2` library into the Ruby process, as well as a CLI
