@@ -87,7 +87,7 @@ module RDF::Raptor::FFI::V2
     #
     # @param  [FFI::Pointer] ptr
     # @return [void]
-    def release
+    def release(ptr = nil)
       V2.raptor_free_term(self) unless ptr.null?
     end
     
