@@ -1,4 +1,4 @@
-Raptor RDF Parser Plugin for RDF.rb
+Raptor RDF Extension for RDF.rb
 ===================================
 
 This is an [RDF.rb][] extension that adds support for parsing/serializing [NTriples][],
@@ -58,7 +58,7 @@ Examples
 
 ### Extracting RDF statements from an HTML+RDFa document
 
-    RDF::Reader.open(url = "http://bblfish.net/", :format => :rdfa, :base_uri => url) do |reader|
+    RDF::Reader.open(url = "http://bblfish.net/", format: :rdfa, base_uri: url) do |reader|
       reader.each_statement do |statement|
         puts statement.inspect
       end
@@ -88,41 +88,41 @@ Examples
 
     RDF::Format.for(:ntriples)      #=> RDF::Raptor::NTriples::Format
     RDF::Format.for("input.nt")
-    RDF::Format.for(:file_name      => "input.nt")
-    RDF::Format.for(:file_extension => "nt")
-    RDF::Format.for(:content_type   => "application/n-triples")
+    RDF::Format.for(file_name:      "input.nt")
+    RDF::Format.for(file_extension: "nt")
+    RDF::Format.for(content_type:   "application/n-triples")
 
 ### Obtaining the RDF/XML format specification class
 
     RDF::Format.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Format
     RDF::Format.for("input.rdf")
-    RDF::Format.for(:file_name      => "input.rdf")
-    RDF::Format.for(:file_extension => "rdf")
-    RDF::Format.for(:content_type   => "application/rdf+xml")
+    RDF::Format.for(file_name:      "input.rdf")
+    RDF::Format.for(file_extension: "rdf")
+    RDF::Format.for(content_type:   "application/rdf+xml")
 
 ### Obtaining the Turtle format specification class
 
     RDF::Format.for(:turtle)       #=> RDF::Raptor::Turtle::Format
     RDF::Format.for("input.ttl")
-    RDF::Format.for(:file_name      => "input.ttl")
-    RDF::Format.for(:file_extension => "ttl")
-    RDF::Format.for(:content_type   => "text/turtle")
+    RDF::Format.for(file_name:      "input.ttl")
+    RDF::Format.for(file_extension: "ttl")
+    RDF::Format.for(content_type:   "text/turtle")
 
 ### Obtaining the RDFa format specification class
 
     RDF::Format.for(:rdfa)         #=> RDF::Raptor::RDFa::Format
     RDF::Format.for("input.html")
-    RDF::Format.for(:file_name      => "input.html")
-    RDF::Format.for(:file_extension => "html")
-    RDF::Format.for(:content_type   => "application/xhtml+xml")
+    RDF::Format.for(file_name:      "input.html")
+    RDF::Format.for(file_extension: "html")
+    RDF::Format.for(content_type:   "application/xhtml+xml")
 
 ### Obtaining the Graphviz format specification class
 
     RDF::Format.for(:graphviz)     #=> RDF::Raptor::Graphviz::Format
     RDF::Format.for("output.dot")
-    RDF::Format.for(:file_name      => "output.dot")
-    RDF::Format.for(:file_extension => "")
-    RDF::Format.for(:content_type   => "text/vnd.graphviz")
+    RDF::Format.for(file_name:      "output.dot")
+    RDF::Format.for(file_extension: "")
+    RDF::Format.for(content_type:   "text/vnd.graphviz")
 
 Documentation
 -------------
@@ -161,12 +161,19 @@ Mac and the most common Linux and BSD distributions:
     % brew install raptor                    # Mac OS X with Homebrew
     % [sudo] aptitude install raptor-utils   # Ubuntu / Debian with aptitude
     % [sudo] apt-get install libraptor2-0    # Ubuntu / Debian with apt-get
-    % [sudo] yum install raptor              # Fedora / CentOS / RHEL
+    % [sudo] yum install raptor2             # Fedora / CentOS / RHEL
     % [sudo] zypper install raptor           # openSUSE
     % [sudo] emerge raptor                   # Gentoo Linux
     % [sudo] pacman -S raptor                # Arch Linux
     % [sudo] pkg_add -r raptor               # FreeBSD
     % [sudo] pkg_add raptor                  # OpenBSD / NetBSD
+
+If the `libraptor2` library is in the standard library search path, and
+the `rapper` command is in the standard command search path, all should
+be well and work fine out of the box. However, if either is in a
+non-standard location, be sure to set the `RDF_RAPTOR_LIBPATH` and/or
+`RDF_RAPTOR_BINPATH` environment variables appropriately before
+requiring `rdf/raptor`.
 
 Download
 --------

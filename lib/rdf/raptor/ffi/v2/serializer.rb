@@ -81,7 +81,7 @@ module RDF::Raptor::FFI::V2
     #   any additional options for serializing (see {#start_to})
     # @return [void]
     def start_to_stream(stream, options = {})
-      iostream = V2::IOStream.new(V2::IOStreamHandler.new(stream), :free_iostream => self[:free_iostream_on_end])
+      iostream = V2::IOStream.new(V2::IOStreamHandler.new(stream), free_iostream: self[:free_iostream_on_end])
       start_to_iostream(iostream, options)
     end
 

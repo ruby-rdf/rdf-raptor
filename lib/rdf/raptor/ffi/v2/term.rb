@@ -33,9 +33,9 @@ module RDF::Raptor::FFI::V2
         str = self.to_str
         case
           when language = self.language
-            RDF::Literal.new(str, :language => language)
+            RDF::Literal.new(str, language: language)
           when datatype = self.datatype
-            RDF::Literal.new(str, :datatype => datatype)
+            RDF::Literal.new(str, datatype: datatype)
           else
             RDF::Literal.new(str)
         end
@@ -87,7 +87,7 @@ module RDF::Raptor::FFI::V2
     #
     # @param  [FFI::Pointer] ptr
     # @return [void]
-    def release
+    def release(ptr = nil)
       V2.raptor_free_term(self) unless ptr.null?
     end
     

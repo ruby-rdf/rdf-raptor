@@ -27,14 +27,14 @@ module RDF::Raptor
     # @example Obtaining an N-Triples format class
     #   RDF::Format.for(:ntriples)       #=> RDF::Raptor::NTriples::Format
     #   RDF::Format.for("input.nt")
-    #   RDF::Format.for(:file_name      => "input.nt")
-    #   RDF::Format.for(:file_extension => "nt")
-    #   RDF::Format.for(:content_type   => "text/plain")
+    #   RDF::Format.for(file_name:      "input.nt")
+    #   RDF::Format.for(file_extension: "nt")
+    #   RDF::Format.for(content_type:   "text/plain")
     #
     class Format < RDF::Format
       extend RDF::Raptor::Format
       
-      content_type     'application/n-triples', :extension => :nt, :alias => ['text/plain']
+      content_type     'application/n-triples', extension: :nt, alias: ['text/plain']
       content_encoding 'utf-8'
       rapper_format    :ntriples
 
@@ -53,9 +53,9 @@ module RDF::Raptor
     # @example Obtaining an N-Triples reader class
     #   RDF::Reader.for(:ntriples)       #=> RDF::Raptor::NTriples::Reader
     #   RDF::Reader.for("input.nt")
-    #   RDF::Reader.for(:file_name      => "input.nt")
-    #   RDF::Reader.for(:file_extension => "nt")
-    #   RDF::Reader.for(:content_type   => "text/plain")
+    #   RDF::Reader.for(file_name:      "input.nt")
+    #   RDF::Reader.for(file_extension: "nt")
+    #   RDF::Reader.for(content_type:   "text/plain")
     #
     # @example Parsing RDF statements from an N-Triples file
     #   RDF::Reader.open("input.nt") do |reader|
@@ -74,9 +74,9 @@ module RDF::Raptor
     # @example Obtaining an N-Triples writer class
     #   RDF::Writer.for(:ntriples)       #=> RDF::Raptor::NTriples::Writer
     #   RDF::Writer.for("output.nt")
-    #   RDF::Writer.for(:file_name      => "output.nt")
-    #   RDF::Writer.for(:file_extension => "nt")
-    #   RDF::Writer.for(:content_type   => "text/plain")
+    #   RDF::Writer.for(file_name:      "output.nt")
+    #   RDF::Writer.for(file_extension: "nt")
+    #   RDF::Writer.for(content_type:   "text/plain")
     #
     # @example Serializing RDF statements into an N-Triples file
     #   RDF::Writer.open("output.nt") do |writer|

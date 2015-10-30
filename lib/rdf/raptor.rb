@@ -31,41 +31,41 @@ module RDF
   # @example Obtaining an N-Triples format class
   #   RDF::Format.for(:ntriples)     #=> RDF::Raptor::NTriples::Format
   #   RDF::Format.for("input.nt")
-  #   RDF::Format.for(:file_name      => "input.nt")
-  #   RDF::Format.for(:file_extension => "nt")
-  #   RDF::Format.for(:content_type   => "text/plain")
+  #   RDF::Format.for(file_name:      "input.nt")
+  #   RDF::Format.for(file_extension: "nt")
+  #   RDF::Format.for(content_type:   "text/plain")
   #
   # @example Obtaining a Turtle format class
   #   RDF::Format.for(:turtle)       #=> RDF::Raptor::Turtle::Format
   #   RDF::Format.for("input.ttl")
-  #   RDF::Format.for(:file_name      => "input.ttl")
-  #   RDF::Format.for(:file_extension => "ttl")
-  #   RDF::Format.for(:content_type   => "text/turtle")
+  #   RDF::Format.for(file_name:      "input.ttl")
+  #   RDF::Format.for(file_extension: "ttl")
+  #   RDF::Format.for(content_type:   "text/turtle")
   #
   # @example Obtaining an RDF/XML format class
   #   RDF::Format.for(:rdfxml)       #=> RDF::Raptor::RDFXML::Format
   #   RDF::Format.for("input.rdf")
-  #   RDF::Format.for(:file_name      => "input.rdf")
-  #   RDF::Format.for(:file_extension => "rdf")
-  #   RDF::Format.for(:content_type   => "application/rdf+xml")
+  #   RDF::Format.for(file_name:      "input.rdf")
+  #   RDF::Format.for(file_extension: "rdf")
+  #   RDF::Format.for(content_type:   "application/rdf+xml")
   #
   # @example Obtaining an RDFa format class
   #   RDF::Format.for(:rdfa)       #=> RDF::Raptor::RDFa::Format
   #   RDF::Format.for("input.html")
-  #   RDF::Format.for(:file_name      => "input.html")
-  #   RDF::Format.for(:file_extension => "html")
-  #   RDF::Format.for(:content_type   => "application/xhtml+xml")
+  #   RDF::Format.for(file_name:      "input.html")
+  #   RDF::Format.for(file_extension: "html")
+  #   RDF::Format.for(content_type:   "application/xhtml+xml")
   #
   # {RDF::Raptor} includes an FFI implementation, which loads the
-  # `libraptor` library into the Ruby process, as well as a CLI
+  # `libraptor2` library into the Ruby process, as well as a CLI
   # implementation, which drives the `rapper` command-line tool in a
   # sub-process.
   #
-  # The FFI implementation is used by default unless the `libraptor` library
+  # The FFI implementation is used by default unless the `libraptor2` library
   # cannot be found, or if the `RDF_RAPTOR_ENGINE` environment variable is
   # explicitly set to `'cli'`.
   #
-  # If the `libraptor` library is in the standard library search path, and
+  # If the `libraptor2` library is in the standard library search path, and
   # the `rapper` command is in the standard command search path, all should
   # be well and work fine out of the box. However, if either is in a
   # non-standard location, be sure to set the `RDF_RAPTOR_LIBPATH` and/or
@@ -79,7 +79,7 @@ module RDF
   # @author [Arto Bendiken](http://github.com/bendiken)
   # @author [John Fieber](http://github.com/jfieber)
   module Raptor
-    LIBRAPTOR = ENV['RDF_RAPTOR_LIBPATH'] || 'libraptor2'  unless const_defined?(:LIBRAPTOR)
+    LIBRAPTOR = ENV['RDF_RAPTOR_LIBPATH'] || ['libraptor2', 'libraptor2.so.0']  unless const_defined?(:LIBRAPTOR)
     RAPPER    = ENV['RDF_RAPTOR_BINPATH'] || 'rapper'     unless const_defined?(:RAPPER)
 
     require 'rdf/raptor/version'

@@ -4,182 +4,165 @@ require 'rdf/spec/reader'
 require 'rdf/spec/writer'
 
 describe RDF::Raptor::NTriples::Format do
-  before(:each) do
-    @format_class = RDF::Raptor::NTriples::Format
+  it_behaves_like 'an RDF::Format' do
+    let(:format_class) {RDF::Raptor::NTriples::Format}
   end
-  
-  # @see lib/rdf/spec/format.rb in rdf-spec
-  include RDF_Format
   
   it "should be discoverable" do
     formats = [
       RDF::Format.for(:ntriples),
       RDF::Format.for("input.nt"),
-      RDF::Format.for(:file_name      => "input.nt"),
-      RDF::Format.for(:file_extension => "nt"),
-      RDF::Format.for(:content_type   => "text/plain"),
-      RDF::Format.for(:content_type   => "application/n-triples"),
+      RDF::Format.for(file_name:      "input.nt"),
+      RDF::Format.for(file_extension: "nt"),
+      RDF::Format.for(content_type:   "text/plain"),
+      RDF::Format.for(content_type:   "application/n-triples"),
     ]
-    formats.each { |format| format.should == @format_class }
+    formats.each { |format| expect(format).to eq(described_class) }
   end
   
   {
-    :ntriples => "<a> <b> <c> .",
-    :literal => '<a> <b> "literal" .',
-    :multi_line => %(<a>\n  <b>\n  "literal"\n .),
+    ntriples: "<a> <b> <c> .",
+    literal: '<a> <b> "literal" .',
+    multi_line: %(<a>\n  <b>\n  "literal"\n .),
   }.each do |sym, str|
     it "detects #{sym}" do
-      @format_class.for {str}.should == @format_class
+      expect(described_class.for {str}).to eq(described_class)
     end
   end
   
   describe ".detect" do
     {
-      :ntriples => "<a> <b> <c> .",
-      :literal => '<a> <b> "literal" .',
-      :multi_line => %(<a>\n  <b>\n  "literal"\n .),
+      ntriples: "<a> <b> <c> .",
+      literal: '<a> <b> "literal" .',
+      multi_line: %(<a>\n  <b>\n  "literal"\n .),
     }.each do |sym, str|
       it "detects #{sym}" do
-        @format_class.detect(str).should be_true
+        expect(described_class.detect(str)).to be true
       end
     end
 
     {
-      :nquads        => "<a> <b> <c> <d> . ",
-      :nq_literal    => '<a> <b> "literal" <d> .',
-      :nq_multi_line => %(<a>\n  <b>\n  "literal"\n <d>\n .),
-      :turtle        => "@prefix foo: <bar> .\n foo:a foo:b <c> .",
-      :trig          => "{<a> <b> <c> .}",
-      :rdfxml        => '<rdf:RDF about="foo"></rdf:RDF>',
-      :n3            => '@prefix foo: <bar> .\nfoo:bar = {<a> <b> <c>} .',
+      nquads:        "<a> <b> <c> <d> . ",
+      nq_literal:    '<a> <b> "literal" <d> .',
+      nq_multi_line: %(<a>\n  <b>\n  "literal"\n <d>\n .),
+      turtle:        "@prefix foo: <bar> .\n foo:a foo:b <c> .",
+      trig:          "{<a> <b> <c> .}",
+      rdfxml:        '<rdf:RDF about="foo"></rdf:RDF>',
+      n3:            '@prefix foo: <bar> .\nfoo:bar = {<a> <b> <c>} .',
     }.each do |sym, str|
       it "does not detect #{sym}" do
-        @format_class.detect(str).should be_false
+        expect(described_class.detect(str)).to be false
       end
     end
   end
 end
 
 describe RDF::Raptor::NTriples::Reader do
-  before(:each) do
-    @input = %q(<http://rubygems.org/gems/rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
+  let(:reader) {RDF::Raptor::NTriples::Reader.new(reader_input)}
+  let(:reader_input) {%q(
+    <http://rubygems.org/gems/rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
     <http://rubygems.org/gems/rdf> <http://usefulinc.com/ns/doap#name> "RDF.rb" .
-    )
-    @reader = RDF::Raptor::NTriples::Reader.new(@input)
-  end
-  
-  # @see lib/rdf/spec/reader.rb in rdf-spec
-  include RDF_Reader
+  )}
+  let(:reader_count) {2}
+  it_behaves_like 'an RDF::Reader'
   
   it "should return :ntriples for to_sym" do
-    @reader.class.to_sym.should == :ntriples
+    expect(described_class.to_sym).to eq(:ntriples)
   end
   
   it "should be discoverable" do
     readers = [
       #RDF::Reader.for(:ntriples), # This is broken until the RDF gem can be patched to support overriding the :ntriples format
       RDF::Reader.for("input.nt"),
-      RDF::Reader.for(:file_name      => "input.nt"),
-      RDF::Reader.for(:file_extension => "nt"),
-      RDF::Reader.for(:content_type   => "text/plain"),
-      RDF::Reader.for(:content_type   => "application/n-triples"),
+      RDF::Reader.for(file_name:      "input.nt"),
+      RDF::Reader.for(file_extension: "nt"),
+      RDF::Reader.for(content_type:   "text/plain"),
+      RDF::Reader.for(content_type:   "application/n-triples"),
     ]
-    readers.each { |reader| reader.should == RDF::Raptor::NTriples::Reader }
+    readers.each { |reader| expect(reader).to eq(RDF::Raptor::NTriples::Reader) }
   end
   
   it 'should yield statements' do
     inner = double("inner")
-    inner.should_receive(:called).with(RDF::Statement).twice
-    @reader.each_statement do |statement|
+    expect(inner).to receive(:called).with(RDF::Statement).twice
+    reader.each_statement do |statement|
       inner.called(statement.class)
     end
   end
   
   it 'should yield raw statements' do
-    @reader.each_statement(:raw => true) do |statement|
-      statement.should be_a RDF::Raptor::FFI::V2::Statement
+    reader.each_statement(raw: true) do |statement|
+      expect(statement).to be_a RDF::Raptor::FFI::V2::Statement
     end
   end
   
   it "should yield triples" do
     inner = double("inner")
-    inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::URI).once
-    inner.should_receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).once
-    @reader.each_triple do |subject, predicate, object|
+    expect(inner).to receive(:called).with(RDF::URI, RDF::URI, RDF::URI).once
+    expect(inner).to receive(:called).with(RDF::URI, RDF::URI, RDF::Literal).once
+    reader.each_triple do |subject, predicate, object|
       inner.called(subject.class, predicate.class, object.class)
     end
   end
   
   it "should open and parse a file" do
     RDF::Reader.open("etc/doap.nt") do |reader|
-      reader.should be_a subject.class
-      reader.count.should be > 0
+      expect(reader).to be_a subject.class
+      expect(reader.count).to be > 0
     end
   end
   
   it "should parse a URI" do
     reader = RDF::Raptor::NTriples::Reader.new
     result = reader.parse("http://dbpedia.org/data/Michael_Jackson.ntriples")
-    result.should == 0
+    expect(result).to eq(0)
   end
   
   it "should parse a String" do
     reader = RDF::Raptor::NTriples::Reader.new
-    result = reader.parse(@input)
-    result.should == 0
+    result = reader.parse(reader_input)
+    expect(result).to eq(0)
   end
 end
 
 describe RDF::Raptor::NTriples::Writer do
-  before(:each) do
-    @writer_class = RDF::Raptor::NTriples::Writer
-    @writer = RDF::Raptor::NTriples::Writer.new
+  it_behaves_like 'an RDF::Writer' do
+    let(:writer) {RDF::Raptor::NTriples::Writer.new}
   end
-  
-  # @see lib/rdf/spec/writer.rb in rdf-spec
-  include RDF_Writer
 
   it "should return :ntriples for to_sym" do
-    @writer_class.to_sym.should == :ntriples
+    expect(described_class.to_sym).to eq(:ntriples)
   end
   
   it "should be discoverable" do
     writers = [
       RDF::Writer.for(:ntriples),
       RDF::Writer.for("output.nt"),
-      RDF::Writer.for(:file_name      => "output.nt"),
-      RDF::Writer.for(:file_extension => "nt"),
-      RDF::Writer.for(:content_type   => "text/plain"),
-      RDF::Writer.for(:content_type   => "application/n-triples"),
+      RDF::Writer.for(file_name:      "output.nt"),
+      RDF::Writer.for(file_extension: "nt"),
+      RDF::Writer.for(content_type:   "text/plain"),
+      RDF::Writer.for(content_type:   "application/n-triples"),
     ]
-    writers.each { |writer| writer.should == RDF::Raptor::NTriples::Writer }
+    writers.each { |writer| expect(writer).to eq(RDF::Raptor::NTriples::Writer) }
   end
 end
 
 describe RDF::Raptor::NTriples do
-  before :all do
-    @testfile = 'test.nt'
-  end
-
-  before :each do
-    @reader = RDF::Raptor::NTriples::Reader
-    @writer = RDF::Raptor::NTriples::Writer
-  end
+  let(:reader) {RDF::Raptor::NTriples::Reader}
+  let(:writer) {RDF::Raptor::NTriples::Writer}
+  let(:statement) {
+    RDF::Statement.new(
+      RDF::URI("http://rubygems.org/gems/rdf"),
+      RDF::URI("http://purl.org/dc/terms/creator"),
+      RDF::URI("http://ar.to/#self"))
+  }
+  let(:stmt_string) {"<http://rubygems.org/gems/rdf> <http://purl.org/dc/terms/creator> <http://ar.to/#self> .\n"}
+  let(:graph) {RDF::Graph.new {|g| g << statement}}
 
   context "when writing" do
-    before :all do
-      s = RDF::URI("http://rubygems.org/gems/rdf")
-      p = RDF::DC.creator
-      o = RDF::URI("http://ar.to/#self")
-      @stmt = RDF::Statement.new(s, p, o)
-      @stmt_string = "<http://rubygems.org/gems/rdf> <http://purl.org/dc/terms/creator> <http://ar.to/#self> ."
-      @graph = RDF::Graph.new
-      @graph << @stmt
-    end
-
 =begin
     it "should correctly format statements" do
-      @writer.new.format_statement(@stmt).should == @stmt_string
+      @writer.new.format_statement(statement).should == stmt_string
     end
 
     context "should correctly format blank nodes" do
@@ -196,7 +179,7 @@ describe RDF::Raptor::NTriples do
     end
 
     it "should correctly format language-tagged literals" do
-      @writer.new.format_literal(RDF::Literal.new('Hello, world!', :language => :en)).should == '"Hello, world!"@en'
+      @writer.new.format_literal(RDF::Literal.new('Hello, world!', language: :en)).should == '"Hello, world!"@en'
     end
 
     it "should correctly format datatyped literals" do
@@ -205,26 +188,26 @@ describe RDF::Raptor::NTriples do
 =end
 
     it "should output statements to a string buffer" do
-      output = @writer.buffer { |writer| writer << @stmt }
-      output.should == "#{@stmt_string}\n"
+      output = writer.buffer { |w| w << statement }
+      expect(output).to eq(stmt_string)
     end
 
     it "should dump statements to a string buffer" do
       output = StringIO.new
-      @writer.dump(@graph, output)
-      output.string.should == "#{@stmt_string}\n"
+      writer.dump(graph, output)
+      expect(output.string).to eq(stmt_string)
     end
 
     it "should dump arrays of statements to a string buffer" do
       output = StringIO.new
-      @writer.dump(@graph.to_a, output)
-      output.string.should == "#{@stmt_string}\n"
+      writer.dump(graph.to_a, output)
+      expect(output.string).to eq(stmt_string)
     end
 
     it "should dump statements to a file" do
       require 'tmpdir' # for Dir.tmpdir
-      @writer.dump(@graph, filename = File.join(Dir.tmpdir, "test.nt"))
-      File.read(filename).should == "#{@stmt_string}\n"
+      writer.dump(graph, filename = File.join(Dir.tmpdir, "test.nt"))
+      expect(File.read(filename)).to eq(stmt_string)
       File.unlink(filename)
     end
   end
