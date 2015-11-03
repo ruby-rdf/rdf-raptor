@@ -4,6 +4,16 @@ require 'rdf/spec/reader'
 require 'rdf/spec/writer'
 
 describe RDF::Raptor::NTriples::Format do
+  before(:each) do
+    # Remove RDF::NTriples if loaded
+    subclasses = RDF::Format.class_variable_get(:@@subclasses)
+    if subclasses.map(&:to_s).include?("RDF::NTriples::Format")
+      RDF::Format.class_variable_set(:@@subclasses, subclasses - [RDF::NTriples::Format])
+      RDF::Format.class_variable_get(:@@content_types).values.each {|v| v.delete(RDF::NTriples::Format)}
+      RDF::Format.class_variable_get(:@@file_extensions).values.each {|v| v.delete(RDF::NTriples::Format)}
+    end
+  end
+
   it_behaves_like 'an RDF::Format' do
     let(:format_class) {RDF::Raptor::NTriples::Format}
   end
@@ -18,16 +28,6 @@ describe RDF::Raptor::NTriples::Format do
       RDF::Format.for(content_type:   "application/n-triples"),
     ]
     formats.each { |format| expect(format).to eq(described_class) }
-  end
-  
-  {
-    ntriples: "<a> <b> <c> .",
-    literal: '<a> <b> "literal" .',
-    multi_line: %(<a>\n  <b>\n  "literal"\n .),
-  }.each do |sym, str|
-    it "detects #{sym}" do
-      expect(described_class.for {str}).to eq(described_class)
-    end
   end
   
   describe ".detect" do
@@ -58,6 +58,16 @@ describe RDF::Raptor::NTriples::Format do
 end
 
 describe RDF::Raptor::NTriples::Reader do
+  before(:each) do
+    # Remove RDF::NTriples if loaded
+    subclasses = RDF::Format.class_variable_get(:@@subclasses)
+    if subclasses.map(&:to_s).include?("RDF::NTriples::Format")
+      RDF::Format.class_variable_set(:@@subclasses, subclasses - [RDF::NTriples::Format])
+      RDF::Format.class_variable_get(:@@content_types).values.each {|v| v.delete(RDF::NTriples::Format)}
+      RDF::Format.class_variable_get(:@@file_extensions).values.each {|v| v.delete(RDF::NTriples::Format)}
+    end
+  end
+
   let(:reader) {RDF::Raptor::NTriples::Reader.new(reader_input)}
   let(:reader_input) {%q(
     <http://rubygems.org/gems/rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
@@ -72,7 +82,7 @@ describe RDF::Raptor::NTriples::Reader do
   
   it "should be discoverable" do
     readers = [
-      #RDF::Reader.for(:ntriples), # This is broken until the RDF gem can be patched to support overriding the :ntriples format
+      RDF::Reader.for(:ntriples),
       RDF::Reader.for("input.nt"),
       RDF::Reader.for(file_name:      "input.nt"),
       RDF::Reader.for(file_extension: "nt"),
@@ -126,6 +136,17 @@ describe RDF::Raptor::NTriples::Reader do
 end
 
 describe RDF::Raptor::NTriples::Writer do
+  before(:each) do
+    # Remove RDF::NTriples if loaded
+    subclasses = RDF::Format.class_variable_get(:@@subclasses)
+    if subclasses.map(&:to_s).include?("RDF::NTriples::Format")
+      RDF::Format.class_variable_set(:@@subclasses, subclasses - [RDF::NTriples::Format])
+      RDF::Format.class_variable_get(:@@content_types).values.each {|v| v.delete(RDF::NTriples::Format)}
+      RDF::Format.class_variable_get(:@@file_extensions).values.each {|v| v.delete(RDF::NTriples::Format)}
+      RDF.send(:remove_constant, :NTriples)
+    end
+  end
+
   it_behaves_like 'an RDF::Writer' do
     let(:writer) {RDF::Raptor::NTriples::Writer.new}
   end
