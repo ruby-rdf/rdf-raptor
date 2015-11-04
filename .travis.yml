@@ -13,7 +13,9 @@ rvm:
 matrix:
   allow_failures:
     - rvm: rbx-2
-before_install:
-  - sudo apt-get install libraptor2-0
+addons:
+  apt:
+    packages:
+      - raptor2-utils
 cache: bundler
-sudo: true
+sudo: false
