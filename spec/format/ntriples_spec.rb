@@ -183,28 +183,28 @@ describe RDF::Raptor::NTriples do
   context "when writing" do
 =begin
     it "should correctly format statements" do
-      @writer.new.format_statement(statement).should == stmt_string
+      writer.new.format_statement(statement).should == stmt_string
     end
 
     context "should correctly format blank nodes" do
-      specify {@writer.new.format_node(RDF::Node.new('foobar')).should == '_:foobar'}
-      specify {@writer.new.format_node(RDF::Node.new('')).should_not == '_:'}
+      specify {writer.new.format_node(RDF::Node.new('foobar')).should == '_:foobar'}
+      specify {writer.new.format_node(RDF::Node.new('')).should_not == '_:'}
     end
 
     it "should correctly format URI references" do
-      @writer.new.format_uri(RDF::URI('http://rdf.rubyforge.org/')).should == '<http://rdf.rubyforge.org/>'
+      writer.new.format_uri(RDF::URI('http://rdf.rubyforge.org/')).should == '<http://rdf.rubyforge.org/>'
     end
 
     it "should correctly format plain literals" do
-      @writer.new.format_literal(RDF::Literal.new('Hello, world!')).should == '"Hello, world!"'
+      writer.new.format_literal(RDF::Literal.new('Hello, world!')).should == '"Hello, world!"'
     end
 
     it "should correctly format language-tagged literals" do
-      @writer.new.format_literal(RDF::Literal.new('Hello, world!', language: :en)).should == '"Hello, world!"@en'
+      writer.new.format_literal(RDF::Literal.new('Hello, world!', language: :en)).should == '"Hello, world!"@en'
     end
 
     it "should correctly format datatyped literals" do
-      @writer.new.format_literal(RDF::Literal.new(3.1415)).should == '"3.1415"^^<http://www.w3.org/2001/XMLSchema#double>'
+      writer.new.format_literal(RDF::Literal.new(3.1415)).should == '"3.1415"^^<http://www.w3.org/2001/XMLSchema#double>'
     end
 =end
 
