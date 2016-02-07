@@ -12,7 +12,7 @@ end
 
 group :debug do
   gem 'pry'
-  gem 'byebug', platforms: :mri
+  gem 'pry-byebug', platforms: :mri
 end
 
 platforms :rbx do

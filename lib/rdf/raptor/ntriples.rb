@@ -86,7 +86,12 @@ module RDF::Raptor
     #   end
     #
     class Writer < RDF::Raptor::Writer
+      include RDF::Raptor::FFI
       format RDF::Raptor::NTriples::Format
+
+      def write_term(value)
+        V2.raptor_term_ntriples_write(value, @serializer.iostream)
+      end
     end # Writer
   end # NTriples
 end # RDF::Raptor

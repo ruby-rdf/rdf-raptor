@@ -28,6 +28,7 @@ module RDF::Raptor::FFI
     # @see http://librdf.org/raptor/api/tutorial-initialising-finishing.html
     typedef :pointer, :raptor_world
     typedef :int, :raptor_version
+    typedef :pointer, :raptor_iostream
     attach_function :raptor_new_world_internal, [:raptor_version], :raptor_world
     attach_function :raptor_free_world, [], :void
     attach_function :raptor_alloc_memory, [:size_t], :pointer
@@ -77,6 +78,7 @@ module RDF::Raptor::FFI
     attach_function :raptor_new_term_from_literal, [:raptor_world, :literal, :datatype, :language], :raptor_term
     attach_function :raptor_new_term_from_blank, [:raptor_world, :blank], :raptor_term
     attach_function :raptor_free_term, [:raptor_term], :void
+    attach_function :raptor_term_ntriples_write, [:raptor_term, :raptor_iostream], :int
 
     # @see http://librdf.org/raptor/api/raptor2-section-xml-namespace.html
     typedef :pointer, :raptor_namespace
@@ -106,7 +108,6 @@ module RDF::Raptor::FFI
     attach_function :raptor_free_parser, [:raptor_parser], :void
 
     # @see http://librdf.org/raptor/api/raptor2-section-iostream.html
-    typedef :pointer, :raptor_iostream
     attach_function :raptor_new_iostream_from_handler, [:raptor_world, :pointer, :pointer], :raptor_iostream
     attach_function :raptor_new_iostream_to_filename, [:raptor_world, :string], :raptor_iostream
     attach_function :raptor_new_iostream_to_sink, [:raptor_world], :raptor_iostream

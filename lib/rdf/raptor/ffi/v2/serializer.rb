@@ -7,6 +7,8 @@ module RDF::Raptor::FFI::V2
   class Serializer < ::FFI::ManagedStruct
     include RDF::Raptor::FFI
 
+    attr_reader :iostream
+
     # Note this layout is private
     layout  :world, :pointer,
             :locator, :pointer,
