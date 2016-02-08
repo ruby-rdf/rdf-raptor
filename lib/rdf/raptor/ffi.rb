@@ -179,6 +179,23 @@ module RDF::Raptor
       # @return [V2::Serializer]
       attr_reader :serializer
 
+      def self.serialize(value)
+        output = StringIO.new
+        writer = new(output)
+        case value
+        when nil then nil
+        when FalseClass then value.to_s
+        when RDF::Statement
+          writer.write_triple(statement.subject, statement.predicate, statement.object)
+        when RDF::Term
+          writer.write_term(value)
+        else
+          raise ArgumentError, "expected an RDF::Statement or RDF::Term, but got #{value.inspect}"
+        end
+
+        output.to_s
+      end
+
       ##
       # @param  [RDF::Resource] subject
       # @param  [RDF::URI]      predicate
@@ -187,6 +204,10 @@ module RDF::Raptor
       # @see    RDF::Writer#write_triple
       def write_triple(subject, predicate, object)
         @serializer.serialize_triple(subject, predicate, object)
+      end
+
+      def write_term(value)
+        raise NotImplementedError
       end
 
       ##
