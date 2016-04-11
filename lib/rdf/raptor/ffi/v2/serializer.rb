@@ -7,6 +7,8 @@ module RDF::Raptor::FFI::V2
   class Serializer < ::FFI::ManagedStruct
     include RDF::Raptor::FFI
 
+    attr_reader :iostream
+
     # Note this layout is private
     layout  :world, :pointer,
             :locator, :pointer,
@@ -49,14 +51,14 @@ module RDF::Raptor::FFI::V2
     # @param  [Proc] handler
     # @return [void]
     def error_handler=(handler)
-      V2.raptor_serializer_set_error_handler(self, self, handler)
+      V2.raptor_serializer_set_error_handler(self, self, handler) if V2.respond_to?(:raptor_serializer_set_error_handler)
     end
 
     ##
     # @param  [Proc] handler
     # @return [void]
     def warning_handler=(handler)
-      V2.raptor_serializer_set_warning_handler(self, self, handler)
+      V2.raptor_serializer_set_warning_handler(self, self, handler) if V2.respond_to?(:raptor_serializer_set_warning_handler)
     end
 
     ##

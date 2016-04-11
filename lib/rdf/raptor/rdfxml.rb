@@ -45,6 +45,10 @@ module RDF::Raptor
         # Raptor guess is not fully supported
         sample.match(/<(\w+:)?(RDF)/)
       end
+
+      def self.symbols
+        [:rdfxml, :rdf]
+      end
     end # Format
 
     ##

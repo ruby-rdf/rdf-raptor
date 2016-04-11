@@ -4,6 +4,16 @@ require 'rdf/spec/reader'
 require 'rdf/spec/writer'
 
 describe RDF::Raptor::NTriples::Format do
+  before(:each) do
+    # Remove RDF::NTriples if loaded
+    subclasses = RDF::Format.class_variable_get(:@@subclasses)
+    if subclasses.map(&:to_s).include?("RDF::NTriples::Format")
+      RDF::Format.class_variable_set(:@@subclasses, subclasses - [RDF::NTriples::Format])
+      RDF::Format.class_variable_get(:@@content_types).values.each {|v| v.delete(RDF::NTriples::Format)}
+      RDF::Format.class_variable_get(:@@file_extensions).values.each {|v| v.delete(RDF::NTriples::Format)}
+    end
+  end
+
   it_behaves_like 'an RDF::Format' do
     let(:format_class) {RDF::Raptor::NTriples::Format}
   end
@@ -18,16 +28,6 @@ describe RDF::Raptor::NTriples::Format do
       RDF::Format.for(content_type:   "application/n-triples"),
     ]
     formats.each { |format| expect(format).to eq(described_class) }
-  end
-  
-  {
-    ntriples: "<a> <b> <c> .",
-    literal: '<a> <b> "literal" .',
-    multi_line: %(<a>\n  <b>\n  "literal"\n .),
-  }.each do |sym, str|
-    it "detects #{sym}" do
-      expect(described_class.for {str}).to eq(described_class)
-    end
   end
   
   describe ".detect" do
@@ -58,6 +58,16 @@ describe RDF::Raptor::NTriples::Format do
 end
 
 describe RDF::Raptor::NTriples::Reader do
+  before(:each) do
+    # Remove RDF::NTriples if loaded
+    subclasses = RDF::Format.class_variable_get(:@@subclasses)
+    if subclasses.map(&:to_s).include?("RDF::NTriples::Format")
+      RDF::Format.class_variable_set(:@@subclasses, subclasses - [RDF::NTriples::Format])
+      RDF::Format.class_variable_get(:@@content_types).values.each {|v| v.delete(RDF::NTriples::Format)}
+      RDF::Format.class_variable_get(:@@file_extensions).values.each {|v| v.delete(RDF::NTriples::Format)}
+    end
+  end
+
   let(:reader) {RDF::Raptor::NTriples::Reader.new(reader_input)}
   let(:reader_input) {%q(
     <http://rubygems.org/gems/rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
@@ -72,7 +82,7 @@ describe RDF::Raptor::NTriples::Reader do
   
   it "should be discoverable" do
     readers = [
-      #RDF::Reader.for(:ntriples), # This is broken until the RDF gem can be patched to support overriding the :ntriples format
+      RDF::Reader.for(:ntriples),
       RDF::Reader.for("input.nt"),
       RDF::Reader.for(file_name:      "input.nt"),
       RDF::Reader.for(file_extension: "nt"),
@@ -126,6 +136,17 @@ describe RDF::Raptor::NTriples::Reader do
 end
 
 describe RDF::Raptor::NTriples::Writer do
+  before(:each) do
+    # Remove RDF::NTriples if loaded
+    subclasses = RDF::Format.class_variable_get(:@@subclasses)
+    if subclasses.map(&:to_s).include?("RDF::NTriples::Format")
+      RDF::Format.class_variable_set(:@@subclasses, subclasses - [RDF::NTriples::Format])
+      RDF::Format.class_variable_get(:@@content_types).values.each {|v| v.delete(RDF::NTriples::Format)}
+      RDF::Format.class_variable_get(:@@file_extensions).values.each {|v| v.delete(RDF::NTriples::Format)}
+      RDF.send(:remove_constant, :NTriples)
+    end
+  end
+
   it_behaves_like 'an RDF::Writer' do
     let(:writer) {RDF::Raptor::NTriples::Writer.new}
   end
@@ -162,28 +183,28 @@ describe RDF::Raptor::NTriples do
   context "when writing" do
 =begin
     it "should correctly format statements" do
-      @writer.new.format_statement(statement).should == stmt_string
+      writer.new.format_statement(statement).should == stmt_string
     end
 
     context "should correctly format blank nodes" do
-      specify {@writer.new.format_node(RDF::Node.new('foobar')).should == '_:foobar'}
-      specify {@writer.new.format_node(RDF::Node.new('')).should_not == '_:'}
+      specify {writer.new.format_node(RDF::Node.new('foobar')).should == '_:foobar'}
+      specify {writer.new.format_node(RDF::Node.new('')).should_not == '_:'}
     end
 
     it "should correctly format URI references" do
-      @writer.new.format_uri(RDF::URI('http://rdf.rubyforge.org/')).should == '<http://rdf.rubyforge.org/>'
+      writer.new.format_uri(RDF::URI('http://rdf.rubyforge.org/')).should == '<http://rdf.rubyforge.org/>'
     end
 
     it "should correctly format plain literals" do
-      @writer.new.format_literal(RDF::Literal.new('Hello, world!')).should == '"Hello, world!"'
+      writer.new.format_literal(RDF::Literal.new('Hello, world!')).should == '"Hello, world!"'
     end
 
     it "should correctly format language-tagged literals" do
-      @writer.new.format_literal(RDF::Literal.new('Hello, world!', language: :en)).should == '"Hello, world!"@en'
+      writer.new.format_literal(RDF::Literal.new('Hello, world!', language: :en)).should == '"Hello, world!"@en'
     end
 
     it "should correctly format datatyped literals" do
-      @writer.new.format_literal(RDF::Literal.new(3.1415)).should == '"3.1415"^^<http://www.w3.org/2001/XMLSchema#double>'
+      writer.new.format_literal(RDF::Literal.new(3.1415)).should == '"3.1415"^^<http://www.w3.org/2001/XMLSchema#double>'
     end
 =end
 

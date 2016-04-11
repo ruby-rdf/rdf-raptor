@@ -28,6 +28,8 @@ module RDF::Raptor
     ##
     # FFI reader implementation.
     class Reader < RDF::Reader
+      include RDF::Util::Logger
+
       ##
       # Initializes the FFI reader instance.
       #
@@ -54,12 +56,12 @@ module RDF::Raptor
 
       ERROR_HANDLER = Proc.new do |user_data, locator, message|
         line = V2.raptor_locator_line(locator)
-        raise RDF::ReaderError, line > -1 ? "Line #{line}: #{message}" : message
+        log_error(message, lineno: line)
       end
 
       WARNING_HANDLER = Proc.new do |user_data, locator, message|
-        # line = V2.raptor_locator_line(locator)
-        # $stderr.puts line > -1 ? "Line #{line}: #{message}" : message
+        line = V2.raptor_locator_line(locator)
+        log_warn(message, lineno: line)
       end
 
       ##
@@ -85,6 +87,10 @@ module RDF::Raptor
               block.call(V2::Statement.new(statement, self).to_rdf)
             end
           end
+
+          if validate? && log_statistics[:error]
+            raise RDF::ReaderError, "Errors found during processing"
+          end
         end
         enum_for(:each_statement, options)
       end
@@ -97,8 +103,8 @@ module RDF::Raptor
       # @see   RDF::Reader#each_triple
       def each_triple(&block)
         if block_given?
-          parse(@input) do |parser, statement|
-            block.call(V2::Statement.new(statement, self).to_triple)
+          each_statement do |statement|
+            block.call(*statement.to_triple)
           end
         end
         enum_for(:each_triple)
@@ -139,6 +145,8 @@ module RDF::Raptor
     ##
     # FFI writer implementation.
     class Writer < RDF::Writer
+      include RDF::Util::Logger
+
       ##
       # Initializes the FFI writer instance.
       #
@@ -151,18 +159,18 @@ module RDF::Raptor
       def initialize(output = $stdout, options = {}, &block)
         @format = self.class.format.rapper_format
         @serializer = V2::Serializer.new(@format)
-        #@serializer.error_handler   = ERROR_HANDLER
-        #@serializer.warning_handler = WARNING_HANDLER
+        @serializer.error_handler   = ERROR_HANDLER
+        @serializer.warning_handler = WARNING_HANDLER
         @serializer.start_to(output, options)
         super
       end
 
       ERROR_HANDLER = Proc.new do |user_data, locator, message|
-        raise RDF::WriterError, message
+        log_error(message)
       end
 
       WARNING_HANDLER = Proc.new do |user_data, locator, message|
-        # $stderr.puts "warning"
+        log_warn(message)
       end
 
       ##
@@ -170,6 +178,23 @@ module RDF::Raptor
       #
       # @return [V2::Serializer]
       attr_reader :serializer
+
+      def self.serialize(value)
+        output = StringIO.new
+        writer = new(output)
+        case value
+        when nil then nil
+        when FalseClass then value.to_s
+        when RDF::Statement
+          writer.write_triple(statement.subject, statement.predicate, statement.object)
+        when RDF::Term
+          writer.write_term(value)
+        else
+          raise ArgumentError, "expected an RDF::Statement or RDF::Term, but got #{value.inspect}"
+        end
+
+        output.to_s
+      end
 
       ##
       # @param  [RDF::Resource] subject
@@ -179,6 +204,10 @@ module RDF::Raptor
       # @see    RDF::Writer#write_triple
       def write_triple(subject, predicate, object)
         @serializer.serialize_triple(subject, predicate, object)
+      end
+
+      def write_term(value)
+        raise NotImplementedError
       end
 
       ##

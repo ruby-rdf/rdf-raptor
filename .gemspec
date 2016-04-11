@@ -25,15 +25,15 @@ Gem::Specification.new do |gem|
   gem.test_files         = %w()
   gem.has_rdoc           = false
 
-  gem.required_ruby_version      = '>= 1.9.3'
+  gem.required_ruby_version      = '>= 2.0'
   gem.requirements               = ['libraptor2 (>= 2.0)']
-  gem.add_runtime_dependency     'ffi',      '>= 1.9.3'
-  gem.add_runtime_dependency     'rdf',      '>= 1.99'
-  gem.add_development_dependency 'yard' ,    '>= 0.8.6'
-  gem.add_development_dependency 'rspec',    '>= 2.14.0'
-  gem.add_development_dependency 'rspec-its'
-  gem.add_development_dependency 'rdf-spec', '>= 1.99'
-  gem.add_development_dependency 'rake'
+  gem.add_runtime_dependency     'ffi',      '~> 1.9.10'
+  gem.add_runtime_dependency     'rdf',      '~> 2.0'
+  gem.add_development_dependency 'yard' ,    '~> 0.8'
+  gem.add_development_dependency 'rspec',    '~> 3.2'
+  gem.add_development_dependency 'rspec-its','~> 1.2'
+  gem.add_development_dependency 'rdf-spec', '~> 2.0'
+  gem.add_development_dependency 'rake',     '~> 10.0'
 
   gem.post_install_message = <<-MESSAGE
   NOTE: RDF::Raptor requires libraptor2 to be installed on the system. Please see the Installation

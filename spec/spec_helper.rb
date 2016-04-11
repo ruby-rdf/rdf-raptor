@@ -2,6 +2,7 @@ require 'bundler/setup'
 
 begin
   require 'pry'
+  require 'pry-byebug'
 rescue LoadError
 end
 

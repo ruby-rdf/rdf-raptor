@@ -27,11 +27,32 @@ module RDF::Raptor
     class Format < RDF::Format
       extend RDF::Raptor::Format
       
-      content_type     'application/xhtml+xml', aliases: ['text/html'], extension: :html
+      content_type     'text/html',
+        aliases: %w(application/xhtml+xml image/svg+xml),
+        extensions: [:html, :xhtml, :svg]
       content_encoding 'utf-8'
       rapper_format    :rdfa
 
       reader { RDF::Raptor::RDFa::Reader }
+
+      ##
+      # Sample detection to see if it matches RDFa (not RDF/XML or Microdata)
+      #
+      # Use a text sample to detect the format of an input file. Sub-classes implement
+      # a matcher sufficient to detect probably format matches, including disambiguating
+      # between other similar formats.
+      #
+      # @param [String] sample Beginning several bytes (~ 1K) of input.
+      # @return [Boolean]
+      def self.detect(sample)
+        (sample.match(/<[^>]*(about|resource|prefix|typeof|property|vocab)\s*="[^>]*>/m) ||
+         sample.match(/<[^>]*DOCTYPE\s+html[^>]*>.*xmlns:/im)
+        ) && !sample.match(/<(\w+:)?(RDF)/)
+      end
+
+      def self.symbols
+        [:rdfa, :lite, :html, :xhtml, :svg]
+      end
     end # Format
 
     ##

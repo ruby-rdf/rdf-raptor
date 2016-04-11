@@ -4,16 +4,18 @@ script: "bundle exec rspec spec"
 env:
   - CI=true
 rvm:
-  - 1.9.3
   - 2.0
   - 2.1
-  - 2.2
-  - jruby-19mode
+  - 2.2.4
+  - 2.3.0
+  - jruby-9.0.4.0
   - rbx-2
 matrix:
   allow_failures:
     - rvm: rbx-2
-before_install:
-  - sudo apt-get install libraptor2-0
+addons:
+  apt:
+    packages:
+      - raptor2-utils
 cache: bundler
-sudo: true
+sudo: false
