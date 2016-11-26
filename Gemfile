@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gemspec name: ""
+gemspec
 
 gem 'rdf',            github: 'ruby-rdf/rdf',            branch: "develop"
 gem 'rdf-spec',       github: 'ruby-rdf/rdf-spec',       branch: "develop"
