@@ -10,7 +10,6 @@ Gem::Specification.new do |gem|
   gem.license            = 'Public Domain' if gem.respond_to?(:license=)
   gem.summary            = 'Raptor RDF Parser plugin for RDF.rb.'
   gem.description        = 'RDF.rb plugin for parsing/serializing NTriples, RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library.'
-  gem.rubyforge_project  = 'rdf'
 
   gem.authors            = ['Arto Bendiken', 'John Fieber']
   gem.email              = 'public-rdf-ruby@w3.org'
