@@ -192,7 +192,7 @@ describe RDF::Raptor::NTriples do
     end
 
     it "should correctly format URI references" do
-      writer.new.format_uri(RDF::URI('http://rdf.rubyforge.org/')).should == '<http://rdf.rubyforge.org/>'
+      writer.new.format_uri(RDF::URI('http://rubgems.org/gems/rdf/')).should == '<http://rubgems.org/gems/rdf/>'
     end
 
     it "should correctly format plain literals" do
