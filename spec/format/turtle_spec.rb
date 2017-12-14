@@ -25,6 +25,10 @@ describe RDF::Raptor::Turtle::Reader do
   let!(:doap_count) {45}
 
   it_behaves_like 'an RDF::Reader' do
+    around(:each) do |example|
+      pending("validation") if example.description.include?('invalidates given invalid input and validate: true')
+     example.run
+    end
     let(:reader) {RDF::Raptor::Turtle::Reader.new(reader_input)}
     let(:reader_input) {File.read(doap)}
     let(:reader_count) {doap_count}

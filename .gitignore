@@ -1,3 +1,4 @@
+.ruby-version
 .DS_Store
 .tmp
 .yardoc
@@ -8,3 +9,5 @@ Gemfile.lock
 coverage
 .rbx/
 /.byebug_history
+Vagrantfile
+.vagrant

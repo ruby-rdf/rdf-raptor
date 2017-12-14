@@ -20,7 +20,7 @@ Features
 * Serializes RDF statements into Graphviz format.
 * Provides serialization format autodetection for RDF/XML, Turtle and RDFa.
 * Compatible with any operating system supported by Raptor and Ruby.
-* Compatible with MRI 2.x, REE, JRuby and Rubinius.
+* Compatible with MRI >= 2.2.2, JRuby and Rubinius.
 
 Examples
 --------
@@ -127,7 +127,7 @@ Examples
 Documentation
 -------------
 
-<http://rdf.rubyforge.org/raptor/>
+<http://www.rubydoc.info/github/ruby-rdf/rdf-raptor/>
 
 * {RDF::Raptor}
   * {RDF::Raptor::NTriples}

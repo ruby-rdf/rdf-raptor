@@ -40,10 +40,3 @@ describe RDF::Raptor::Graphviz::Writer do
     writers.each { |writer| expect(writer).to eq(RDF::Raptor::Graphviz::Writer) }
   end
 end
-
-describe RDF::Raptor::Graphviz::Reader do
-  # Raptor has no implementation for a Graphviz reader
-  it "should raise a NoMethodError" do
-    expect {described_class.open}.to raise_error(NoMethodError)
-  end
-end

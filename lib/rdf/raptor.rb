@@ -72,7 +72,7 @@ module RDF
   # `RDF_RAPTOR_BINPATH` environment variables appropriately before
   # requiring `rdf/raptor`.
   #
-  # @see http://rdf.rubyforge.org/
+  # @see http://www.rubydoc.info/github/ruby-rdf/rdf/
   # @see http://librdf.org/raptor/
   # @see http://wiki.github.com/ffi/ffi/
   #
