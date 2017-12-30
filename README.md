@@ -139,8 +139,8 @@ Documentation
 Dependencies
 ------------
 
-* [RDF.rb](http://rubygems.org/gems/rdf) (>= 1.0.0)
-* [FFI](http://rubygems.org/gems/ffi) (>= 1.0.0)
+* [RDF.rb](http://rubygems.org/gems/rdf) (~> 3.0.0)
+* [FFI](http://rubygems.org/gems/ffi) (>= 1.9.0)
 * [Raptor][] (>= 2.0), the `libraptor` library or the `rapper` binary
 
 Installation
