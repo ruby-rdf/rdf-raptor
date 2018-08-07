@@ -16,13 +16,7 @@ Gem::Specification.new do |gem|
 
   gem.platform           = Gem::Platform::RUBY
   gem.files              = %w(AUTHORS CREDITS README UNLICENSE VERSION etc/doap.ttl) + Dir.glob('lib/**/*.rb')
-  gem.bindir             = %q(bin)
-  gem.executables        = %w()
-  gem.default_executable = gem.executables.first
   gem.require_paths      = %w(lib)
-  gem.extensions         = %w()
-  gem.test_files         = %w()
-  gem.has_rdoc           = false
 
   gem.required_ruby_version      = '>= 2.2.2'
   gem.requirements               = ['libraptor2 (>= 2.0)']
