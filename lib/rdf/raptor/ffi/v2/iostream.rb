@@ -23,7 +23,7 @@ module RDF::Raptor::FFI::V2
     # @overload initialize(file)
     #   @param  [File, Tempfile] file
     #
-    def initialize(ptr_or_obj, options = {})
+    def initialize(ptr_or_obj, **options)
       ptr = case ptr_or_obj
         when FFI::Pointer
           ptr_or_obj
