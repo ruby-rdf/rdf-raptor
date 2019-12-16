@@ -95,20 +95,20 @@ describe RDF::Raptor::Turtle::Writer do
     )
   end
 
-  def parse(input, options = {})
+  def parse(input, **options)
     graph = RDF::Graph.new
-    RDF::Raptor::Turtle::Reader.new(input, options).each do |statement|
+    RDF::Raptor::Turtle::Reader.new(input, **options).each do |statement|
       graph << statement
     end
     graph
   end
 
   # Serialize ntstr to a string and compare against regexps
-  def serialize(ntstr, base = nil, regexps = [], options = {})
+  def serialize(ntstr, base = nil, regexps = [], **options)
     prefixes = options[:prefixes] || {nil => ""}
     g = parse(ntstr, base_uri: base, prefixes: prefixes, validate: false)
     @debug = []
-    result = RDF::Raptor::Turtle::Writer.buffer(options.merge(base_uri: base, prefixes: prefixes)) do |writer|
+    result = RDF::Raptor::Turtle::Writer.buffer(base_uri: base, prefixes: prefixes, **options) do |writer|
       writer << g
     end
     

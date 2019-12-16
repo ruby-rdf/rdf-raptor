@@ -40,7 +40,7 @@ module RDF::Raptor
       # @yield  [reader] `self`
       # @yieldparam  [RDF::Reader] reader
       # @yieldreturn [void] ignored
-      def initialize(input = $stdin, options = {}, &block)
+      def initialize(input = $stdin, **options, &block)
         @format = self.class.format.rapper_format
         @parser = V2::Parser.new(@format)
         @parser.error_handler = ERROR_HANDLER
@@ -75,7 +75,7 @@ module RDF::Raptor
       # @yieldparam  [RDF::Statement] statement
       # @yieldreturn [void] ignored
       # @see   RDF::Reader#each_statement
-      def each_statement(options = {}, &block)
+      def each_statement(**options, &block)
         if block_given?
           if options[:raw]
             # this is up to an order of magnitude faster...
@@ -92,7 +92,7 @@ module RDF::Raptor
             raise RDF::ReaderError, "Errors found during processing"
           end
         end
-        enum_for(:each_statement, options)
+        enum_for(:each_statement, **options)
       end
       alias_method :each, :each_statement
 
@@ -121,7 +121,7 @@ module RDF::Raptor
       # @yieldreturn [void] ignored
       # @return [void]
       def parse(input, &block)
-        @parser.parse(input, @options, &block)
+        @parser.parse(input, **@options, &block)
       end
 
       GENID = /^genid\d+$/
@@ -156,12 +156,12 @@ module RDF::Raptor
       # @yield  [writer] `self`
       # @yieldparam  [RDF::Writer] writer
       # @yieldreturn [void] ignored
-      def initialize(output = $stdout, options = {}, &block)
+      def initialize(output = $stdout, **options, &block)
         @format = self.class.format.rapper_format
         @serializer = V2::Serializer.new(@format)
         @serializer.error_handler   = ERROR_HANDLER
         @serializer.warning_handler = WARNING_HANDLER
-        @serializer.start_to(output, options)
+        @serializer.start_to(output, **options)
         super
       end
 

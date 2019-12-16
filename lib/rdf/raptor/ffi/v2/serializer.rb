@@ -69,9 +69,9 @@ module RDF::Raptor::FFI::V2
     # @option options [String, #to_s] :base_uri (nil)
     #   the base URI to use when resolving relative URIs
     # @return [void]
-    def start_to(output, options = {})
+    def start_to(output, **options)
       if output.respond_to?(:write)
-        start_to_stream(output, options)
+        start_to_stream(output, **options)
        else
         raise ArgumentError, "don't know how to serialize to #{output.inspect}"
       end
@@ -82,9 +82,9 @@ module RDF::Raptor::FFI::V2
     # @param  [Hash{Symbol => Object}] options
     #   any additional options for serializing (see {#start_to})
     # @return [void]
-    def start_to_stream(stream, options = {})
+    def start_to_stream(stream, **options)
       iostream = V2::IOStream.new(V2::IOStreamHandler.new(stream), free_iostream: self[:free_iostream_on_end])
-      start_to_iostream(iostream, options)
+      start_to_iostream(iostream, **options)
     end
 
     ##
@@ -92,9 +92,9 @@ module RDF::Raptor::FFI::V2
     # @param  [Hash{Symbol => Object}] options
     #   any additional options for serializing (see {#start_to})
     # @return [void]
-    def start_to_iostream(iostream, options = {})
+    def start_to_iostream(iostream, base_uri: nil, **options)
       @iostream = iostream # prevents premature GC
-      @base_uri = options[:base_uri].to_s.empty? ? nil : V2::URI.new(options[:base_uri].to_s)
+      @base_uri = base_uri.to_s.empty? ? nil : V2::URI.new(base_uri.to_s)
       if V2.raptor_serializer_start_to_iostream(self, @base_uri, @iostream).nonzero?
         raise RDF::WriterError, "raptor_serialize_start_to_iostream() failed"
       end

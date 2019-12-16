@@ -82,16 +82,16 @@ module RDF::Raptor::FFI::V2
     # @yieldparam  [FFI::Pointer] statement
     # @yieldreturn [void] ignored
     # @return [void]
-    def parse(input, options = {}, &block)
+    def parse(input, **options, &block)
       case input
         when RDF::URI, URI, %r(^(file|https|http|ftp)://)
-          parse_url(input, options, &block)
+          parse_url(input, **options, &block)
         when File, Tempfile
-          parse_file(input, options, &block)
+          parse_file(input, **options, &block)
         when IO, StringIO
-          parse_stream(input, options, &block)
+          parse_stream(input, **options, &block)
         when String
-          parse_buffer(input, options, &block)
+          parse_buffer(input, **options, &block)
         else
           raise ArgumentError, "don't know how to parse #{input.inspect}"
       end
@@ -108,7 +108,7 @@ module RDF::Raptor::FFI::V2
     # @yieldparam  [FFI::Pointer] statement
     # @yieldreturn [void] ignored
     # @return [void]
-    def parse_url(url, options = {}, &block)
+    def parse_url(url, **options, &block)
       self.statement_handler = block if block_given?
 
       data_url = V2::URI.new((url.respond_to?(:to_uri) ? url.to_uri : url).to_s)
@@ -130,7 +130,7 @@ module RDF::Raptor::FFI::V2
     # @yieldparam  [FFI::Pointer] statement
     # @yieldreturn [void] ignored
     # @return [void]
-    def parse_file(file, options = {}, &block)
+    def parse_file(file, **options, &block)
       self.statement_handler = block if block_given?
 
       data_url = V2::URI.new("file://#{File.expand_path(file.path)}")
@@ -151,7 +151,7 @@ module RDF::Raptor::FFI::V2
     # @yieldparam  [FFI::Pointer] statement
     # @yieldreturn [void] ignored
     # @return [void]
-    def parse_stream(stream, options = {}, &block)
+    def parse_stream(stream, **options, &block)
       self.statement_handler = block if block_given?
 
       begin
@@ -175,7 +175,7 @@ module RDF::Raptor::FFI::V2
     # @yieldparam  [FFI::Pointer] statement
     # @yieldreturn [void] ignored
     # @return [void]
-    def parse_buffer(buffer, options = {}, &block)
+    def parse_buffer(buffer, **options, &block)
       self.statement_handler = block if block_given?
 
       parse_start!((options[:base_uri] || BASE_URI).to_s)

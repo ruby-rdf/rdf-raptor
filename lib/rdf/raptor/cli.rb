@@ -27,30 +27,30 @@ module RDF::Raptor
       # Initializes the CLI reader instance.
       #
       # @param  [IO, File, RDF::URI, String] input
+      # @param [String, #to_s] :base_uri ("file:///dev/stdin")
       # @param  [Hash{Symbol => Object}] options
       #   any additional options (see `RDF::Reader#initialize`)
-      # @option options [String, #to_s] :base_uri ("file:///dev/stdin")
       # @yield  [reader] `self`
       # @yieldparam  [RDF::Reader] reader
       # @yieldreturn [void] ignored
-      def initialize(input = $stdin, options = {}, &block)
+      def initialize(input = $stdin, base_uri: nil, **options, &block)
         raise RDF::ReaderError, "`rapper` binary not found" unless RDF::Raptor.available?
 
         format = self.class.format.rapper_format
         case input
           when RDF::URI, %r(^(file|http|https|ftp)://)
             @command = "#{RAPPER} -q -i #{format} -o ntriples '#{input}'"
-            @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
+            @command << " '#{base_uri}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb')
 
           when File, Tempfile
             @command = "#{RAPPER} -q -i #{format} -o ntriples '#{File.expand_path(input.path)}'"
-            @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
+            @command << " '#{base_uri}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb')
 
           else # IO, String
             @command = "#{RAPPER} -q -i #{format} -o ntriples file:///dev/stdin"
-            @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
+            @command << " '#{base_uri}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb+')
             pid = fork do
               # process to feed `rapper`
@@ -135,20 +135,20 @@ module RDF::Raptor
       # @yield  [writer] `self`
       # @yieldparam  [RDF::Writer] writer
       # @yieldreturn [void]
-      def initialize(output = $stdout, options = {}, &block)
+      def initialize(output = $stdout, base_uri: nil, **options, &block)
         raise RDF::WriterError, "`rapper` binary not found" unless RDF::Raptor.available?
 
         format = self.class.format.rapper_format
         case output
           when File, IO, StringIO, Tempfile
             @command = "#{RAPPER} -q -i turtle -o #{format} file:///dev/stdin"
-            @command << " '#{options[:base_uri]}'" if options.has_key?(:base_uri)
+            @command << " '#{base_uri}'" if options.has_key?(:base_uri)
             @rapper  = IO.popen(@command, 'rb+')
           else
             raise ArgumentError, "unsupported output type: #{output.inspect}"
         end
-        @writer = RDF::NTriples::Writer.new(@rapper, options)
-        super(output, options, &block)
+        @writer = RDF::NTriples::Writer.new(@rapper, **options)
+        super(output, base_uri: base_uri, **options, &block)
       end
 
     protected

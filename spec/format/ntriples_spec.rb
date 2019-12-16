@@ -121,7 +121,7 @@ describe RDF::Raptor::NTriples::Reader do
   end
   
   it "should open and parse a file" do
-    RDF::Reader.open("etc/doap.nt") do |reader|
+    RDF::Reader.open(File.expand_path("../../../etc/doap.nt", __FILE__)) do |reader|
       expect(reader).to be_a subject.class
       expect(reader.count).to be > 0
     end
