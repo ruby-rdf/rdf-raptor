@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.email              = 'public-rdf-ruby@w3.org'
 
   gem.platform           = Gem::Platform::RUBY
-  gem.files              = %w(AUTHORS CREDITS README UNLICENSE VERSION etc/doap.ttl) + Dir.glob('lib/**/*.rb')
+  gem.files              = %w(AUTHORS CONTRIBUTING.md CREDITS README.md UNLICENSE VERSION etc/doap.ttl) + Dir.glob('lib/**/*.rb')
   gem.require_paths      = %w(lib)
 
   gem.required_ruby_version      = '>= 2.4'
