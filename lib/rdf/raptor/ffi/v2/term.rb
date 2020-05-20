@@ -1,6 +1,6 @@
 module RDF::Raptor::FFI::V2
   ##
-  # @see http://librdf.org/raptor/api-1.4/raptor-section-triples.html
+  # @see https://librdf.org/raptor/api-1.4/raptor-section-triples.html
   class Term < ::FFI::Struct
     include RDF::Raptor::FFI
     

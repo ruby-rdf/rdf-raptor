@@ -1,4 +1,4 @@
-@base         <http://rubygems.org/gems/rdf-json> .
+@base         <https://rubygems.org/gems/rdf-raptor> .
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dc:   <http://purl.org/dc/terms/> .
@@ -7,49 +7,47 @@
 
 <> a doap:Project ;
   doap:name          "RDF::Raptor" ;
-  doap:homepage      <http://ruby-rdf.github.com/rdf-raptor> ;
-  doap:license       <http://creativecommons.org/licenses/publicdomain/> ;
+  doap:homepage      <https://ruby-rdf.github.com/rdf-raptor> ;
+  doap:license       <https://unlicense.org/> ;
   doap:shortdesc     "Raptor RDF Parser plugin for RDF.rb."@en ;
   doap:description   "RDF.rb plugin for parsing/serializing RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library."@en ;
   doap:created       "2010-03-23" ;
-  doap:platform      "Ruby" ;
-  doap:download-page <http://rubygems.org/gems/rdf-turtle> ;
-  doap:bug-database  <http://github.com/ruby-rdf/rdf-raptor/issues> ;
-  doap:blog          <http://ar.to/>, <http://blog.datagraph.org/> ;
-  doap:developer     <http://ar.to/#self>,
+  doap:programming-language "Ruby" ;
+  doap:download-page <> ;
+  doap:bug-database  <https://github.com/ruby-rdf/rdf-raptor/issues> ;
+  doap:blog          <https://greggkellogg.net/> ;
+  doap:developer     <https://ar.to/#self>,
                      _:jfieber,
-                     <http://greggkellogg.net/foaf#me> ;
-  doap:maintainer    <http://ar.to/#self> ;
-  doap:documenter    <http://ar.to/#self> ;
-  doap:helper        <http://bhuga.net/#ben>,
-                     <http://greggkellogg.net/foaf#me> ;
-  foaf:maker         <http://ar.to/#self> ;
-  dc:creator         <http://ar.to/#self> .
+                     <https://greggkellogg.net/foaf#me> ;
+  doap:maintainer    <https://greggkellogg.net/> ;
+  doap:documenter    <https://ar.to/#self> ;
+  doap:helper        <https://bhuga.net/#ben>,
+                     <https://greggkellogg.net/foaf#me> ;
+  foaf:maker         <https://ar.to/#self> ;
+  dc:creator         <https://ar.to/#self> .
 
-<http://ar.to/#self> a foaf:Person ;
+<https://ar.to/#self> a foaf:Person ;
   foaf:name          "Arto Bendiken" ;
   foaf:mbox          <mailto:arto.bendiken@gmail.com> ;
   foaf:mbox_sha1sum  "d0737cceb55eb7d740578d2db1bc0727e3ed49ce",
                      "a033f652c84a4d73b8c26d318c2395699dd2bdfb" ;
-  foaf:homepage      <http://ar.to/> ;
-  rdfs:isDefinedBy   <http://datagraph.org/bendiken/foaf> .
+  foaf:homepage      <https://ar.to/>  .
 
-<http://bhuga.net/#ben> a foaf:Person ;
+<https://bhuga.net/#ben> a foaf:Person ;
   foaf:name          "Ben Lavender" ;
   foaf:mbox          <mailto:blavender@gmail.com> ;
   foaf:mbox_sha1sum  "dbf45f4ffbd27b67aa84f02a6a31c144727d10af" ;
-  foaf:homepage      <http://bhuga.net/> ;
-  rdfs:isDefinedBy   <http://datagraph.org/bhuga/foaf> .
+  foaf:homepage      <https://bhuga.net/> .
 
 _:jfieber a foaf:Person ;
   foaf:name          "John Fieber" ;
-  foaf:mbox          <mailto:jrf@ursamaris.org> ;
+  #foaf:mbox          <mailto:jrf@ursamaris.org> ;
   foaf:mbox_sha1sum "f7653fc1ac0e82ebb32f092389bd5fc728eaae12" ;
   foaf:homepage      <http://ursamaris.org/> .
 
-<http://greggkellogg.net/foaf#me> a foaf:Person ;
+<https://greggkellogg.net/foaf#me> a foaf:Person ;
   foaf:name          "Gregg Kellogg" ;
   foaf:mbox          <mailto:gregg@greggkellogg.net> ;
   foaf:mbox_sha1sum  "35bc44e6d0070e5ad50ccbe0d24403c96af2b9bd" ;
-  foaf:homepage      <http://greggkellogg.net/>;
-  rdfs:isDefinedBy   <http://greggkellogg.net/foaf> .
+  foaf:homepage      <https://greggkellogg.net/>;
+  rdfs:isDefinedBy   <https://greggkellogg.net/foaf> .

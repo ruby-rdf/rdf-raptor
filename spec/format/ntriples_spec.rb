@@ -70,8 +70,8 @@ describe RDF::Raptor::NTriples::Reader do
 
   let(:reader) {RDF::Raptor::NTriples::Reader.new(reader_input)}
   let(:reader_input) {%q(
-    <http://rubygems.org/gems/rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
-    <http://rubygems.org/gems/rdf> <http://usefulinc.com/ns/doap#name> "RDF.rb" .
+    <https://rubygems.org/gems/rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
+    <https://rubygems.org/gems/rdf> <http://usefulinc.com/ns/doap#name> "RDF.rb" .
   )}
   let(:reader_count) {2}
   it_behaves_like 'an RDF::Reader' do
@@ -178,11 +178,11 @@ describe RDF::Raptor::NTriples do
   let(:writer) {RDF::Raptor::NTriples::Writer}
   let(:statement) {
     RDF::Statement.new(
-      RDF::URI("http://rubygems.org/gems/rdf"),
+      RDF::URI("https://rubygems.org/gems/rdf"),
       RDF::URI("http://purl.org/dc/terms/creator"),
-      RDF::URI("http://ar.to/#self"))
+      RDF::URI("https://ar.to/#self"))
   }
-  let(:stmt_string) {"<http://rubygems.org/gems/rdf> <http://purl.org/dc/terms/creator> <http://ar.to/#self> .\n"}
+  let(:stmt_string) {"<https://rubygems.org/gems/rdf> <http://purl.org/dc/terms/creator> <https://ar.to/#self> .\n"}
   let(:graph) {RDF::Graph.new {|g| g << statement}}
 
   context "when writing" do
@@ -197,7 +197,7 @@ describe RDF::Raptor::NTriples do
     end
 
     it "should correctly format URI references" do
-      writer.new.format_uri(RDF::URI('http://rubgems.org/gems/rdf/')).should == '<http://rubgems.org/gems/rdf/>'
+      writer.new.format_uri(RDF::URI('https://rubgems.org/gems/rdf/')).should == '<https://rubgems.org/gems/rdf/>'
     end
 
     it "should correctly format plain literals" do

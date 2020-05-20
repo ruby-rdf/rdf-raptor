@@ -1,4 +1,4 @@
-require 'rdf' # @see http://rubygems.org/gems/rdf
+require 'rdf' # @see https://rubygems.org/gems/rdf
 require 'rdf/raptor/format'
 
 module RDF
@@ -72,12 +72,12 @@ module RDF
   # `RDF_RAPTOR_BINPATH` environment variables appropriately before
   # requiring `rdf/raptor`.
   #
-  # @see http://www.rubydoc.info/github/ruby-rdf/rdf/
-  # @see http://librdf.org/raptor/
-  # @see http://wiki.github.com/ffi/ffi/
+  # @see https://www.rubydoc.info/github/ruby-rdf/rdf/
+  # @see https://librdf.org/raptor/
+  # @see https://wiki.github.com/ffi/ffi/
   #
-  # @author [Arto Bendiken](http://github.com/bendiken)
-  # @author [John Fieber](http://github.com/jfieber)
+  # @author [Arto Bendiken](https://github.com/artob)
+  # @author [John Fieber](https://github.com/jfieber)
   module Raptor
     LIBRAPTOR = ENV['RDF_RAPTOR_LIBPATH'] || ['libraptor2', 'libraptor2.so.0']  unless const_defined?(:LIBRAPTOR)
     RAPPER    = ENV['RDF_RAPTOR_BINPATH'] || 'rapper'     unless const_defined?(:RAPPER)

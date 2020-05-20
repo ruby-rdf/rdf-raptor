@@ -19,7 +19,7 @@ module RDF::Raptor
   #     end
   #   end
   #
-  # @see http://www.w3.org/TR/rdf-testcases/#ntriples
+  # @see https://www.w3.org/TR/rdf-testcases/#ntriples
   module NTriples
     ##
     # N-Triples format specification.

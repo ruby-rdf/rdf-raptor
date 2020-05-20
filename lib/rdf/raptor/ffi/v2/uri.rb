@@ -4,7 +4,7 @@ module RDF::Raptor::FFI::V2
   # passing URI references. The default internal implementation uses `char*`
   # strings for URIs, manipulating them and constructing them.
   #
-  # @see http://librdf.org/raptor/api-1.4/raptor-section-uri.html
+  # @see https://librdf.org/raptor/api-1.4/raptor-section-uri.html
   class URI < ::FFI::ManagedStruct
     include RDF::Raptor::FFI
     include RDF::Resource

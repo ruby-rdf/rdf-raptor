@@ -3,7 +3,7 @@ module RDF::Raptor::FFI::V1
   # This class provides the functionality of turning syntaxes into RDF
   # triples - RDF parsing.
   #
-  # @see http://librdf.org/raptor/api-1.4/raptor-section-parser.html
+  # @see https://librdf.org/raptor/api-1.4/raptor-section-parser.html
   class Parser < ::FFI::ManagedStruct
     include RDF::Raptor::FFI
     layout :world, :pointer # the actual layout is private

@@ -27,7 +27,7 @@ module RDF::Raptor
       # Initializes the CLI reader instance.
       #
       # @param  [IO, File, RDF::URI, String] input
-      # @param [String, #to_s] :base_uri ("file:///dev/stdin")
+      # @param [String, #to_s] base_uri ("file:///dev/stdin")
       # @param  [Hash{Symbol => Object}] options
       #   any additional options (see `RDF::Reader#initialize`)
       # @yield  [reader] `self`
@@ -113,7 +113,7 @@ module RDF::Raptor
         #
         # @private
         # @see RDF::NTriples::Reader#read_node
-        # @see https://github.com/bendiken/rdf-raptor/issues/#issue/9
+        # @see https://github.com/ruby-rdf/rdf-raptor/issues/#issue/9
         def read_node
           if node_id = match(NODEID)
             @nodes ||= {}

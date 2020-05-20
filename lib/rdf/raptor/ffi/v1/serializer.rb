@@ -3,7 +3,7 @@ module RDF::Raptor::FFI::V1
   # This class provides the functionality of turning RDF triples into
   # syntaxes - RDF serializing.
   #
-  # @see http://librdf.org/raptor/api-1.4/raptor-section-serializer.html
+  # @see https://librdf.org/raptor/api-1.4/raptor-section-serializer.html
   class Serializer < ::FFI::ManagedStruct
     include RDF::Raptor::FFI
     layout :world, :pointer # the actual layout is private

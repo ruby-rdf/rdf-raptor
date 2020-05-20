@@ -12,7 +12,7 @@ module RDF::Raptor
   #     end
   #   end
   #
-  # @see http://rdfa.info/
+  # @see https://rdfa.info/
   module RDFa
     ##
     # RDFa format specification.

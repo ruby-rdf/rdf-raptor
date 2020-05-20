@@ -1,29 +1,89 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:doap="http://usefulinc.com/ns/doap#" xmlns:dc="http://purl.org/dc/terms/" xmlns:xhv="http://www.w3.org/1999/xhtml/vocab#" xmlns:foaf="http://xmlns.com/foaf/0.1/">
-  <doap:Project rdf:about="http://rubygems.org/gems/rdf-rdfxml">
-    <dc:creator rdf:resource="http://greggkellogg.net/foaf#me"/>
-    <doap:blog rdf:resource="http://greggkellogg.net/"/>
-    <doap:bug-database rdf:resource="http://github.com/ruby-rdf/rdf-rdfxml/issues"/>
-    <doap:category rdf:resource="http://dbpedia.org/resource/Resource_Description_Framework"/>
-    <doap:category>
-      <rdf:Description rdf:about="http://dbpedia.org/resource/Ruby_(programming_language)">
-        <doap:programming-language>Ruby</doap:programming-language>
-      </rdf:Description>
-    </doap:category>
-    <doap:created rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2010-06-03</doap:created>
-    <doap:description xml:lang="en">
-      RDF::RDFXML is an RDF/XML reader/writer for Ruby using the RDF.rb library suite.
-    </doap:description>
-    <doap:developer rdf:resource="http://greggkellogg.net/foaf#me"/>
-    <doap:helper rdf:resource="http://njh.me/"/>
-    <doap:documenter rdf:resource="http://greggkellogg.net/foaf#me"/>
-    <doap:download-page rdf:resource="http://rubygems.org/gems/rdf-raptor"/>
-    <doap:homepage rdf:resource="http://github.com/ruby-rdf/rdf-raptor"/>
-    <doap:mailing-list rdf:resource="http://lists.w3.org/Archives/Public/public-rdf-ruby/"/>
-    <doap:maintainer rdf:resource="http://greggkellogg.net/foaf#me"/>
-    <doap:name>RDF::RDFXML</doap:name>
-    <doap:shortdesc xml:lang="en">RDF/XML reader/writer for Ruby.</doap:shortdesc>
-    <xhv:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
-    <foaf:maker rdf:resource="http://greggkellogg.net/foaf#me"/>
-  </doap:Project>
+<?xml version='1.0' encoding='utf-8' ?>
+<rdf:RDF xmlns:dc='http://purl.org/dc/terms/' xmlns:doap='http://usefulinc.com/ns/doap#' xmlns:foaf='http://xmlns.com/foaf/0.1/' xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'>
+<foaf:Person rdf:about='https://bhuga.net/#ben'>
+<foaf:homepage rdf:resource='https://bhuga.net/' />
+
+<foaf:mbox rdf:resource='mailto:blavender@gmail.com' />
+
+<foaf:mbox_sha1sum>dbf45f4ffbd27b67aa84f02a6a31c144727d10af</foaf:mbox_sha1sum>
+
+<foaf:name>Ben Lavender</foaf:name>
+
+</foaf:Person>
+
+<doap:Project rdf:about='https://rubygems.org/gems/rdf-raptor'>
+<dc:creator>
+<foaf:Person rdf:about='https://ar.to/#self'>
+<foaf:homepage rdf:resource='https://ar.to/' />
+
+<foaf:mbox rdf:resource='mailto:arto.bendiken@gmail.com' />
+
+<foaf:mbox_sha1sum>a033f652c84a4d73b8c26d318c2395699dd2bdfb</foaf:mbox_sha1sum>
+ <foaf:mbox_sha1sum>d0737cceb55eb7d740578d2db1bc0727e3ed49ce</foaf:mbox_sha1sum>
+
+<foaf:name>Arto Bendiken</foaf:name>
+
+</foaf:Person>
+
+</dc:creator>
+
+<doap:blog rdf:resource='https://greggkellogg.net/' />
+
+<doap:bug-database rdf:resource='https://github.com/ruby-rdf/rdf-raptor/issues' />
+
+<doap:created>2010-03-23</doap:created>
+
+<doap:description xml:lang='en'>RDF.rb plugin for parsing/serializing RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library.</doap:description>
+
+<doap:developer>
+<foaf:Person rdf:about='https://greggkellogg.net/foaf#me'>
+<rdfs:isDefinedBy rdf:resource='https://greggkellogg.net/foaf' />
+
+<foaf:homepage rdf:resource='https://greggkellogg.net/' />
+
+<foaf:mbox rdf:resource='mailto:gregg@greggkellogg.net' />
+
+<foaf:mbox_sha1sum>35bc44e6d0070e5ad50ccbe0d24403c96af2b9bd</foaf:mbox_sha1sum>
+
+<foaf:name>Gregg Kellogg</foaf:name>
+
+</foaf:Person>
+
+</doap:developer>
+ <doap:developer rdf:resource='https://ar.to/#self' />
+ <doap:developer>
+<foaf:Person rdf:nodeID='jfieber'>
+<foaf:homepage rdf:resource='http://ursamaris.org/' />
+
+<foaf:mbox_sha1sum>f7653fc1ac0e82ebb32f092389bd5fc728eaae12</foaf:mbox_sha1sum>
+
+<foaf:name>John Fieber</foaf:name>
+
+</foaf:Person>
+
+</doap:developer>
+
+<doap:documenter rdf:resource='https://ar.to/#self' />
+
+<doap:download-page rdf:resource='https://rubygems.org/gems/rdf-raptor' />
+
+<doap:helper rdf:resource='https://greggkellogg.net/foaf#me' />
+ <doap:helper rdf:resource='https://bhuga.net/#ben' />
+
+<doap:homepage rdf:resource='https://ruby-rdf.github.com/rdf-raptor' />
+
+<doap:license rdf:resource='https://unlicense.org/' />
+
+<doap:maintainer rdf:resource='https://greggkellogg.net/' />
+
+<doap:name>RDF::Raptor</doap:name>
+
+<doap:programming-language>Ruby</doap:programming-language>
+
+<doap:shortdesc xml:lang='en'>Raptor RDF Parser plugin for RDF.rb.</doap:shortdesc>
+
+<foaf:maker rdf:resource='https://ar.to/#self' />
+
+</doap:Project>
+
 </rdf:RDF>

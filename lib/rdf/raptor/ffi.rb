@@ -1,5 +1,5 @@
 require 'tempfile'
-require 'ffi' # @see http://rubygems.org/gems/ffi
+require 'ffi' # @see https://rubygems.org/gems/ffi
 
 module RDF::Raptor
   ##

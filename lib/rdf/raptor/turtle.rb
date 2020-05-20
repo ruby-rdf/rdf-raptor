@@ -19,7 +19,7 @@ module RDF::Raptor
   #     end
   #   end
   #
-  # @see http://www.w3.org/TeamSubmission/turtle/
+  # @see https://www.w3.org/TeamSubmission/turtle/
   module Turtle
     ##
     # Turtle format specification.
