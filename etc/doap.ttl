@@ -18,8 +18,9 @@
   doap:blog          <https://greggkellogg.net/> ;
   doap:developer     <https://ar.to/#self>,
                      _:jfieber,
+                     _:dwbutler,
                      <https://greggkellogg.net/foaf#me> ;
-  doap:maintainer    <https://greggkellogg.net/> ;
+  doap:maintainer    _:dwbutler, <https://greggkellogg.net/> ;
   doap:documenter    <https://ar.to/#self> ;
   doap:helper        <https://bhuga.net/#ben>,
                      <https://greggkellogg.net/foaf#me> ;
@@ -38,6 +39,12 @@
   foaf:mbox          <mailto:blavender@gmail.com> ;
   foaf:mbox_sha1sum  "dbf45f4ffbd27b67aa84f02a6a31c144727d10af" ;
   foaf:homepage      <https://bhuga.net/> .
+
+_:dwbutler a foaf:Person ;
+  foaf:name          "David Butler" ;
+  #foaf:mbox          <mailto:david.william.butler@gmail.com> ;
+  foaf:mbox_sha1sum "8125fe100c2ed5f6ced2a88bd09a244e1c91682b" ;
+  foaf:homepage      <https://github.com/dwbutler> .
 
 _:jfieber a foaf:Person ;
   foaf:name          "John Fieber" ;
