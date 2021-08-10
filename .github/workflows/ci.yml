@@ -35,6 +35,8 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
       - name: Install dependencies
         run: bundle install --jobs 4 --retry 3
+      - name: Install Raptor2
+        run: sudo apt-get install raptor2-utils
       - name: Run tests
         run: bundle exec rspec spec || $ALLOW_FAILURES
       - name: Coveralls GitHub Action
