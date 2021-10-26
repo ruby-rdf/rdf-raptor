@@ -38,7 +38,7 @@ jobs:
       - name: Install Raptor2
         run: sudo apt-get install raptor2-utils
       - name: Run tests
-        run: bundle exec rspec spec || $ALLOW_FAILURES
+        run: ruby --version; bundle exec rspec spec || $ALLOW_FAILURES
       - name: Coveralls GitHub Action
         uses: coverallsapp/github-action@v1.1.2
         if: "matrix.ruby == '3.0'"
