@@ -16,9 +16,9 @@ Features
 * Parses and serializes RDF data from/into the NTriples, RDF/XML, and Turtle formats.
 * Extracts RDF statements from XHTML+RDFa documents.
 * Serializes RDF statements into Graphviz format.
-* Provides serialization format autodetection for RDF/XML, Turtle and RDFa.
+* Provides serialization format auto-detection for RDF/XML, Turtle and RDFa.
 * Compatible with any operating system supported by Raptor and Ruby.
-* Compatible with MRI >= 2.4, JRuby and Rubinius.
+* Compatible with MRI >= 2.6, JRuby and Rubinius.
 
 Examples
 --------
@@ -28,7 +28,7 @@ Examples
 ### Ensuring Raptor is installed and obtaining the version number
 
     RDF::Raptor.available?         #=> true
-    RDF::Raptor.version            #=> "2.0.8"
+    RDF::Raptor.version            #=> "3.2.0"
 
 ### Parsing RDF statements from an NTriples file
 
@@ -137,8 +137,8 @@ Documentation
 Dependencies
 ------------
 
-* [RDF.rb](https://rubygems.org/gems/rdf) (~> 3.1)
-* [FFI](https://rubygems.org/gems/ffi) (~> 1.11)
+* [RDF.rb](https://rubygems.org/gems/rdf) (~> 3.2)
+* [FFI](https://rubygems.org/gems/ffi) (~> 1.15)
 * [Raptor][] (>= 2.0), the `libraptor` library or the `rapper` binary
 
 Installation
