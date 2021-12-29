@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
 
   gem.name               = 'rdf-raptor'
   gem.homepage           = 'https://github.com/ruby-rdf/rdf-raptor'
-  gem.license            = 'Public Domain' if gem.respond_to?(:license=)
+  gem.license            = 'Unlicense'
   gem.summary            = 'Raptor RDF Parser plugin for RDF.rb.'
   gem.description        = 'RDF.rb plugin for parsing/serializing NTriples, RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library.'
 
