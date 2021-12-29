@@ -22,7 +22,7 @@ end
 
 describe RDF::Raptor::Turtle::Reader do
   let!(:doap) {File.expand_path("../../../etc/doap.ttl", __FILE__)}
-  let!(:doap_count) {45}
+  let!(:doap_count) {47}
 
   it_behaves_like 'an RDF::Reader' do
     around(:each) do |example|

@@ -19,7 +19,7 @@ module RDF::Raptor
   #     end
   #   end
   #
-  # @see http://www.w3.org/TR/REC-rdf-syntax/
+  # @see https://www.w3.org/TR/REC-rdf-syntax/
   module RDFXML
     ##
     # RDF/XML format specification.

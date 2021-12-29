@@ -2,7 +2,7 @@ module RDF::Raptor::FFI
   ##
   # A foreign-function interface (FFI) to `libraptor` 1.4.x.
   #
-  # @see http://librdf.org/raptor/libraptor.html
+  # @see https://librdf.org/raptor/libraptor.html
   module V1
     autoload :IOStream,        'rdf/raptor/ffi/v1/iostream'
     autoload :IOStreamHandler, 'rdf/raptor/ffi/v1/iostream_handler'
@@ -22,27 +22,27 @@ module RDF::Raptor::FFI
     RAPTOR_IDENTIFIER_TYPE_ANONYMOUS = 2
     RAPTOR_IDENTIFIER_TYPE_LITERAL   = 5
 
-    # @see http://librdf.org/raptor/api-1.4/tutorial-initialising-finishing.html
+    # @see https://librdf.org/raptor/api-1.4/tutorial-initialising-finishing.html
     attach_function :raptor_init, [], :void
     attach_function :raptor_finish, [], :void
     attach_function :raptor_alloc_memory, [:size_t], :pointer
     attach_function :raptor_calloc_memory, [:size_t, :size_t], :pointer
     attach_function :raptor_free_memory, [:pointer], :void
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-locator.html
+    # @see https://librdf.org/raptor/api-1.4/raptor-section-locator.html
     typedef :pointer, :raptor_locator
     attach_function :raptor_locator_line, [:raptor_locator], :int
     attach_function :raptor_locator_column, [:raptor_locator], :int
     attach_function :raptor_locator_byte, [:raptor_locator], :int
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-general.html
+    # @see https://librdf.org/raptor/api-1.4/raptor-section-general.html
     attach_variable :raptor_version_major, :int
     attach_variable :raptor_version_minor, :int
     attach_variable :raptor_version_release, :int
     attach_variable :raptor_version_decimal, :int
     callback        :raptor_message_handler, [:pointer, :raptor_locator, :string], :void
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-uri.html
+    # @see https://librdf.org/raptor/api-1.4/raptor-section-uri.html
     typedef :pointer, :raptor_uri
     attach_function :raptor_new_uri, [:string], :raptor_uri
     attach_function :raptor_uri_copy, [:raptor_uri], :raptor_uri
@@ -52,7 +52,7 @@ module RDF::Raptor::FFI
     attach_function :raptor_uri_print, [:raptor_uri, :pointer], :void
     attach_function :raptor_free_uri, [:raptor_uri], :void
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-triples.html
+    # @see https://librdf.org/raptor/api-1.4/raptor-section-triples.html
     typedef :int,     :raptor_identifier_type
     typedef :pointer, :raptor_identifier
     typedef :pointer, :raptor_statement
@@ -61,7 +61,7 @@ module RDF::Raptor::FFI
     attach_function :raptor_print_statement_as_ntriples, [:pointer, :pointer], :void
     attach_function :raptor_statement_part_as_string, [:pointer, :raptor_identifier_type, :raptor_uri, :pointer], :string
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-parser.html
+    # @see https://librdf.org/raptor/api-1.4/raptor-section-parser.html
     callback :raptor_statement_handler, [:pointer, :raptor_statement], :void
     typedef :pointer, :raptor_parser
     typedef :string, :mime_type
@@ -81,7 +81,7 @@ module RDF::Raptor::FFI
     attach_function :raptor_get_need_base_uri, [:raptor_parser], :int
     attach_function :raptor_free_parser, [:raptor_parser], :void
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-iostream.html
+    # @see https://librdf.org/raptor/api-1.4/raptor-section-iostream.html
     typedef :pointer, :raptor_iostream
     attach_function :raptor_new_iostream_from_handler2, [:pointer, :pointer], :raptor_iostream
     attach_function :raptor_free_iostream, [:raptor_iostream], :void
@@ -93,10 +93,10 @@ module RDF::Raptor::FFI
     callback        :raptor_iostream_read_bytes_func, [:pointer, :pointer, :size_t, :size_t], :int
     callback        :raptor_iostream_read_eof_func, [:pointer], :int
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-xml-namespace.html
+    # @see https://librdf.org/raptor/api-1.4/raptor-section-xml-namespace.html
     typedef :pointer, :raptor_namespace
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-serializer.html
+    # @see https://librdf.org/raptor/api-1.4/raptor-section-serializer.html
     typedef :pointer, :raptor_serializer
     attach_function :raptor_new_serializer, [:string], :raptor_serializer
     attach_function :raptor_free_serializer, [:raptor_serializer], :void

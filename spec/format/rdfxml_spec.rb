@@ -22,7 +22,7 @@ end
 
 describe RDF::Raptor::RDFXML::Reader do
   let!(:doap) {File.expand_path("../../../etc/doap.xml", __FILE__)}
-  let!(:doap_count) {20}
+  let!(:doap_count) {41}
 
   it_behaves_like 'an RDF::Reader' do
     around(:each) do |example|

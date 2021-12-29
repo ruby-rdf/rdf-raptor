@@ -1,6 +1,6 @@
 module RDF::Raptor::FFI::V2
   ##
-  # @see http://librdf.org/raptor/api/raptor2-section-xml-namespace.html
+  # @see https://librdf.org/raptor/api/raptor2-section-xml-namespace.html
   class Namespace < ::FFI::Struct
     include RDF::Raptor::FFI
     # @see https://github.com/dajobe/raptor/blob/f4b2597d4279dcb283bf5c32e5435696fd28a8ec/src/raptor_internal.h#L428

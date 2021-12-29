@@ -1,6 +1,6 @@
 module RDF::Raptor::FFI::V2
   ##
-  # @see http://librdf.org/raptor/api-1.4/raptor-section-iostream.html
+  # @see https://librdf.org/raptor/api-1.4/raptor-section-iostream.html
   class IOStreamHandler < ::FFI::Struct
     include RDF::Raptor::FFI
     layout :version, :int,

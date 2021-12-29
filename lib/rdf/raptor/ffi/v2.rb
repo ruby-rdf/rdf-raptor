@@ -2,7 +2,7 @@ module RDF::Raptor::FFI
   ##
   # A foreign-function interface (FFI) to `libraptor` 2.x.
   #
-  # @see http://librdf.org/raptor/libraptor.html
+  # @see https://librdf.org/raptor/libraptor.html
   module V2
     autoload :IOStream,        'rdf/raptor/ffi/v2/iostream'
     autoload :IOStreamHandler, 'rdf/raptor/ffi/v2/iostream_handler'
@@ -25,7 +25,7 @@ module RDF::Raptor::FFI
     RAPTOR_TERM_TYPE_LITERAL  = 2
     RAPTOR_TERM_TYPE_BLANK    = 4
 
-    # @see http://librdf.org/raptor/api/tutorial-initialising-finishing.html
+    # @see https://librdf.org/raptor/api/tutorial-initialising-finishing.html
     typedef :pointer, :raptor_world
     typedef :int, :raptor_version
     typedef :pointer, :raptor_iostream
@@ -35,13 +35,13 @@ module RDF::Raptor::FFI
     attach_function :raptor_calloc_memory, [:size_t, :size_t], :pointer
     attach_function :raptor_free_memory, [:pointer], :void
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-locator.html
+    # @see https://librdf.org/raptor/api-1.4/raptor-section-locator.html
     typedef :pointer, :raptor_locator
     attach_function :raptor_locator_line, [:raptor_locator], :int
     attach_function :raptor_locator_column, [:raptor_locator], :int
     attach_function :raptor_locator_byte, [:raptor_locator], :int
 
-    # @see http://librdf.org/raptor/api/raptor2-section-general.html
+    # @see https://librdf.org/raptor/api/raptor2-section-general.html
     attach_variable :raptor_version_string, :string
     attach_variable :raptor_version_major, :int
     attach_variable :raptor_version_minor, :int
@@ -49,7 +49,7 @@ module RDF::Raptor::FFI
     attach_variable :raptor_version_decimal, :int
     callback        :raptor_message_handler, [:pointer, :raptor_locator, :string], :void
 
-    # @see http://librdf.org/raptor/api-1.4/raptor-section-uri.html
+    # @see https://librdf.org/raptor/api-1.4/raptor-section-uri.html
     typedef :pointer, :raptor_uri
     attach_function :raptor_new_uri, [:raptor_world, :string], :raptor_uri
     attach_function :raptor_uri_copy, [:raptor_uri], :raptor_uri
@@ -59,7 +59,7 @@ module RDF::Raptor::FFI
     attach_function :raptor_uri_print, [:raptor_uri, :pointer], :void
     attach_function :raptor_free_uri, [:raptor_uri], :void
 
-    # @see http://librdf.org/raptor/api/raptor2-section-triples.html
+    # @see https://librdf.org/raptor/api/raptor2-section-triples.html
     typedef :int,     :raptor_identifier_type
     typedef :pointer, :raptor_identifier
     typedef :pointer, :raptor_statement
@@ -80,11 +80,11 @@ module RDF::Raptor::FFI
     attach_function :raptor_free_term, [:raptor_term], :void
     attach_function :raptor_term_ntriples_write, [:raptor_term, :raptor_iostream], :int
 
-    # @see http://librdf.org/raptor/api/raptor2-section-xml-namespace.html
+    # @see https://librdf.org/raptor/api/raptor2-section-xml-namespace.html
     typedef :pointer, :raptor_namespace
     attach_function :raptor_free_namespace, [:raptor_namespace], :void
 
-    # @see http://librdf.org/raptor/api/raptor2-section-parser.html
+    # @see https://librdf.org/raptor/api/raptor2-section-parser.html
     callback :raptor_statement_handler, [:pointer, :raptor_statement], :void
     callback :raptor_namespace_handler, [:pointer, :raptor_namespace], :void
     typedef :pointer, :raptor_parser
@@ -107,7 +107,7 @@ module RDF::Raptor::FFI
     attach_function :raptor_parser_parse_abort, [], :void
     attach_function :raptor_free_parser, [:raptor_parser], :void
 
-    # @see http://librdf.org/raptor/api/raptor2-section-iostream.html
+    # @see https://librdf.org/raptor/api/raptor2-section-iostream.html
     attach_function :raptor_new_iostream_from_handler, [:raptor_world, :pointer, :pointer], :raptor_iostream
     attach_function :raptor_new_iostream_to_filename, [:raptor_world, :string], :raptor_iostream
     attach_function :raptor_new_iostream_to_sink, [:raptor_world], :raptor_iostream
@@ -120,7 +120,7 @@ module RDF::Raptor::FFI
     callback        :raptor_iostream_read_bytes_func, [:pointer, :pointer, :size_t, :size_t], :int
     callback        :raptor_iostream_read_eof_func, [:pointer], :int
 
-    # @see http://librdf.org/raptor/api/raptor2-section-serializer.html
+    # @see https://librdf.org/raptor/api/raptor2-section-serializer.html
     typedef :pointer, :raptor_serializer
     typedef :string, :prefix
     attach_function :raptor_new_serializer, [:raptor_world, :string], :raptor_serializer

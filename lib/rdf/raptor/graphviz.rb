@@ -23,7 +23,7 @@ module RDF::Raptor
     #   RDF::Format.for(file_extension: "dot")
     #   RDF::Format.for(content_type:   "text/vnd.graphviz")
     #
-    # @see http://www.iana.org/assignments/media-types/text/vnd.graphviz
+    # @see https://www.iana.org/assignments/media-types/text/vnd.graphviz
     class Format < RDF::Format
       extend RDF::Raptor::Format
       

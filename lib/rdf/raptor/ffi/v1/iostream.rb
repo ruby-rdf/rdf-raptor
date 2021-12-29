@@ -3,7 +3,7 @@ module RDF::Raptor::FFI::V1
   # This class provides an I/O stream that can write to filenames, `FILE*`,
   # strings and user-defined output via callbacks.
   #
-  # @see http://librdf.org/raptor/api-1.4/raptor-section-iostream.html
+  # @see https://librdf.org/raptor/api-1.4/raptor-section-iostream.html
   class IOStream < ::FFI::ManagedStruct
     include RDF::Raptor::FFI
     layout :user_data, :pointer # the actual layout is private

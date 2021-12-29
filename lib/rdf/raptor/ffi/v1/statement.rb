@@ -1,6 +1,6 @@
 module RDF::Raptor::FFI::V1
   ##
-  # @see http://librdf.org/raptor/api-1.4/raptor-section-triples.html
+  # @see https://librdf.org/raptor/api-1.4/raptor-section-triples.html
   class Statement < ::FFI::Struct
     include RDF::Raptor::FFI
     layout :subject, :pointer,

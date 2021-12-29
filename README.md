@@ -5,11 +5,9 @@ This is an [RDF.rb][] extension that adds support for parsing/serializing [NTrip
 [RDF/XML][], [Turtle][], [RDFa][], and [Graphviz][] data using the [Raptor RDF Parser][Raptor]
 library.
 
-* <https://github.com/ruby-rdf/rdf-raptor>
-* <http://blog.datagraph.org/2010/04/parsing-rdf-with-ruby>
-
-[![Gem Version](https://badge.fury.io/rb/rdf-raptor.png)](http://badge.fury.io/rb/rdf-raptor)
-[![Build Status](https://travis-ci.org/ruby-rdf/rdf-raptor.png?branch=master)](http://travis-ci.org/ruby-rdf/rdf-raptor)
+[![Gem Version](https://badge.fury.io/rb/rdf-raptor.png)](https://badge.fury.io/rb/rdf-raptor)
+[![Build Status](https://github.com/ruby-rdf/rdf-raptor/workflows/CI/badge.svg?branch=develop)](https://github.com/ruby-rdf/rdf-raptor/actions?query=workflow%3ACI)
+[![Gitter chat](https://badges.gitter.im/ruby-rdf/rdf.png)](https://gitter.im/ruby-rdf/rdf)
 
 Features
 --------
@@ -18,9 +16,9 @@ Features
 * Parses and serializes RDF data from/into the NTriples, RDF/XML, and Turtle formats.
 * Extracts RDF statements from XHTML+RDFa documents.
 * Serializes RDF statements into Graphviz format.
-* Provides serialization format autodetection for RDF/XML, Turtle and RDFa.
+* Provides serialization format auto-detection for RDF/XML, Turtle and RDFa.
 * Compatible with any operating system supported by Raptor and Ruby.
-* Compatible with MRI >= 2.4, JRuby and Rubinius.
+* Compatible with MRI >= 2.6, JRuby and Rubinius.
 
 Examples
 --------
@@ -30,7 +28,7 @@ Examples
 ### Ensuring Raptor is installed and obtaining the version number
 
     RDF::Raptor.available?         #=> true
-    RDF::Raptor.version            #=> "2.0.8"
+    RDF::Raptor.version            #=> "3.2.0"
 
 ### Parsing RDF statements from an NTriples file
 
@@ -127,7 +125,7 @@ Examples
 Documentation
 -------------
 
-<http://www.rubydoc.info/github/ruby-rdf/rdf-raptor/>
+<https://www.rubydoc.info/github/ruby-rdf/rdf-raptor/>
 
 * {RDF::Raptor}
   * {RDF::Raptor::NTriples}
@@ -139,14 +137,14 @@ Documentation
 Dependencies
 ------------
 
-* [RDF.rb](http://rubygems.org/gems/rdf) (~> 3.1)
-* [FFI](http://rubygems.org/gems/ffi) (~> 1.11)
+* [RDF.rb](https://rubygems.org/gems/rdf) (~> 3.2)
+* [FFI](https://rubygems.org/gems/ffi) (~> 1.15)
 * [Raptor][] (>= 2.0), the `libraptor` library or the `rapper` binary
 
 Installation
 ------------
 
-The recommended installation method is via [RubyGems](http://rubygems.org/).
+The recommended installation method is via [RubyGems](https://rubygems.org/).
 To install the latest official release of the `RDF::Raptor` gem, do:
 
     % [sudo] gem install rdf-raptor
@@ -190,33 +188,33 @@ follows:
 Mailing List
 ------------
 
-* <http://lists.w3.org/Archives/Public/public-rdf-ruby/>
+* <https://lists.w3.org/Archives/Public/public-rdf-ruby/>
 
 Authors
 -------
 
-* [Arto Bendiken](https://github.com/bendiken) - <http://ar.to/>
-* [John Fieber](https://github.com/jfieber) - <http://github.com/jfieber>
+* [Arto Bendiken](https://github.com/artob) - <https://ar.to/>
+* [John Fieber](https://github.com/jfieber) - <https://github.com/jfieber>
 
 Contributors
 ------------
 
-* [Ben Lavender](https://github.com/bhuga) - <http://bhuga.net/>
-* [David Butler](https://github.com/dwbutler) - <http://github.com/dwbutler>
-* [Gregg Kellogg](https://github.com/gkellogg) - <http://greggkellogg.net/>
+* [Ben Lavender](https://github.com/bhuga) - <https://bhuga.net/>
+* [David Butler](https://github.com/dwbutler) - <https://github.com/dwbutler>
+* [Gregg Kellogg](https://github.com/gkellogg) - <https://greggkellogg.net/>
 
 License
 -------
 
 This is free and unencumbered public domain software. For more information,
-see <http://unlicense.org/> or the accompanying [UNLICENSE][] file.
+see <https://unlicense.org/> or the accompanying [UNLICENSE][] file.
 
 [RDF.rb]:   https://ruby-rdf.github.io/rdf
 [NTriples]: https://en.wikipedia.org/wiki/N-Triples
-[RDF/XML]:  http://www.w3.org/TR/REC-rdf-syntax/
+[RDF/XML]:  https://www.w3.org/TR/REC-rdf-syntax/
 [Turtle]:   https://en.wikipedia.org/wiki/Turtle_(syntax)
-[RDFa]:     http://rdfa.info/
-[Graphviz]: http://www.graphviz.org/
-[Raptor]:   http://librdf.org/raptor/
-[rapper]:   http://librdf.org/raptor/rapper.html
+[RDFa]:     https://rdfa.info/
+[Graphviz]: https://www.graphviz.org/
+[Raptor]:   https://librdf.org/raptor/
+[rapper]:   https://librdf.org/raptor/rapper.html
 [UNLICENSE]:https://github.com/ruby-rdf/rdf-raptor/blob/master/UNLICENSE
