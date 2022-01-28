@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Module: RDF::Raptor
+  
+    &mdash; RDF::Raptor - RDF/XML, Turtle and RDFa Support for RDF.rb
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "RDF::Raptor";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (R)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span>
+     &raquo; 
+    <span class="title">Raptor</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Module: RDF::Raptor
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/rdf/raptor.rb<span class="defines">,<br />
+  lib/rdf/raptor/cli.rb,<br /> lib/rdf/raptor/ffi.rb,<br /> lib/rdf/raptor/rdfa.rb,<br /> lib/rdf/raptor/format.rb,<br /> lib/rdf/raptor/rdfxml.rb,<br /> lib/rdf/raptor/turtle.rb,<br /> lib/rdf/raptor/version.rb,<br /> lib/rdf/raptor/graphviz.rb,<br /> lib/rdf/raptor/ntriples.rb</span>
+</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p><strong><code>RDF::Raptor</code></strong> is a Raptor RDF Parser plugin for RDF.rb.</p>
+<ul><li>
+<p><span class='object_link'><a href="Raptor/NTriples.html" title="RDF::Raptor::NTriples (module)">NTriples</a></span> provides support for the standard  machine-readable N-Triples format.</p>
+</li><li>
+<p><span class='object_link'><a href="Raptor/Turtle.html" title="RDF::Raptor::Turtle (module)">Turtle</a></span> provides support for the popular  human-readable Turtle format.</p>
+</li><li>
+<p><span class='object_link'><a href="Raptor/RDFXML.html" title="RDF::Raptor::RDFXML (module)">RDFXML</a></span> provides support for the standard  machine-readable RDF/XML format.</p>
+</li><li>
+<p><span class='object_link'><a href="Raptor/RDFa.html" title="RDF::Raptor::RDFa (module)">RDFa</a></span> provides support for extracting  RDF statements from XHTML+RDFa documents.</p>
+</li><li>
+<p><span class='object_link'><a href="Raptor/Graphviz.html" title="RDF::Raptor::Graphviz (module)">Graphviz</a></span> provides support for serializing  RDF statements to the Graphviz DOT format.</p>
+</li></ul>
+
+<p><span class='object_link'><a href="" title="RDF::Raptor (module)">Raptor</a></span> includes an FFI implementation, which loads the <code>libraptor2</code> library into the Ruby process, as well as a CLI implementation, which drives the <code>rapper</code> command-line tool in a sub-process.</p>
+
+<p>The FFI implementation is used by default unless the <code>libraptor2</code> library cannot be found, or if the <code>RDF_RAPTOR_ENGINE</code> environment variable is explicitly set to <code>&#39;cli&#39;</code>.</p>
+
+<p>If the <code>libraptor2</code> library is in the standard library search path, and the <code>rapper</code> command is in the standard command search path, all should be well and work fine out of the box. However, if either is in a non-standard location, be sure to set the <code>RDF_RAPTOR_LIBPATH</code> and/or <code>RDF_RAPTOR_BINPATH</code> environment variables appropriately before requiring <code>rdf/raptor</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Requiring the <code>RDF::Raptor</code> module</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>rdf/raptor</span><span class='tstring_end'>&#39;</span></span></code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Checking whether Raptor is installed</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Raptor</span><span class='period'>.</span><span class='id identifier rubyid_available?'><span class='object_link'><a href="#available%3F-class_method" title="RDF::Raptor.available? (method)">available?</a></span></span>         <span class='comment'>#=&gt; true</span></code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Obtaining the Raptor version number</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Raptor</span><span class='period'>.</span><span class='id identifier rubyid_version'>version</span>            <span class='comment'>#=&gt; &quot;1.4.21&quot;</span></code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Obtaining the Raptor engine</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Raptor</span><span class='op'>::</span><span class='const'>ENGINE</span>            <span class='comment'>#=&gt; :ffi</span></code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Obtaining an N-Triples format class</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='symbol'>:ntriples</span><span class='rparen'>)</span>     <span class='comment'>#=&gt; RDF::Raptor::NTriples::Format
+</span><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>input.nt</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>file_name:</span>      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>input.nt</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>file_extension:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nt</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>content_type:</span>   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>text/plain</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span></code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Obtaining a Turtle format class</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='symbol'>:turtle</span><span class='rparen'>)</span>       <span class='comment'>#=&gt; RDF::Raptor::Turtle::Format
+</span><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>input.ttl</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>file_name:</span>      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>input.ttl</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>file_extension:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ttl</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>content_type:</span>   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>text/turtle</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span></code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Obtaining an RDF/XML format class</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='symbol'>:rdfxml</span><span class='rparen'>)</span>       <span class='comment'>#=&gt; RDF::Raptor::RDFXML::Format
+</span><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>input.rdf</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>file_name:</span>      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>input.rdf</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>file_extension:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>rdf</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>content_type:</span>   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/rdf+xml</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span></code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Obtaining an RDFa format class</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='symbol'>:rdfa</span><span class='rparen'>)</span>       <span class='comment'>#=&gt; RDF::Raptor::RDFa::Format
+</span><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>input.html</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>file_name:</span>      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>input.html</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>file_extension:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>html</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>Format</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span><span class='label'>content_type:</span>   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/xhtml+xml</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span></code></pre>
+    
+  </div>
+
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="https://ruby-rdf.github.io/rdf/" target="_parent" title="https://ruby-rdf.github.io/rdf/">https://ruby-rdf.github.io/rdf/</a></li>
+    
+      <li><a href="https://librdf.org/raptor/" target="_parent" title="https://librdf.org/raptor/">https://librdf.org/raptor/</a></li>
+    
+      <li><a href="https://wiki.github.com/ffi/ffi/" target="_parent" title="https://wiki.github.com/ffi/ffi/">https://wiki.github.com/ffi/ffi/</a></li>
+    
+  </ul>
+<p class="tag_title">Author:</p>
+<ul class="author">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p><a href="https://github.com/artob">Arto Bendiken</a></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p><a href="https://github.com/jfieber">John Fieber</a></p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Raptor/CLI.html" title="RDF::Raptor::CLI (module)">CLI</a></span>, <span class='object_link'><a href="Raptor/FFI.html" title="RDF::Raptor::FFI (module)">FFI</a></span>, <span class='object_link'><a href="Raptor/Format.html" title="RDF::Raptor::Format (module)">Format</a></span>, <span class='object_link'><a href="Raptor/Graphviz.html" title="RDF::Raptor::Graphviz (module)">Graphviz</a></span>, <span class='object_link'><a href="Raptor/NTriples.html" title="RDF::Raptor::NTriples (module)">NTriples</a></span>, <span class='object_link'><a href="Raptor/RDFXML.html" title="RDF::Raptor::RDFXML (module)">RDFXML</a></span>, <span class='object_link'><a href="Raptor/RDFa.html" title="RDF::Raptor::RDFa (module)">RDFa</a></span>, <span class='object_link'><a href="Raptor/Turtle.html" title="RDF::Raptor::Turtle (module)">Turtle</a></span>, <span class='object_link'><a href="Raptor/VERSION.html" title="RDF::Raptor::VERSION (module)">VERSION</a></span>
+    
+  
+    
+  
+</p>
+
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="LIBRAPTOR-constant" class="">LIBRAPTOR =
+          
+        </dt>
+        <dd><pre class="code"><span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>RDF_RAPTOR_LIBPATH</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>libraptor2</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>libraptor2.so.0</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span></pre></dd>
+      
+        <dt id="RAPPER-constant" class="">RAPPER =
+          
+        </dt>
+        <dd><pre class="code"><span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>RDF_RAPTOR_BINPATH</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>rapper</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#available%3F-class_method" title="available? (class method)">.<strong>available?</strong>  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns <code>true</code> if the <code>rapper</code> binary is available.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="available?-class_method">
+  
+    .<strong>available?</strong>  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <code>true</code> if the <code>rapper</code> binary is available.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="RDF::Raptor (module)">Raptor</a></span></span><span class='period'>.</span><span class='id identifier rubyid_available?'>available?</span>  <span class='comment'>#=&gt; true</span></code></pre>
+    
+  </div>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+106
+107
+108</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor.rb', line 106</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_available?'>available?</span>
+  <span class='op'>!</span><span class='op'>!</span><span class='id identifier rubyid_version'>version</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Fri Jan 28 19:42:25 2022 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.27 (ruby-3.1.0).
+</div>
+
+    </div>
+  </body>
+</html>

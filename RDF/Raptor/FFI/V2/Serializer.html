@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Class: RDF::Raptor::FFI::V2::Serializer
+  
+    &mdash; RDF::Raptor - RDF/XML, Turtle and RDFa Support for RDF.rb
+  
+</title>
+
+  <link rel="stylesheet" href="../../../../css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="../../../../css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "RDF::Raptor::FFI::V2::Serializer";
+  relpath = '../../../../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../../../../class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../../../../_index.html">Index (S)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../../../RDF.html" title="RDF (module)">RDF</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../../Raptor.html" title="RDF::Raptor (module)">Raptor</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../FFI.html" title="RDF::Raptor::FFI (module)">FFI</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span>
+     &raquo; 
+    <span class="title">Serializer</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../../../class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Class: RDF::Raptor::FFI::V2::Serializer
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
+      <span class="inheritName">FFI::ManagedStruct</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">FFI::ManagedStruct</li>
+          
+            <li class="next">RDF::Raptor::FFI::V2::Serializer</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+    </dd>
+  </dl>
+  
+
+  
+  
+  
+  
+  <dl>
+      <dt>Includes:</dt>
+      <dd><span class='object_link'><a href="../../FFI.html" title="RDF::Raptor::FFI (module)">RDF::Raptor::FFI</a></span></dd>
+  </dl>
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/rdf/raptor/ffi/v2/serializer.rb</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>This class provides the functionality of turning RDF triples into syntaxes - RDF serializing.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="https://librdf.org/raptor/api-1.4/raptor-section-serializer.html" target="_parent" title="https://librdf.org/raptor/api-1.4/raptor-section-serializer.html">https://librdf.org/raptor/api-1.4/raptor-section-serializer.html</a></li>
+    
+  </ul>
+
+</div>
+
+
+  <h2>Constant Summary</h2>
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="../../FFI.html" title="RDF::Raptor::FFI (module)">RDF::Raptor::FFI</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../FFI.html#ENGINE-constant" title="RDF::Raptor::FFI::ENGINE (constant)">ENGINE</a></span></p>
+
+
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#iostream-instance_method" title="#iostream (instance method)">#<strong>iostream</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute iostream.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#release-class_method" title="release (class method)">.<strong>release</strong>(ptr)  </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Releases <code>libraptor</code> memory associated with this structure.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#error_handler=-instance_method" title="#error_handler= (instance method)">#<strong>error_handler=</strong>(handler)  </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#finish-instance_method" title="#finish (instance method)">#<strong>finish</strong>  </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(ptr_or_name)  &#x21d2; Serializer </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of Serializer.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#prefix-instance_method" title="#prefix (instance method)">#<strong>prefix</strong>(prefixes)  </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serialize_raw_statement-instance_method" title="#serialize_raw_statement (instance method)">#<strong>serialize_raw_statement</strong>(statement)  </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serialize_triple-instance_method" title="#serialize_triple (instance method)">#<strong>serialize_triple</strong>(subject, predicate, object)  </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#start_to-instance_method" title="#start_to (instance method)">#<strong>start_to</strong>(output, **options)  </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#start_to_iostream-instance_method" title="#start_to_iostream (instance method)">#<strong>start_to_iostream</strong>(iostream, base_uri: nil, **options)  </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#start_to_stream-instance_method" title="#start_to_stream (instance method)">#<strong>start_to_stream</strong>(stream, **options)  </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#warning_handler=-instance_method" title="#warning_handler= (instance method)">#<strong>warning_handler=</strong>(handler)  </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../../FFI.html" title="RDF::Raptor::FFI (module)">RDF::Raptor::FFI</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../FFI.html#version-instance_method" title="RDF::Raptor::FFI#version (method)">#version</a></span></p>
+
+  <div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    
+      <span class="overload">#<strong>initialize</strong>(ptr)  &#x21d2; <tt><span class='object_link'><a href="" title="RDF::Raptor::FFI::V2::Serializer (class)">Serializer</a></span></tt> </span>
+    
+      <span class="overload">#<strong>initialize</strong>(name)  &#x21d2; <tt><span class='object_link'><a href="" title="RDF::Raptor::FFI::V2::Serializer (class)">Serializer</a></span></tt> </span>
+    
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a new instance of Serializer.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <p class="tag_title">Overloads:</p>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">#<strong>initialize</strong>(ptr)  &#x21d2; <tt><span class='object_link'><a href="" title="RDF::Raptor::FFI::V2::Serializer (class)">Serializer</a></span></tt> </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>ptr</span>
+      
+      
+        <span class='type'>(<tt>FFI::Pointer</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">#<strong>initialize</strong>(name)  &#x21d2; <tt><span class='object_link'><a href="" title="RDF::Raptor::FFI::V2::Serializer (class)">Serializer</a></span></tt> </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>name</span>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>, <tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div>
+      </li>
+    
+  </ul>
+
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 30</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_ptr_or_name'>ptr_or_name</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_ptr'>ptr</span> <span class='op'>=</span> <span class='kw'>case</span> <span class='id identifier rubyid_ptr_or_name'>ptr_or_name</span>
+    <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="../../FFI.html" title="RDF::Raptor::FFI (module)">FFI</a></span></span><span class='op'>::</span><span class='const'>Pointer</span> <span class='kw'>then</span> <span class='id identifier rubyid_ptr_or_name'>ptr_or_name</span>
+    <span class='kw'>when</span> <span class='const'>Symbol</span>       <span class='kw'>then</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_raptor_new_serializer'>raptor_new_serializer</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_world'><span class='object_link'><a href="../V2.html#world-class_method" title="RDF::Raptor::FFI::V2.world (method)">world</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_ptr_or_name'>ptr_or_name</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
+    <span class='kw'>when</span> <span class='const'>String</span>       <span class='kw'>then</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_raptor_new_serializer'>raptor_new_serializer</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_world'><span class='object_link'><a href="../V2.html#world-class_method" title="RDF::Raptor::FFI::V2.world (method)">world</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_ptr_or_name'>ptr_or_name</span><span class='rparen'>)</span>
+    <span class='kw'>else</span> <span class='kw'>nil</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>invalid argument: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_ptr_or_name'>ptr_or_name</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_ptr'>ptr</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_ptr'>ptr</span><span class='period'>.</span><span class='id identifier rubyid_null?'>null?</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_ptr'>ptr</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="iostream-instance_method">
+  
+    #<strong>iostream</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute iostream.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+10
+11
+12</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 10</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_iostream'>iostream</span>
+  <span class='ivar'>@iostream</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="release-class_method">
+  
+    .<strong>release</strong>(ptr)  
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+<p>Releases <code>libraptor</code> memory associated with this structure.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>ptr</span>
+      
+      
+        <span class='type'>(<tt>FFI::Pointer</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+46
+47
+48</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 46</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_release'>release</span><span class='lparen'>(</span><span class='id identifier rubyid_ptr'>ptr</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_raptor_free_serializer'>raptor_free_serializer</span><span class='lparen'>(</span><span class='id identifier rubyid_ptr'>ptr</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="error_handler=-instance_method">
+  
+    #<strong>error_handler=</strong>(handler)  
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>handler</span>
+      
+      
+        <span class='type'>(<tt>Proc</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+53
+54
+55</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 53</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_error_handler='>error_handler=</span><span class='lparen'>(</span><span class='id identifier rubyid_handler'>handler</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_raptor_serializer_set_error_handler'>raptor_serializer_set_error_handler</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_handler'>handler</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:raptor_serializer_set_error_handler</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="finish-instance_method">
+  
+    #<strong>finish</strong>  
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+116
+117
+118
+119
+120
+121</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 116</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_finish'>finish</span>
+  <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_raptor_serializer_serialize_end'>raptor_serializer_serialize_end</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nonzero?'>nonzero?</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../../../../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>WriterError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>raptor_serialize_end() failed</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  <span class='ivar'>@iostream</span> <span class='op'>=</span> <span class='ivar'>@base_uri</span> <span class='op'>=</span> <span class='kw'>nil</span> <span class='comment'># allows GC
+</span><span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="prefix-instance_method">
+  
+    #<strong>prefix</strong>(prefixes)  
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>prefixes</span>
+      
+      
+        <span class='type'>(<tt>Hash{namespace =&gt; uri}</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+106
+107
+108
+109
+110
+111
+112</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 106</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_prefix'>prefix</span><span class='lparen'>(</span><span class='id identifier rubyid_prefixes'>prefixes</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_prefixes'>prefixes</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_uri'>uri</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_raptor_serializer_set_namespace'>raptor_serializer_set_namespace</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="URI.html" title="RDF::Raptor::FFI::V2::URI (class)">URI</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="URI.html#initialize-instance_method" title="RDF::Raptor::FFI::V2::URI#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nonzero?'>nonzero?</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../../../../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>WriterError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>raptor_serializer_set_namespace() failed</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="serialize_raw_statement-instance_method">
+  
+    #<strong>serialize_raw_statement</strong>(statement)  
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>statement</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Statement.html" title="RDF::Raptor::FFI::V2::Statement (class)">V2::Statement</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+144
+145
+146
+147
+148</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 144</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_serialize_raw_statement'>serialize_raw_statement</span><span class='lparen'>(</span><span class='id identifier rubyid_statement'>statement</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_raptor_serializer_serialize_statement'>raptor_serializer_serialize_statement</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_statement'>statement</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nonzero?'>nonzero?</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../../../../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>WriterError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>raptor_serialize_statement() failed</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="serialize_triple-instance_method">
+  
+    #<strong>serialize_triple</strong>(subject, predicate, object)  
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>subject</span>
+      
+      
+        <span class='type'>(<tt>RDF::Resource</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>predicate</span>
+      
+      
+        <span class='type'>(<tt>RDF::URI</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>object</span>
+      
+      
+        <span class='type'>(<tt>RDF::Term</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 128</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_serialize_triple'>serialize_triple</span><span class='lparen'>(</span><span class='id identifier rubyid_subject'>subject</span><span class='comma'>,</span> <span class='id identifier rubyid_predicate'>predicate</span><span class='comma'>,</span> <span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raptor_statement'>raptor_statement</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Statement.html" title="RDF::Raptor::FFI::V2::Statement (class)">Statement</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Statement.html#initialize-instance_method" title="RDF::Raptor::FFI::V2::Statement#initialize (method)">new</a></span></span>
+  <span class='id identifier rubyid_raptor_statement'>raptor_statement</span><span class='period'>.</span><span class='id identifier rubyid_subject'>subject</span>   <span class='op'>=</span> <span class='id identifier rubyid_subject'>subject</span>
+  <span class='id identifier rubyid_raptor_statement'>raptor_statement</span><span class='period'>.</span><span class='id identifier rubyid_predicate'>predicate</span> <span class='op'>=</span> <span class='id identifier rubyid_predicate'>predicate</span>
+  <span class='id identifier rubyid_raptor_statement'>raptor_statement</span><span class='period'>.</span><span class='id identifier rubyid_object'>object</span>    <span class='op'>=</span> <span class='id identifier rubyid_object'>object</span>
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_serialize_raw_statement'>serialize_raw_statement</span><span class='lparen'>(</span><span class='id identifier rubyid_raptor_statement'>raptor_statement</span><span class='rparen'>)</span>
+  <span class='kw'>ensure</span>
+    <span class='id identifier rubyid_raptor_statement'>raptor_statement</span><span class='period'>.</span><span class='id identifier rubyid_release'>release</span>
+    <span class='id identifier rubyid_raptor_statement'>raptor_statement</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="start_to-instance_method">
+  
+    #<strong>start_to</strong>(output, **options)  
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>output</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>where output should be written to</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash{Symbol =&gt; Object}</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>any additional options for serializing</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+    
+    
+    <p class="tag_title">Options Hash (<tt>**options</tt>):</p>
+    <ul class="option">
+      
+        <li>
+          <span class="name">:base_uri</span>
+          <span class="type">(<tt>String</tt>, <tt>#to_s</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>nil</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>the base URI to use when resolving relative URIs</p>
+</div>
+          
+        </li>
+      
+    </ul>
+  
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+72
+73
+74
+75
+76
+77
+78</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 72</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_start_to'>start_to</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:write</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_start_to_stream'>start_to_stream</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+   <span class='kw'>else</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>don&#39;t know how to serialize to </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="start_to_iostream-instance_method">
+  
+    #<strong>start_to_iostream</strong>(iostream, base_uri: nil, **options)  
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>iostream</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="IOStream.html" title="RDF::Raptor::FFI::V2::IOStream (class)">V2::IOStream</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash{Symbol =&gt; Object}</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>any additional options for serializing (see <span class='object_link'><a href="#start_to-instance_method" title="RDF::Raptor::FFI::V2::Serializer#start_to (method)">#start_to</a></span>)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+95
+96
+97
+98
+99
+100
+101</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 95</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_start_to_iostream'>start_to_iostream</span><span class='lparen'>(</span><span class='id identifier rubyid_iostream'>iostream</span><span class='comma'>,</span> <span class='label'>base_uri:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+  <span class='ivar'>@iostream</span> <span class='op'>=</span> <span class='id identifier rubyid_iostream'>iostream</span> <span class='comment'># prevents premature GC
+</span>  <span class='ivar'>@base_uri</span> <span class='op'>=</span> <span class='id identifier rubyid_base_uri'>base_uri</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='kw'>nil</span> <span class='op'>:</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="URI.html" title="RDF::Raptor::FFI::V2::URI (class)">URI</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="URI.html#initialize-instance_method" title="RDF::Raptor::FFI::V2::URI#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_base_uri'>base_uri</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_raptor_serializer_start_to_iostream'>raptor_serializer_start_to_iostream</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='ivar'>@base_uri</span><span class='comma'>,</span> <span class='ivar'>@iostream</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nonzero?'>nonzero?</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../../../../RDF.html" title="RDF (module)">RDF</a></span></span><span class='op'>::</span><span class='const'>WriterError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>raptor_serialize_start_to_iostream() failed</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="start_to_stream-instance_method">
+  
+    #<strong>start_to_stream</strong>(stream, **options)  
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>stream</span>
+      
+      
+        <span class='type'>(<tt>IO</tt>, <tt>StringIO</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash{Symbol =&gt; Object}</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>any additional options for serializing (see <span class='object_link'><a href="#start_to-instance_method" title="RDF::Raptor::FFI::V2::Serializer#start_to (method)">#start_to</a></span>)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+85
+86
+87
+88</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 85</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_start_to_stream'>start_to_stream</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_iostream'>iostream</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="IOStream.html" title="RDF::Raptor::FFI::V2::IOStream (class)">IOStream</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="IOStream.html#initialize-instance_method" title="RDF::Raptor::FFI::V2::IOStream#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="IOStreamHandler.html" title="RDF::Raptor::FFI::V2::IOStreamHandler (class)">IOStreamHandler</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="IOStreamHandler.html#initialize-instance_method" title="RDF::Raptor::FFI::V2::IOStreamHandler#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>free_iostream:</span> <span class='kw'>self</span><span class='lbracket'>[</span><span class='symbol'>:free_iostream_on_end</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_start_to_iostream'>start_to_iostream</span><span class='lparen'>(</span><span class='id identifier rubyid_iostream'>iostream</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="warning_handler=-instance_method">
+  
+    #<strong>warning_handler=</strong>(handler)  
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>handler</span>
+      
+      
+        <span class='type'>(<tt>Proc</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+60
+61
+62</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/rdf/raptor/ffi/v2/serializer.rb', line 60</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_warning_handler='>warning_handler=</span><span class='lparen'>(</span><span class='id identifier rubyid_handler'>handler</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_raptor_serializer_set_warning_handler'>raptor_serializer_set_warning_handler</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_handler'>handler</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../V2.html" title="RDF::Raptor::FFI::V2 (module)">V2</a></span></span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:raptor_serializer_set_warning_handler</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Fri Jan 28 19:42:28 2022 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.27 (ruby-3.1.0).
+</div>
+
+    </div>
+  </body>
+</html>
