@@ -10,6 +10,13 @@ Gem::Specification.new do |gem|
   gem.license            = 'Unlicense'
   gem.summary            = 'Raptor RDF Parser plugin for RDF.rb.'
   gem.description        = 'RDF.rb plugin for parsing/serializing NTriples, RDF/XML, Turtle and RDFa data using the Raptor RDF Parser library.'
+  gem.metadata           = {
+    "documentation_uri" => "https://ruby-rdf.github.io/rdf-raptor",
+    "bug_tracker_uri"   => "https://github.com/ruby-rdf/rdf-raptor/issues",
+    "homepage_uri"      => "https://github.com/ruby-rdf/rdf-raptor",
+    "mailing_list_uri"  => "https://lists.w3.org/Archives/Public/public-rdf-ruby/",
+    "source_code_uri"   => "https://github.com/ruby-rdf/rdf-raptor",
+  }
 
   gem.authors            = ['Arto Bendiken', 'John Fieber']
   gem.email              = 'public-rdf-ruby@w3.org'

@@ -125,7 +125,7 @@ Examples
 Documentation
 -------------
 
-<https://www.rubydoc.info/github/ruby-rdf/rdf-raptor/>
+<https://ruby-rdf.github.io/rdf-raptor/>
 
 * {RDF::Raptor}
   * {RDF::Raptor::NTriples}

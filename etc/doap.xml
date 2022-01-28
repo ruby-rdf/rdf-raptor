@@ -70,7 +70,7 @@
 <doap:helper rdf:resource='https://greggkellogg.net/foaf#me' />
  <doap:helper rdf:resource='https://bhuga.net/#ben' />
 
-<doap:homepage rdf:resource='https://ruby-rdf.github.com/rdf-raptor' />
+<doap:homepage rdf:resource='https://ruby-rdf.github.io/rdf-raptor' />
 
 <doap:license rdf:resource='https://unlicense.org/1.0/' />
 
