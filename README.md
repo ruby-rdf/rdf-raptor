@@ -5,7 +5,7 @@ This is an [RDF.rb][] extension that adds support for parsing/serializing [NTrip
 [RDF/XML][], [Turtle][], [RDFa][], and [Graphviz][] data using the [Raptor RDF Parser][Raptor]
 library.
 
-[![Gem Version](https://badge.fury.io/rb/rdf-raptor.png)](https://badge.fury.io/rb/rdf-raptor)
+[![Gem Version](https://badge.fury.io/rb/rdf-raptor.svg)](https://badge.fury.io/rb/rdf-raptor)
 [![Build Status](https://github.com/ruby-rdf/rdf-raptor/workflows/CI/badge.svg?branch=develop)](https://github.com/ruby-rdf/rdf-raptor/actions?query=workflow%3ACI)
 [![Gitter chat](https://badges.gitter.im/ruby-rdf/rdf.png)](https://gitter.im/ruby-rdf/rdf)
 
