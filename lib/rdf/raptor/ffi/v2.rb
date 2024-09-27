@@ -30,7 +30,7 @@ module RDF::Raptor::FFI
     typedef :int, :raptor_version
     typedef :pointer, :raptor_iostream
     attach_function :raptor_new_world_internal, [:raptor_version], :raptor_world
-    attach_function :raptor_free_world, [], :void
+    attach_function :raptor_free_world, [:raptor_world], :void
     attach_function :raptor_alloc_memory, [:size_t], :pointer
     attach_function :raptor_calloc_memory, [:size_t, :size_t], :pointer
     attach_function :raptor_free_memory, [:pointer], :void
